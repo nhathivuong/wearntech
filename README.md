@@ -18,6 +18,9 @@ A good brainstorming session is **STRONGLY** recommended! Plan out together :
 - What features you want to have.
 - What stretch goals you want to aim for.
 - Will all users share one cart?
+- Will there be a sign up?
+- What will the shape of a user object be?
+- Will there be global state?
 - etc...
 
 There probably shouldn't be any coding until a skeleton has been planned out.
@@ -26,7 +29,7 @@ There probably shouldn't be any coding until a skeleton has been planned out.
 
 ## Meet your Product Manager!
 
-YYour instructor will operate as your product manager!
+Your instructor will operate as your product manager!
 - This person is in charge of answering questions, guiding you and basically preventing everything from falling apart!
 - This person will be directing a team stand-up every day.
     - A stand-up is a meeting that lasts around 10 to 15 minutes where each member of the team updates the PM (and other members) about their progress or problems they're facing.
