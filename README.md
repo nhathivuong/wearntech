@@ -143,6 +143,8 @@ You will find 349 items in the `_data/items.json` file. The data is mostly clean
 
 Use the [Group Project Step by Step Instructions](https://docs.google.com/document/d/1Nx5cLzQiMpz4bkzjjq2AtpsXpymdu3SCxRJnLtgV70w/edit?usp=sharing)
 
+<img src='./git-teamwork-and-you.png' style='width: 100%;'/>
+
 ---
 
 ## Presentation
