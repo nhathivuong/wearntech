@@ -8,7 +8,7 @@ Your job will be to build a functional e-commerce website where users can come i
 
 ## Getting Started
 
-You have your assignment and your team. What should you do first? This will vary for every team, and even every team member.
+You have your assignment and your team. What should you do first?
 
 > **The important thing is to NOT just jump in and start coding!**
 
@@ -17,6 +17,7 @@ A good brainstorming session is **STRONGLY** recommended! Plan out together :
 - How it will behave.
 - What features you want to have.
 - What stretch goals you want to aim for.
+- Will all users share one cart?
 - etc...
 
 There probably shouldn't be any coding until a skeleton has been planned out.
@@ -25,7 +26,7 @@ There probably shouldn't be any coding until a skeleton has been planned out.
 
 ## Meet your Product Manager!
 
-Each team has been assigned a product manager!
+YYour instructor will operate as your product manager!
 - This person is in charge of answering questions, guiding you and basically preventing everything from falling apart!
 - This person will be directing a team stand-up every day.
     - A stand-up is a meeting that lasts around 10 to 15 minutes where each member of the team updates the PM (and other members) about their progress or problems they're facing.
@@ -36,19 +37,19 @@ Each team has been assigned a product manager!
 
 You have plenty of freedom in how the app will look and behave. As long as you meet the MVP requirements below, your poject will be deemed successful! You are allowed to use external UI libraries to build some nice functionality.
 
-> **✋ You CANNOT use any external styling libraries, including, but not limited to, Material UI, Bootstrap, and Tailwind to style your project!**
+> **✋ You CANNOT use any external global styling libraries, including, but not limited to, Bootstrap, and Tailwind. We don't want to force the overhead on your team.**
 
 ## Frontend
 
 Users should be able to:
 
 - View all items in the database.
-- Purchase items that are in stock.
-- View their cart containing the items they intend to purchase.
+- Add items into a cart (if in stock).
     - The cart **CANNOT** use `sessionStorage` or `localStorage`, and must be persistent.
     - **HINT**: use the database. Yes it will be slow, but use it anyways.
+- View their cart containing the items they intend to purchase.
 - Edit the cart before completing the purchase.
-    - **HINT**: use a reducer.
+- Purchase items that are in stock.
 
 ## Backend Requirements
 
@@ -56,11 +57,9 @@ The Node server should
 
 - Be RESTful (use the right `method` for the right job and hold nothing in memory).
 - Provide the FE with the required data in a clear and organized way.
-- Update the database as users make purchases.
+- Update the database as users make purchases (reduce stock).
 
 ## Code Requirements
-
-That's right! We're dropping code requirements on you! 
 
 - No console logs! _Unless they are part of a catch (logging an error)._
 - Comments! Comments everywhere! 
@@ -71,23 +70,28 @@ That's right! We're dropping code requirements on you!
 - Organization! No file should be several hundred lines long! Split your code up into different files.
 - No bugs! (In a perfect world this would be possible. For now, try to minimize them).
 
-## Project Requirements
-
-You thought we were done? Oh there's more!
+## Other Requirements
 
 - Attendance to the daily stand-ups conducted by your PM.
 - A [Trello](https://trello.com) board to divide up the tasks (other similar sites are fine too).
 - A group chat or new private discord server for your team and your PM.
+- Communicate with your team what you are working on, or if you are getting blocked on something.
 
 ## Stretch Goals
 
-Yeup!
-
 > For this project, stretch goals are highly recommended (though not necessary)!
 
-The MVP for this project is small; in fact it's tiny. We strongly encourage you to flex your skills and build something cool and functional! 
+The MVP for this project is very manageable for your group. We strongly encourage you to flex your skills and build something cool and functional!
 
-Make use of any and all libraries (except styling libraries) you can get your hands on if you think it will make the user's experience on your website better!
+Stretch ideas:
+- Recommended/featured items on home page.
+- Search bar for filtering items.
+- Additional filtering based on price, brand, etc.
+- View past purchases.
+- Make use of modules/libraries (except styling libraries). If you think it will make the user's experience on your website better, try it out!
+- Pagination to reduce number of items shown at once.
+- Sign up / log in system with user specific carts.
+- Footer about your dev team.
 
 ---
 
@@ -128,18 +132,24 @@ You will find 349 items in the `_data/items.json` file. The data is mostly clean
 
 ## 🤣 Don't be this guy...
 
-<img src='./client/assets/comic-strip.png' style='width: 100%;'/>
+<img src='./comic-strip.png' style='width: 100%;'/>
 
 ---
 
 ## Working as a team
 
-Use the [Group Project Step by Step Instructions](https://docs.google.com/document/d/1Txc02kMSnTjyOWFj3HDXc5y5tSurt3AFJGpXZKxvX6A/edit?usp=sharing)
+Use the [Group Project Step by Step Instructions](https://docs.google.com/document/d/1Nx5cLzQiMpz4bkzjjq2AtpsXpymdu3SCxRJnLtgV70w/edit?usp=sharing)
 
 ---
 
 ## Presentation
 
-Your team will have to present the final product on the final day in order to get a passing grade. Who will draw the short straw?
+On Monday, March 31st, at 2pm, your team will present the final product.
 
-- The presentation shouldn't be more than 5 mintues long.
+- This is usually done by one person, but that's up to you to decide.
+
+- Show the website from the user's side. You do not have to share/show/explain code.
+
+- Feel free to discuss difficulties at the end and stretch goals your completed or had hoped to complete.
+
+- The presentation shouldn't take more than 10 mintues.
