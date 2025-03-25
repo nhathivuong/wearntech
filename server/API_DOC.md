@@ -4,7 +4,7 @@
 
 | URL                    | Method | Description                                                    |
 | ---------------------- | ------ | -------------------------------------------------------------- |
-| `"/getItems"`          | `GET`  | Returns an array with all the items and their properties       |
+| `"/items"`             | `GET`  | Returns an array with all the items and their properties       |
 
 
 ---

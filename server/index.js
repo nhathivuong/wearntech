@@ -2,9 +2,12 @@ const express = require("express");
 const morgan = require("morgan");
 
 const {
-    getItems
+    getItems,
+    getCompagnies,
+    getSingleItem,
+    getCompany
 } = require("./handlers");
-const getSingleItem = require("./handlers/getItemId")
+
 
 const PORT = 4000;
 
@@ -14,7 +17,10 @@ app.use(morgan("tiny"));
 app.use(express.json());
 
 app.get("/item/:itemId", getSingleItem);
-app.get("/getItems", getItems)
+app.get("/items", getItems)
+app.get("/companies", getCompagnies)
+app.get("/company/:companyId", getCompany)
+
 app.get("/test", (req, res) => res.status(200).json("🥓"));
 
 app.get("*", (req, res) => {
