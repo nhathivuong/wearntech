@@ -4,7 +4,8 @@ const morgan = require("morgan");
 const {
     getItems,
     getCompagnies,
-    getSingleItem
+    getSingleItem,
+    getCompany
 } = require("./handlers");
 
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.get("/item/:itemId", getSingleItem);
 app.get("/items", getItems)
 app.get("/companies", getCompagnies)
+app.get("/company/:companyId", getCompany)
 
 app.get("/test", (req, res) => res.status(200).json("🥓"));
 
