@@ -4,10 +4,9 @@ const morgan = require("morgan");
 const {
     getItems,
     getCompagnies,
-    getSingleItem
+    getSingleItem,
+    getCartId
 } = require("./handlers");
-
-const getCartId = require("./handlers/getCartId")
 
 const PORT = 4000;
 
@@ -16,6 +15,7 @@ const app = express();
 app.use(morgan("tiny"));
 app.use(express.json());
 
+app.get("/cart/:cartId", getCartId)
 app.get("/item/:itemId", getSingleItem);
 app.get("/getItems", getItems)
 app.get("/test", (req, res) => res.status(200).json("🥓"));
