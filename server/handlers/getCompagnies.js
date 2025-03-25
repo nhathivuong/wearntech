@@ -22,10 +22,14 @@ const getCompagnies = async(req, res) =>{
     }
     catch(error){
         console.error("Error fetching compagnies", error)
+        res.status(500).json({
+            status:500,
+            message : error.message
+        })
     }
     finally{
         await client.close()
     }
 }
 
-export default getCompagnies
+module.exports = getCompagnies;
