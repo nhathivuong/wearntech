@@ -1,4 +1,4 @@
-[
+const items = [
   {
     "name": "Barska GB12166 Fitness Watch with Heart Rate Monitor",
     "price": "$49.99",
@@ -3480,3 +3480,5 @@
     "companyId": 11008
   }
 ]
+
+module.exports = { items };

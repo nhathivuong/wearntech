@@ -19,7 +19,6 @@
 .env.test.local
 .env.production.local
 *.env
-package.json
 yarn.lock
 
 
