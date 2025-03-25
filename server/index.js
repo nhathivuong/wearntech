@@ -5,7 +5,8 @@ const {
     getItems,
     getCompagnies,
     getSingleItem,
-    getCartId
+    getCartId,
+    getCompany
 } = require("./handlers");
 
 const PORT = 4000;
@@ -17,6 +18,10 @@ app.use(express.json());
 
 app.get("/cart/:cartId", getCartId)
 app.get("/item/:itemId", getSingleItem);
+app.get("/items", getItems)
+app.get("/companies", getCompagnies)
+app.get("/company/:companyId", getCompany)
+
 app.get("/getItems", getItems)
 app.get("/test", (req, res) => res.status(200).json("🥓"));
 

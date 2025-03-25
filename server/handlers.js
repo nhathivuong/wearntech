@@ -1,9 +1,10 @@
 const getItems = require("./handlers/getItems");
 const getSingleItem = require("./handlers/getItemId")
-const getCartId = require("./handlers/getCartId")
-
+const getCompagnies = require("./handlers/getCompagnies")
+const getCompany = require("./handlers/getCompany")
 module.exports = {
     getItems,
     getSingleItem,
-    getCartId
+    getCompagnies,
+    getCompany
 };
