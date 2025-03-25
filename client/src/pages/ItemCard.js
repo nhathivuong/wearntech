@@ -1,16 +1,16 @@
 import React from 'react';
 import { useState } from 'react';
 
-const ItemCard = ({ item, addToCart }) => {
+const ItemCard = ({ item }) => {
   // State for showing a message after adding an item to the cart
-  const [added, setAdded] = useState(false);
+  // const [added, setAdded] = useState(false);
 
-  // Handle add to cart action
-  const handleAddToCart = () => {
-    addToCart(item);  // Add item to cart (this will come from parent component)
-    setAdded(true);  // Show confirmation message
-    setTimeout(() => setAdded(false), 2000);  // Hide confirmation after 2 seconds
-  };
+  // // Handle add to cart action
+  // const handleAddToCart = () => {
+  //   addToCart(item);  // Add item to cart (this will come from parent component)
+  //   setAdded(true);  // Show confirmation message
+  //   setTimeout(() => setAdded(false), 2000);  // Hide confirmation after 2 seconds
+  // };
 
   return (
     <div className="item-card">
