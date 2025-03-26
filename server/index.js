@@ -7,6 +7,7 @@ const {
     getCompanies,
     getCompany,
     getCart,
+    getReceipt,
     addItemToCart,
     deleteAllItemsFromCart,
     deleteItemFromCart,
@@ -26,8 +27,9 @@ app.get("/item/:itemId", getItem);
 app.get("/companies", getCompanies)
 app.get("/company/:companyId", getCompany)
 app.get("/cart/:cartId", getCart)
+app.get("/order/:orderId/receipt", getReceipt);
 
-app.post("/cart/:cartId", addItemToCart)
+app.post("/cart/:cartId/:itemId", addItemToCart)
 app.delete("/cart/:cartId", deleteAllItemsFromCart)
 app.delete("/cart/:cartId/:itemid", deleteItemFromCart)
 app.post("/cart/:cartId", confirmPurchase)
