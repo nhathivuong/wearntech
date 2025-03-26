@@ -3,10 +3,15 @@ const morgan = require("morgan");
 
 const {
     getItems,
-    getCompagnies,
-    getSingleItem,
-    getCartId,
-    getCompany
+    getItem,
+    getCompanies,
+    getCompany,
+    getCart,
+    addItemToCart,
+    deleteAllItemsFromCart,
+    deleteItemFromCart,
+    confirmPurchase,
+    updateItems,
 } = require("./handlers");
 
 const PORT = 4000;
@@ -16,14 +21,17 @@ const app = express();
 app.use(morgan("tiny"));
 app.use(express.json());
 
-app.get("/cart/:cartId", getCartId)
-app.get("/item/:itemId", getSingleItem);
 app.get("/items", getItems)
-app.get("/companies", getCompagnies)
+app.get("/item/:itemId", getItem);
+app.get("/companies", getCompanies)
 app.get("/company/:companyId", getCompany)
+app.get("/cart/:cartId", getCart)
 
-app.get("/getItems", getItems)
-app.get("/test", (req, res) => res.status(200).json("🥓"));
+app.post("/cart/:cartId", addItemToCart)
+app.delete("/cart/:cartId", deleteAllItemsFromCart)
+app.delete("/cart/:cartId", deleteItemFromCart)
+app.post("/cart/:cartId", confirmPurchase)
+app.patch("/cart/:cartId", updateItems)
 
 app.get("*", (req, res) => {
     res.status(404).json({
