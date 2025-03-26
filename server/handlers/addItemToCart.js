@@ -2,14 +2,31 @@ const {MongoClient} = require("mongodb")
 require("dotenv").config();
 const {MONGO_URI} = process.env;
 const {v4: uuidv4} = require("uuid")
-
+// Here is how i envision a cart item to be stored as
+// newitem = {
+//     _id: uuidv4,
+//     quantity: number probably 1 by default
+// " and other information we would like to display in the cart" 
+// }
 const addItemToCart = async(req, res) =>{
-    const {cartId} = req.params || uuidv4()
-    const {newitem} = req.body
-    if(!newitem){
+    const {cartId} = req.params
+    const {newItem} = req.body
+    //ensures we have a body
+    if(!newItem){
         return res.status(404).json({
             status:404,
             message: "invalid item data"
+        })
+    }
+    //validates the cart Id
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+    const validateId = (id) => uuidRegex.test(id)
+    //create a cart id if it doesn't exist or is not valid
+    if(!cartId || !validateId(cartId)){
+        cartId = uuidv4()
+        res.status(201).json({
+            status:201,
+            message: "A new cart id has been generated"
         })
     }
     const client = new MongoClient(MONGO_URI)
@@ -20,40 +37,33 @@ const addItemToCart = async(req, res) =>{
         const foundCart = await db.collection("cart").findOne({_id: cartId})
         // if the cart does not exist create a new cart
         if(!foundCart){
-            const newCart = await db.collection("cart").insertOne({
+            await db.collection("cart").insertOne({
                 _id: cartId,
-                items: [newitem],
-            })
-            res.status(201).json({
-                status: 201,
-                message:"A new cart was created with the new item",
-                data: newCart
+                items: [newItem],
             })
         }
         //find if the item already exist in the cart and changes the quantity if it does 
-        const itemAlreadyInCart = foundCart.items.find((item) => item._id === newitem._id)
+        const itemAlreadyInCart = foundCart.items.find((item) => item._id === newItem._id)
         if(itemAlreadyInCart){
             const updateQuantity = foundCart.items.map((item) => 
-                item._id === newitem._id
-                ? { ...item, quantity: item.quantity + newitem.quantity}
+                item._id === newItem._id
+                ? { ...item, quantity: item.quantity + newItem.quantity}
                 : item
             )
-            const newCart = await db.collection("cart").updateOne({_id: cartId},{$set: {items: updateQuantity}})
-            res.status(200).json({
-                status: 200,
-                data: newCart,
-                message: "The cart has been updated"
-            })
+            const newCart = await db.collection("cart").updateOne({_id: cartId}, {$set: {items: updateQuantity}})
         }
-        //adds the item to the cart if it is not in the cart
-        else{
-            const newCart = await db.collection("cart").updateOne({_id:cartId}, {$push: {items: newitem}})
-            res.status(200).json({
-                status:200,
-                data: newCart,
-                message: "The item has been added to the cart"
-            })
+        //adds the item to the cart if it does not exist in the cart
+        if(!itemAlreadyInCart){
+            const newCart = await db.collection("cart").updateOne({_id:cartId}, {$push: {items: newItem}})
         }
+        //updated cart
+        const updatedCart = await db.collection("cart").findOne({_id: cartId})
+
+        res.status(201).json({
+            status: 201,
+            message: "Item has been added to cart",
+            data: updatedCart
+        })
     }
     catch(error){
         console.log(error)
