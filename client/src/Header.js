@@ -1,6 +1,7 @@
 import { HomeIcon, CartIcon, SearchIcon } from "./components/Icons"
 import { NavLink } from "react-router-dom"
 import styled from "styled-components"
+import NavBarCompanies from "./NavBarCompanies"
 
 const Header = () => {
     return <StyledNavigationBar>
@@ -8,7 +9,8 @@ const Header = () => {
             <NavLink to="/"><HomeIcon /> Home</NavLink>
             <NavLink to="/items">Items</NavLink>
             <NavLink to="/companies">Brands</NavLink>
-            </div>
+            <NavBarCompanies/>
+        </div>
         <div className="searchAndCart">
             <SearchIcon /> <input type="text" />
             <NavLink to="/cart"><CartIcon /></NavLink>
