@@ -31,7 +31,7 @@ app.get("/order/:orderId/receipt", getReceipt);
 
 app.post("/cart/:cartId/:itemId", addItemToCart)
 app.delete("/cart/:cartId", deleteAllItemsFromCart)
-app.delete("/cart/:cartId/:itemid", deleteItemFromCart)
+app.delete("/cart/:cartId/:itemId", deleteItemFromCart)
 app.post("/cart/:cartId", confirmPurchase)
 app.patch("/cart/:cartId", updateItems)
 
