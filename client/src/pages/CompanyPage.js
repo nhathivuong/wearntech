@@ -6,9 +6,11 @@ import { AllItemsContext } from "../contexts/AllItemsContext"
 const CompanyPage = () => {
     const { companies } = useContext(AllCompaniesContext);
     const { allItems } = useContext(AllItemsContext);
-    const { companyId: _id } = useParams();
+    const { _id } = useParams();
+    const companyId = _id;
 
     const foundCompany = companies ? companies.find(company => company._id === companyId) : null;
+    const itemsFromCompany = allItems.filter((item) => item.companyId === companyId);
 
     return (
         <>
@@ -22,7 +24,13 @@ const CompanyPage = () => {
                     </section>
                     {/* Products by Company section */}
                     <section>
-                        
+                        {
+                            itemsFromCompany.map((itemFromCompany) => {
+                                return (
+                                    <ItemCard item={itemFromCompany}/>
+                                )
+                            })
+                        }
                     </section>
                 </>
             ) : (
