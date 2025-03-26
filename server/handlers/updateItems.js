@@ -20,8 +20,8 @@ const updateItems = async (req, res) => {
 
         const itemsInCart = cart.items; // array of objects with keys _id & quantity
 
-        // For each item in cart
-        const updatePromises = itemsInCart.map(async (itemInCart) => {
+        // Check if inventory is sufficient for all items
+        const stockCheckPromises = itemsInCart.map(async (itemInCart) => {
             const itemId = itemInCart._id;
             const quantityOfItem = itemInCart.quantity;
 
@@ -40,7 +40,23 @@ const updateItems = async (req, res) => {
                 return { success: false, status: 400, message: `Not enough inventory available for Item ID ${itemId}.`}
             }
 
-            // update item data
+            return { success: true, status: 200, message: "Sufficient inventory for cart items,"};
+
+        });
+        
+        const stockCheckResults = await Promise.all(stockCheckPromises);
+
+        //Confirm that inventory for all is sufficient
+        const failedStockChecks = stockCheckResults.filter(result => !result.success);
+
+        if (failedStockChecks.length > 0) {
+            return res.status(400).json({ status: 400, message: "Inventory insufficient", error: failedStockChecks})
+        }
+
+        // Update item data for all items
+        const updatePromises = itemsInCart.map(async (itemInCart) => {
+            const itemId = itemInCart._id;
+            const quantityOfItem = itemInCart.quantity;
             const query = { _id: Number(itemId) };
             const newValues = {
                 $set: {
@@ -58,11 +74,11 @@ const updateItems = async (req, res) => {
         })
             
         // Confirm all updates are completed successfully
-        const results = await Promise.all(updatePromises);
-        const failedResults = results.filter(result => !result.success);
+        const updateResults = await Promise.all(updatePromises);
+        const failedUpdateResults = updateResults.filter(result => !result.success);
 
-        if (failedResults.length > 0) {
-            return res.status(400).json({ status: 400, message: "Error encountered.", error: failedResults})
+        if (failedUpdateResults.length > 0) {
+            return res.status(400).json({ status: 400, message: "Error encountered.", error: failedUpdateResults})
         }
 
         res.status(202).json({ status: 202, message: "Inventory successfully updated."})
