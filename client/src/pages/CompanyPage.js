@@ -2,35 +2,41 @@ import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AllCompaniesContext } from "../contexts/AllCompaniesContext";
 import { AllItemsContext } from "../contexts/AllItemsContext"
+import ItemCard from "./ItemCard";
 
 const CompanyPage = () => {
     const { companies } = useContext(AllCompaniesContext);
     const { allItems } = useContext(AllItemsContext);
-    const { _id } = useParams();
-    const companyId = _id;
+    const { _id: companyId } = useParams();    
 
-    const foundCompany = companies ? companies.find(company => company._id === companyId) : null;
-    const itemsFromCompany = allItems.filter((item) => item.companyId === companyId);
+    let foundCompany = null;
+    let itemsFromCompany = [];
+    
+    if ( companies.length > 0 && allItems!==null ) {
+        foundCompany = (companies.find(company => company._id === Number(companyId))) 
+        itemsFromCompany = (allItems.filter(item => item.companyId === Number(companyId)))
+    }
 
     return (
         <>
         {
-            foundCompany && itemsFromCompany? (
+            foundCompany? (
                 <>
                     {/* Company Title section */}
                     <section> 
-                        <h2><a href={foundCompany.url} target="_blank">{foundCompany.name}</a></h2>
+                        <p><a href={foundCompany.url} target="_blank">{foundCompany.name}</a></p>
                         <p>Products made in {foundCompany.country}</p>
                     </section>
+
                     {/* Products by Company section */}
                     <section>
-                        {
-                            itemsFromCompany.map((itemFromCompany) => {
-                                return (
-                                    <ItemCard item={itemFromCompany}/>
-                                )
-                            })
-                        }
+                        {itemsFromCompany.length > 0 && allItems ? (
+                            itemsFromCompany.map((item) => (
+                                <ItemCard key={item._id} item={item}/>
+                            ))
+                        ) : (
+                            <p>No products found for this company.</p>
+                        )}
                     </section>
                 </>
             ) : (
