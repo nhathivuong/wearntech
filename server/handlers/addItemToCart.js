@@ -37,6 +37,14 @@ const addItemToCart = async(req, res) =>{
                 _id: cartId,
                 items: [newItem],
             })
+            return res.status(201).json({
+                status: 201,
+                message: "A new cart with the item has been created",
+                data: {
+                    _id: cartId,
+                    items: [newItem],
+                }
+            })
         }
         //find if the item already exist in the cart and changes the quantity if it does 
         const itemAlreadyInCart = foundCart.items.find((item) => item._id === newItem._id)
