@@ -115,6 +115,22 @@ Unsuccessful status codes: 400, 404, 500.
 
 ---
 
+### "/order/:orderId/receipt" (Get)
+
+on success
+```js
+{
+  "status": 200,
+  "data": {...},
+}
+```
+
+The data object will have keys: _id, cartId, and items.
+
+Unsuccessful status codes: 400, 404, 500.
+
+---
+
 ### "/cart/:cartid" (POST)
 
 On success
