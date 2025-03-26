@@ -4,14 +4,14 @@ import styled from "styled-components"
 
 const Header = () => {
     return <StyledNavigationBar>
-        <div class="pagesNavigation">
-            <NavLink to="/"><HomeIcon />Home</NavLink>
+        <div className="pagesNavigation">
+            <NavLink to="/"><HomeIcon /> Home</NavLink>
             <NavLink to="/items">Items</NavLink>
             <NavLink to="/companies">Brands</NavLink>
-        <div class="searchAndCart">
+            </div>
+        <div className="searchAndCart">
             <SearchIcon /> <input type="text" />
             <NavLink to="/cart"><CartIcon /></NavLink>
-        </div>
         </div>
     </StyledNavigationBar>
 }
@@ -19,24 +19,30 @@ const Header = () => {
 
 // Placeholder for now, will change it later when we get to CSS stuff
 const StyledNavigationBar = styled.nav`
-    background-color: #02010a;
-    color: white;
+    background-color: var(--color-red);
+    font-weight: bolder;
+    color: var(--color-white);
+    display: flex;
     top: 0;
-    max-width: 100%;
+    width: 100%;
     padding: 1.5rem;
     position: sticky;
     margin: 0;
     padding: 1rem 0;
     .pagesNavigation {
-        display: flex;
-        justify-content: space-evenly;
+        display: inline-block;
         align-items: center;
-        margin: 0 1rem;
+        text-align: center;
+        margin: 0 auto;
+        position: relative;
     }
     .searchAndCart{
-        display: flex;
-        justify-content: flex-end;
-    }
+        display: inline-block;
+        margin-left: auto;
+        position: absolute;
+        right: 0;
+        margin: 0 2rem;
+}
 `
 
 export default Header
