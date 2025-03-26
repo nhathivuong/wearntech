@@ -3,50 +3,71 @@ require("dotenv").config();
 const { MONGO_URI } = process.env;
 
 // updates items
-const updateItem = async (req, res) => {
+const updateItems = async (req, res) => {
     const client = new MongoClient(MONGO_URI);
     const cartId  = req.params.cartId;    
-    const query = { itemId };
-    const newValues = { 
-        $set: { 
-            numInStock: currentNumInStock - quantityOfItem
-        }
-    };
+
     try {
         await client.connect();
         const db = client.db("e-commerce");
 
         // find cart object from database
         const cart = await db.collection("cart").findOne({ cartId: Number(cartId) });
-        const itemsInCart = cart.items;
+
+        if (!cart) {
+            return res.status(400).json({ status: 404, message: "Cart not found."});
+        }
+
+        const itemsInCart = cart.items; // array of objects with keys _id & quantity
 
         // For each item in cart
-        itemsInCart.map((itemInCart)=>{
-            
+        const updatePromises = itemsInCart.map(async (itemInCart) => {
+            const itemId = itemInCart._id;
+            const quantityOfItem = itemInCart.quantity;
+
+            // find item data from database
+            const foundItem = await db.collection("items").findOne({ _id: Number(itemId) });
+
+            if (!foundItem) {
+                return { success: false, status: 404, message: `Item ID ${itemId} could not be found.`}
+            }
+
+            // stock of found item
+            const currentNumInStock = foundItem.numInStock;
+
+            // verify that inventory is available
+            if (currentNumInStock === 0 || currentNumInStock - quantityOfItem < 0) {
+                return { success: false, status: 400, message: `Not enough inventory available for Item ID ${itemId}.`}
+            }
+
+            // update item data
+            const query = { _id: Number(itemId) };
+            const newValues = {
+                $set: {
+                    numInStock: currentNumInStock - quantityOfItem
+                }
+            };
+
+            const result = await db.collection("items").updateOne(query, newValues);
+
+            if (result.modifiedCount === 0) {
+                return { success: false, status: 400, message: `Could not update inventory for Item ID ${itemId}.`}
+            }
+
+            return { success: true, status: 202, message: `Inventory updated for Item ID ${itemId}.`};
         })
-        // find item data from database
-        const foundItem = await db.collection("items").findOne({ _id: Number(itemId) });
+            
+        // Confirm all updates are completed successfully
+        const results = await Promise.all(updatePromises);
+        const failedResults = results.filter(result => !result.success);
 
-        // verify that item data numInStock is not 0
-        // verify that item data numInStock - quantityOfItem is not 0
-
-        // update item data
-
-        const result = await db.collection(items).updateOne( query, newValues);
-
-
-        if (result.modifiedCount === 0) {
-            res.status(400).json({ 
-            status: 400, 
-            message: "Could not update inventory.",
-            });
+        if (failedResults.length > 0) {
+            return res.status(400).json({ status: 400, message: "Error encountered.", error: failedResults})
         }
-        res.status(202).json({ 
-            status: 202,
-            message: "Inventory updated successfully",
-        });
+
+        res.status(202).json({ status: 202, message: "Inventory successfully updated."})
+
     } catch (error) {
-        console.error(error);
         res.status(500).json({
             status: 500,
             message: error.message,
