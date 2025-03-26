@@ -29,7 +29,7 @@ app.get("/cart/:cartId", getCart)
 
 app.post("/cart/:cartId", addItemToCart)
 app.delete("/cart/:cartId", deleteAllItemsFromCart)
-app.delete("/cart/:cartId", deleteItemFromCart)
+app.delete("/cart/:cartId/:itemid", deleteItemFromCart)
 app.post("/cart/:cartId", confirmPurchase)
 app.patch("/cart/:cartId", updateItems)
 

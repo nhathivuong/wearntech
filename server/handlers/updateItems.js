@@ -15,7 +15,7 @@ const updateItems = async (req, res) => {
         const cart = await db.collection("cart").findOne({ cartId: Number(cartId) });
 
         if (!cart) {
-            return res.status(400).json({ status: 404, message: "Cart not found."});
+            return res.status(404).json({ status: 404, message: "Cart not found."});
         }
 
         const itemsInCart = cart.items; // array of objects with keys _id & quantity
