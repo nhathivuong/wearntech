@@ -1,12 +1,23 @@
 const getItems = require("./handlers/getItems");
-const getSingleItem = require("./handlers/getItemId")
-const getCompagnies = require("./handlers/getCompagnies")
+const getItem = require("./handlers/getItem")
+const getCompanies = require("./handlers/getCompanies")
 const getCompany = require("./handlers/getCompany")
-const getCartId = require("./handlers/getCartId")
+const getCart = require("./handlers/getCart")
+const addItemToCart = require("./handlers/addItemToCart")
+const deleteAllItemsFromCart = require("./handlers/deleteAllItemsFromCart")
+const deleteItemFromCart = require("./handlers/deleteItemFromCart")
+const confirmPurchase = require("./handlers/confirmPurchase")
+const updateItems = require ("./handlers/updateItems")
+
 module.exports = {
     getItems,
-    getSingleItem,
-    getCompagnies,
+    getItem,
+    getCompanies,
     getCompany,
-    getCartId
+    getCart,
+    addItemToCart,
+    deleteAllItemsFromCart,
+    deleteItemFromCart,
+    confirmPurchase,
+    updateItems,
 };

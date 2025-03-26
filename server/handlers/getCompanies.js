@@ -2,7 +2,7 @@ const {MongoClient} = require("mongodb")
 require("dotenv").config();
 const {MONGO_URI} = process.env;
 
-const getCompagnies = async(req, res) =>{
+const getCompanies = async(req, res) =>{
     const client = new MongoClient(MONGO_URI)
     
     try{
@@ -21,7 +21,7 @@ const getCompagnies = async(req, res) =>{
         })
     }
     catch(error){
-        console.error("Error fetching compagnies", error)
+        console.error("Error fetching companies", error)
         res.status(500).json({
             status:500,
             message : error.message
@@ -32,4 +32,4 @@ const getCompagnies = async(req, res) =>{
     }
 }
 
-module.exports = getCompagnies;
+module.exports = getCompanies;

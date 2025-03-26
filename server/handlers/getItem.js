@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
-const getSingleItem = async (req, res) => {
+const getItem = async (req, res) => {
     const client = new MongoClient(MONGO_URI);
     const itemId = req.params.itemId; 
     if (!itemId) {
@@ -25,4 +25,4 @@ const getSingleItem = async (req, res) => {
     }
 };
 
-module.exports = getSingleItem;
+module.exports = getItem;

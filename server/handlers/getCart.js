@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
-const getCartId = async (req, res) => {
+const getCart = async (req, res) => {
     const client = new MongoClient(MONGO_URI);
     const cartId = req.params.cartId;
 
@@ -28,4 +28,4 @@ const getCartId = async (req, res) => {
     }
 };
 
-module.exports = getCartId;
+module.exports = getCart;
