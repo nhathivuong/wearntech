@@ -120,7 +120,7 @@ Unsuccessful status codes: 400, 404, 500.
 On success
 ```js
 {
-  "status": 200,
+  "status": 201,
   "data": {...},
 }
 ```
