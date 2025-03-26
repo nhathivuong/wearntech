@@ -4,7 +4,8 @@ const {MONGO_URI} = process.env
 const {v4: uuidv4} = require("uuid")
 
 const confirmPurchase = async(req, res) =>{
-    const {_id: cartId, items} = req.body
+    const {cartId} = req.params
+    const {items} = req.body
     const client = new MongoClient(MONGO_URI)
     const newOrder = {
         _id: uuidv4(),

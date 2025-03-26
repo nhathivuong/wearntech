@@ -2,17 +2,16 @@ const {MongoClient} = require("mongodb")
 require("dotenv").config();
 const {MONGO_URI} = process.env;
 const {v4: uuidv4} = require("uuid")
-// Here is how i envision a cart item to be stored as
-// newitem = {
-//     _id: itemId,
-//     quantity: number probably 1 by default
-// " and other information we would like to display in the cart" 
-// }
+
 const addItemToCart = async(req, res) =>{
-    const {cartId} = req.params
-    const {newItem} = req.body
+    let {cartId, itemId} = req.params
+    const {quantity} = req.body
+    const newItem = {
+        _id: Number(itemId),
+        quantity: quantity
+    }
     //ensures we have a body
-    if(!newItem){
+    if(!newItem || !quantity || !itemId){
         return res.status(404).json({
             status:404,
             message: "invalid item data"

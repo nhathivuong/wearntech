@@ -3,20 +3,15 @@ import { useState, useEffect } from "react";
 
 export const AllItemsContext = React.createContext();
 
-const AllItemsProvider = ({children}) => {
+const AllItemsProvider = ({ children }) => {
     const [allItems, setAllItems] = useState(null)
-
     useEffect(() => {
-        const getItems = async () => {
-            try{
-                const res = await fetch("/items");
-                const {allItems} = await res.json();
-                setAllItems(allItems)
-            } catch (err) {
-                console.error(err)
-            }
-        }
-        getItems();
+        const getAllItems = async () => {
+            const response = await fetch("/items");
+            const {data} = await response.json();
+            setAllItems(data);
+        };
+        getAllItems();
     }, [])
     return (
         <AllItemsContext.Provider value={{allItems, setAllItems}} >

@@ -5,15 +5,15 @@
 | URL                    | Method | Description                                                    |
 | ---------------------- | ------ | -------------------------------------------------------------- |
 | `"/items"`             | `GET`  | Returns an array with all the items and their properties       |
-| `"/item/:itemid"`             | `GET`  | Returns an object  with the item and its properties       |
+| `"/item/:itemId"`             | `GET`  | Returns an object  with the item and its properties       |
 | `"/companies"`             | `GET`  | Returns an array with all the companies and their properties       |
-| `"/company/:companyid"`             | `GET`  | Returns an object  with the company and its properties       |
-| `"/cart/:cartid"`             | `GET`  | Returns an object containing an array of items      |
-| `"/cart/:cartid"`             | `POST`  | Returns an order object containing the `cartid` and an items array      |
-| `"/cart/:cartid"`             | `DELETE`  | Removes all the items from the cart|
-| `"/cart/:cartid/:itemid"`             | `DELETE`  | Removes one item from the cart|
-| `"/cart/:cartid"`             | `POST`  | Removes one item from the cart|
-| `"/cart/:cartid"`             | `PATCH`  | Changes the `numInStock` for the item|
+| `"/company/:companyId"`             | `GET`  | Returns an object  with the company and its properties       |
+| `"/cart/:cartId"`             | `GET`  | Returns an object containing an array of items      |
+| `"/cart/:cartId/:itemId"`             | `POST`  | Returns an order object containing the `cartId` and an items array      |
+| `"/cart/:cartId"`             | `DELETE`  | Removes all the items from the cart|
+| `"/cart/:cartId/:itemId"`             | `DELETE`  | Removes one item from the cart|
+| `"/cart/:cartId"`             | `POST`  | Removes one item from the cart|
+| `"/cart/:cartId"`             | `PATCH`  | Changes the `numInStock` for the item|
 ---
 
 ## Responses Overview
@@ -51,7 +51,7 @@ Unsuccessful status codes: 404, 500.
 
 ---
 
-### "/item/:itemid" (GET)
+### "/item/:itemId" (GET)
 
 On success
 ```js
@@ -99,7 +99,7 @@ Unsuccessful status codes: 404, 500.
 
 ---
 
-### "/cart/:cartid" (GET)
+### "/cart/:cartId" (GET)
 
 On success
 ```js
@@ -131,7 +131,7 @@ Unsuccessful status codes: 400, 404, 500.
 
 ---
 
-### "/cart/:cartid" (POST)
+### "/cart/:cartId/:itemId" (POST)
 
 On success
 ```js
@@ -143,11 +143,11 @@ On success
 
 The `data` object will have key: `_id`, `cartid` and `items`
 
-Unsuccessful status codes: 400, 404, 500.
+Unsuccessful status codes: 400, 404, 408 500.
 
 ---
 
-### "/cart/:cartid" (DELETE)
+### "/cart/:cartId" (DELETE)
 
 On success
 ```js
@@ -161,7 +161,7 @@ Unsuccessful status codes: 404, 409, 500.
 
 ---
 
-### "/cart/:cartid/:itemid" (DELETE)
+### "/cart/:cartId/:itemId" (DELETE)
 
 On success
 ```js
@@ -175,7 +175,7 @@ Unsuccessful status codes: 400, 404, 409, 500.
 
 ---
 
-### "/cart/:cartid" (POST)
+### "/cart/:cartId" (POST)
 
 On success
 ```js
@@ -189,7 +189,7 @@ Unsuccessful status codes: 500, 502.
 
 ---
 
-### "/cart/:cartid" (PATCH)
+### "/cart/:cartId" (PATCH)
 
 On success
 ```js
