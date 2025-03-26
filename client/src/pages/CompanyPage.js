@@ -15,7 +15,7 @@ const CompanyPage = () => {
     return (
         <>
         {
-            foundCompany ? (
+            foundCompany && itemsFromCompany? (
                 <>
                     {/* Company Title section */}
                     <section> 
