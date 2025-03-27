@@ -30,7 +30,7 @@ const AboutPage = () => {
             />
             <PortfolioItem
                 href=""
-                src=""
+                src="/assets/nhathi-picture.JPG"
                 alt="Nha Thi Vuong"
             />
             <PortfolioItem

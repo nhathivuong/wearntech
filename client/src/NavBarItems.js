@@ -8,7 +8,6 @@ const NavBarItems = ({handleItemNav}) => {
     if(!allItems){
         return <p>Loading items category...</p>
     }
-
     //finds the unique categories
     const uniqueItemCategories = [... new Set(allItems.map(item => item.category))]
     //finds unique body location
@@ -22,14 +21,14 @@ const NavBarItems = ({handleItemNav}) => {
         <Categories>
         <h2>Categories</h2>
         {categoriesinAlphaOrder.map((category, index) => {
-            return <EachFilter key={index} to={`/items/${category}`} onClick={handleItemNav}>{category}</EachFilter>
+            return <EachFilter key={index} to={`/items?category=${category.toLowerCase()}`} onClick={handleItemNav}>{category}</EachFilter>
             })
         }
         </Categories>
         <Categories>
         <h2>Location</h2>
         {bodyInAlphaOrder.map((location, index) => {
-            return <EachFilter key={index} to={`/items/${location}`} onClick={handleItemNav}>{location}</EachFilter>
+            return <EachFilter key={index} to={`/items?body=${location.toLowerCase()}`} onClick={handleItemNav}>{location}</EachFilter>
             })
         }
         </Categories>

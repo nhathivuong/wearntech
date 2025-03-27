@@ -28,6 +28,7 @@ const Header = () => {
     return <><StyledNavigationBar>
         <div className="pagesNavigation">
             <NavLink to="/" onClick={closeNav}><HomeIcon/> Home</NavLink>
+            <NavLink to="/about" onClick={closeNav}>About</NavLink>
             <NavLink onClick={handleItemNav}>Items</NavLink>
             <NavLink onClick={handleCoNav}>Brands</NavLink>
         </div>
@@ -36,7 +37,7 @@ const Header = () => {
             <NavLink to="/cart"  onClick={closeNav}><CartIcon /></NavLink>
         </div>
     </StyledNavigationBar>
-    {itemNavOpen && <NavBarItems handleCoNav={handleItemNav}/>}
+    {itemNavOpen && <NavBarItems handleItemNav={handleItemNav}/>}
     {coNavOpen && <NavBarCompanies handleCoNav={handleCoNav}/>}
     </>
 }
