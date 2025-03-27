@@ -14,15 +14,37 @@ const deleteItemFromCart = async (req, res) => {
         await client.connect();
         const db = client.db("e-commerce");
 
-        const cart = await db.collection("cart").findOne({ _id: cartId });
-
-        if (!cart) {
+        //Find cart from db
+        const foundCart = await db.collection("cart").findOne({ _id: cartId });
+        if (!foundCart) {
             return res.status(404).json({ status: 404, message: "Cart not found." });
         }
-        const updatedCart = await db.collection("cart").updateOne(
-            { _id: cartId },
-            { $pull: { items: { _id: itemId } } }
-        );
+
+        //Find item in cart
+        const foundItem = foundCart.items.find((item)=>{
+            return item._id === itemId;
+        });
+        if (!foundItem) {
+            return res.status(404).json({ status: 404, message: "Item not found in cart."})
+        }
+
+        let updatedCart;
+
+        //Verify if quantity for item is greater than 1, Decrease quantity by 1
+        if (foundItem.quantity > 1) {
+            updatedCart = await db.collection("cart").updateOne(
+                { _id: cartId, "items._id": itemId },
+                { $inc: { "items.$.quantity": -1 }}
+            )
+        }
+        //Verify if quantity for item is at 1, Remove item and quantity from cart
+        if (foundItem.quantity === 1) {
+            updatedCart = await db.collection("cart").updateOne(
+                { _id: cartId },
+                { $pull: { items: { _id: itemId}}}
+            )
+        }
+
         if (updatedCart.matchedCount === 0) {
             return res.status(404).json({ status: 404, message: "Cart not found." });
         }
