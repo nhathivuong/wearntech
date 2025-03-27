@@ -1,19 +1,26 @@
 import { HomeIcon, CartIcon, SearchIcon } from "./components/Icons"
 import { NavLink } from "react-router-dom"
+import { useState } from "react"
 import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
-import { useState } from "react"
+import NavBarItems from "./NavBarItems"
+
 
 const Header = () => {
-    const [coNavOpen, setCoNavOpen] = useState(false)
     const [itemNavOpen, setItemNavOpen] = useState(false)
+    const [coNavOpen, setCoNavOpen] = useState(false)
 
-    const handleCoNav = () =>{
-        setCoNavOpen(!coNavOpen)
-    }
+    //opens the item nav and closes the companies nav
     const handleItemNav = () =>{
         setItemNavOpen(!itemNavOpen)
+        setCoNavOpen(false);
     }
+    // opens the companies dropdown nav and also close the item 
+    const handleCoNav = () =>{
+        setCoNavOpen(!coNavOpen)
+        setItemNavOpen(false)
+    }
+    // closes the Nav dropdown when anything else is clicked 
     const closeNav = () =>{
         setCoNavOpen(false);
         setItemNavOpen(false)
@@ -29,6 +36,7 @@ const Header = () => {
             <NavLink to="/cart"  onClick={closeNav}><CartIcon /></NavLink>
         </div>
     </StyledNavigationBar>
+    {itemNavOpen && <NavBarItems handleCoNav={handleItemNav}/>}
     {coNavOpen && <NavBarCompanies handleCoNav={handleCoNav}/>}
     </>
 }

@@ -1,0 +1,64 @@
+import { useContext} from "react"
+import { AllItemsContext } from "./contexts/AllItemsContext"
+import { NavLink } from "react-router-dom"
+import styled from "styled-components"
+
+const NavBarItems = ({handleItemNav}) => {
+    const {allItems} = useContext(AllItemsContext)
+    if(!allItems){
+        return <p>Loading items category...</p>
+    }
+
+    //finds the unique categories
+    const uniqueItemCategories = [... new Set(allItems.map(item => item.category))]
+    //finds unique body location
+    const uniqueItemBody = [... new Set(allItems.map(item => item.body_location))]
+    //sort in alphabetical order
+    const categoriesinAlphaOrder = uniqueItemCategories.sort((a,b)=> a.localeCompare(b))
+    const bodyInAlphaOrder = uniqueItemBody.sort((a,b) => a.localeCompare(b))
+
+    return(
+    <NavDrop>
+        <Categories>
+        <h2>Categories</h2>
+        {categoriesinAlphaOrder.map((category, index) => {
+            return <EachFilter key={index} to={`/items/${category}`} onClick={handleItemNav}>{category}</EachFilter>
+            })
+        }
+        </Categories>
+        <Categories>
+        <h2>Location</h2>
+        {bodyInAlphaOrder.map((location, index) => {
+            return <EachFilter key={index} to={`/items/${location}`} onClick={handleItemNav}>{location}</EachFilter>
+            })
+        }
+        </Categories>
+        <EachFilter to={`/items`} onClick={handleItemNav}><h2>All items</h2></EachFilter>
+    </NavDrop>
+    )
+}
+const NavDrop = styled.div`
+    position:fixed;
+    box-sizing: border-box;
+    padding: 1em 0 1em 1em;
+    display:grid;
+    grid-template-columns: 15rem 15rem 15rem;
+    width:100%;
+    background-color: var(--color-yellow);
+`
+const EachFilter = styled(NavLink)`
+    height:fit-content;
+    width:fit-content;
+    padding: 0;
+    text-align:left;
+    &:hover{
+        text-decoration:underline;
+    }
+`
+const Categories = styled.div`
+    width:fit-content;
+    display:flex;
+    flex-direction:column;
+    gap: 5px;
+`
+export default NavBarItems
