@@ -9,6 +9,9 @@ const deleteAllItemsFromCart = require("./handlers/deleteAllItemsFromCart")
 const deleteItemFromCart = require("./handlers/deleteItemFromCart")
 const confirmPurchase = require("./handlers/confirmPurchase")
 const updateItems = require ("./handlers/updateItems")
+const signUp = require("./handlers/signUp")
+const logIn = require("./handlers/logIn")
+
 
 module.exports = {
     getItems,
@@ -22,4 +25,6 @@ module.exports = {
     deleteItemFromCart,
     confirmPurchase,
     updateItems,
+    signUp,
+    logIn,
 };
