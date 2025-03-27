@@ -9,11 +9,14 @@
 | `"/companies"`             | `GET`  | Returns an array with all the companies and their properties       |
 | `"/company/:companyId"`             | `GET`  | Returns an object  with the company and its properties       |
 | `"/cart/:cartId"`             | `GET`  | Returns an object containing an array of items      |
+| `""/order/:orderId/receipt""`             | `GET`  | Returns an object containing an array of items that was purchased|
 | `"/cart/:cartId/:itemId"`             | `POST`  | Returns an order object containing the `cartId` and an items array      |
 | `"/cart/:cartId"`             | `DELETE`  | Removes all the items from the cart|
 | `"/cart/:cartId/:itemId"`             | `DELETE`  | Removes one item from the cart|
 | `"/cart/:cartId"`             | `POST`  | Removes one item from the cart|
 | `"/cart/:cartId"`             | `PATCH`  | Changes the `numInStock` for the item|
+| `"/signUp"`             | `POST`  | Sign-up users to the website |
+| `"/logIn"`             | `POST`  | Sign-in users to the website|
 ---
 
 ## Responses Overview
@@ -200,5 +203,33 @@ On success
 ```
 
 Unsuccessful status codes: 400, 404, 502.
+
+---
+
+### "/signUp" (POST)
+
+On success
+```js
+{
+  "status": 201,
+  "message": "User created successfully.",
+}
+```
+
+Unsuccessful status codes: 400, 409, 500, 502.
+
+---
+
+### "/logIn" (POST)
+
+On success
+```js
+{
+  "status": 201,
+  "message": "Login successful.",
+}
+```
+
+Unsuccessful status codes: 400, 502.
 
 ---
