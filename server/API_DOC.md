@@ -202,3 +202,31 @@ On success
 Unsuccessful status codes: 400, 404, 502.
 
 ---
+
+### "/signUp" (POST)
+
+On success
+```js
+{
+  "status": 201,
+  "message": "User created successfully.",
+}
+```
+
+Unsuccessful status codes: 400, 409, 500, 502.
+
+---
+
+### "/logIn" (POST)
+
+On success
+```js
+{
+  "status": 201,
+  "message": "Login successful.",
+}
+```
+
+Unsuccessful status codes: 400, 502.
+
+---
