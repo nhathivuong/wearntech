@@ -1,54 +1,57 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState, useCallback } from "react";
-import { LoadingSpinner, ErrorBoundary } from "../components"; // Assuming these components exist
+import { useEffect, useState } from "react";
 
 const ViewItemPage = () => {
-  const params = useParams();
+  const { _id: itemId } = useParams();
   const [product, setProduct] = useState(null);
   const [company, setCompany] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [status, setStatus] = useState(null);
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState("");
+  const [addedToCart, setAddedToCart] = useState(false);
 
-  // Fetch item and company data in one function
-  const fetchItemData = useCallback(async (itemId) => {
-    try {
-      const productRes = await fetch(`/item/${itemId}`);
-      if (!productRes.ok) throw new Error("Failed to fetch product data");
-      const productData = await productRes.json();
-
-      setProduct(productData.data);
-
-      const companyRes = await fetch(`/company/${productData.data.companyId}`);
-      if (!companyRes.ok) throw new Error("Failed to fetch company data");
-      const companyData = await companyRes.json();
-
-      setCompany(companyData.data);
-    } catch (err) {
-      setError(err.message);
-    }
-  }, []);
-
+  //Fetches
   useEffect(() => {
-    fetchItemData(params.itemId);
-  }, [params.itemId, fetchItemData]);
+    const fetchItemData = async () => {
+      //Fetch item's data from database
+      const itemResponse = await fetch(`/item/${itemId}`);
+      const { itemData } = await itemResponse.json();
+      setProduct(itemData);
 
-  const handleAddToCart = async () => {
+      //Using item's data, fetch company data from database
+      const companyResponse = await fetch(`/company/${itemData.companyId}`);
+      const { companyData } = await companyResponse.json();
+      setCompany(companyData);
+    }
+    fetchItemData();
+  },[itemId]);
+  
+
+  const handleAddToCart = async (ev) => {
     try {
-      const response = await fetch("/add-item-to-cart", {
+      ev.preventDefault();
+      setStatus("Processing")
+      const orderData = {
+        _id: itemId,
+        quantity
+      }
+      const body = JSON.stringify( orderData );
+      const options = {
         method: "POST",
         headers: {
+          "Accept": "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          _id: product._id,
-          quantity,
-        }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
-      setStatus("Item added to cart!");
+        body
+      };
+      const addToCartResponse = await fetch(`/cart/${cartId}/${itemId}`, options);
+      const { addToCartData } = await addToCartResponse.json();
+      if (addToCartData.status !== 201) {
+        setStatus("");
+        console.log(error);
+      } else {
+        setAddedToCart(true);
+      }
+      
     } catch (error) {
       setError(error.message);
     }
@@ -56,73 +59,57 @@ const ViewItemPage = () => {
 
   // Return a loading spinner or skeleton if product or company is still loading
   if (!product || !company) {
-    return <LoadingSpinner />;
+    return <p>Loading Information...</p>;
   }
 
   return (
-    <ErrorBoundary>
-      <div className="product-details-container">
-        <div className="status-box">
-          {error && <div className="error-message">{error}</div>}
-          {status && <div className="status-message">{status}</div>}
-        </div>
+    <>
+      {/* General Item Data */}
+      <section>
+        <img src={product.imageSrc} alt={product.name} />
+        <p>{product.category}</p>
+        <p>{product.name}</p>
+        <p>{product.price}</p>
+        <p>Designed By:</p>
+        <Link to={`/company/${company._id}`}>{company.name}</Link>
+        <p>Used on: {product.body_location}</p>
+      </section>
 
-        <div className="product-box">
-          <img src={product.imageSrc} alt={product.name} className="product-image" />
-          <div className="details-box">
-            <div className="product-category">{product.category}</div>
-            <div className="product-name">{product.name}</div>
-            <div className="product-price">{product.price}</div>
+      {/* Stock and Quantity */}
+      <section>
+      {
+        product.numInStock === 0 ? (
+          <button disabled>OUT OF STOCK</button>
+        ) : (
+          <>
+            {/* Subtract quantity button */}
+            <button onClick={() => setQuantity(Math.max(quantity - 1, 1))} disabled={quantity === 1}> - </button>
+            {/* Displays desired amount*/}
+            <span>{quantity}</span>
+            {/* Increase quantity button */}
+            <button onClick={() => setQuantity(Math.min(quantity + 1, product.numInStock))} disabled={quantity === product.numInStock}> + </button>
 
-            <div className="product-info">
-              <div className="product-details">
-                <div>
-                  Designed by{" "}
-                  <Link to={`/company/${company._id}`} className="company-link">
-                    {company.name}
-                  </Link>
-                </div>
-                <div>Used on: {product.body_location}</div>
-              </div>
-            </div>
+            {/* When max quantity is met, user is informed that they cannot purchase more*/}
+            { 
+              quantity === product.numInStock ? (
+                <p>Maximum quantity available. No more stock for sale...</p>
+              ) : (
+                <p>Please purchase as many as you'd like!</p>
+              )
+            }
+            <button onClick={handleAddToCart} disabled={status === "processing"}>Add to Cart</button>
+          </>
+        )}
+      </section>
 
-            {/* Stock and Quantity */}
-            {product.numInStock === 0 ? (
-              <button disabled className="out-of-stock-btn">
-                OUT OF STOCK
-              </button>
-            ) : (
-              <div className="quantity-section">
-                <div className="quantity-container">
-                  <button
-                    onClick={() => setQuantity(Math.max(quantity - 1, 1))}
-                    disabled={quantity === 1}
-                    className="quantity-button"
-                  >
-                    -
-                  </button>
-                  <span>{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(Math.min(quantity + 1, product.numInStock))}
-                    disabled={quantity === product.numInStock}
-                    className="quantity-button"
-                  >
-                    +
-                  </button>
-                </div>
-                {quantity >= product.numInStock && (
-                  <div className="max-quantity-message">Maximum quantity in stock!</div>
-                )}
-                <button className="add-to-cart-btn" onClick={handleAddToCart}>
-                  Add to Cart
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </ErrorBoundary>
-  );
+      {/* Confirmation message that item was added to cart*/}
+      <section>
+        {
+          addedToCart && <p>{quantity}x {product.name}: Successfully added to Cart!</p>
+        }
+      </section>
+    </>
+  )
 };
 
 export default ViewItemPage;
