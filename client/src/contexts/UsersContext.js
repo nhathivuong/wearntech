@@ -4,6 +4,7 @@ export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
+    const [currentUser, setCurrentUser] = useState("Guest");
     const url = `/users`; 
 
     useEffect(() => {
@@ -17,7 +18,7 @@ const UserProvider = ({ children }) => {
     }, []);
 
     return (
-        <UserContext.Provider value={{users}}>
+        <UserContext.Provider value={{users, currentUser, setCurrentUser}}>
             {children}
         </UserContext.Provider>
     );
