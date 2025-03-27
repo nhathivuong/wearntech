@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 
 //cart logic that receives the cart items from backend , deletes them , or post them using the checkout button
-const Cart = () => {
+const ViewCartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -232,3 +232,5 @@ const Cart = () => {
     </Container>
   );
 };
+
+export default ViewCartPage;
