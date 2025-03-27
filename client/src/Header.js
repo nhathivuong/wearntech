@@ -36,7 +36,7 @@ const Header = () => {
             <NavLink to="/cart"  onClick={closeNav}><CartIcon /></NavLink>
         </div>
     </StyledNavigationBar>
-    {itemNavOpen && <NavBarItems handleCoNav={handleItemNav}/>}
+    {itemNavOpen && <NavBarItems handleItemNav={handleItemNav}/>}
     {coNavOpen && <NavBarCompanies handleCoNav={handleCoNav}/>}
     </>
 }
