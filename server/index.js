@@ -14,6 +14,7 @@ const {
     confirmPurchase,
     updateItems,
     signUp,
+    logIn,
 } = require("./handlers");
 
 const PORT = 4000;
@@ -36,6 +37,8 @@ app.delete("/cart/:cartId/:itemId", deleteItemFromCart)
 app.post("/cart/:cartId", confirmPurchase)
 app.patch("/cart/:cartId", updateItems)
 app.post("/signUp", signUp)
+app.post("/logIn", logIn)
+
 
 app.get("*", (req, res) => {
     res.status(404).json({

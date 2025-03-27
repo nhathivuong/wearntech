@@ -2,36 +2,29 @@ const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
-const login = async (req, res) => {
-    const { email, username } = req.body;
+const logIn = async (req, res) => {
+    const { email } = req.body;
     const client = new MongoClient(MONGO_URI);
-    if (!email || !username) {
+    if (!email) {
         return res.status(400).json({
             status: 400,
-            message: "Email and username are required."
+            message: "Email is required."
         });
     }
     try {
         await client.connect();
         const db = client.db("e-commerce");
-        const user = await db.collection("users").findOne({ email });
+        const user = await db.collection("users").findOne({email});
         if (!user) {
-            return res.status(404).json({
-                status: 404,
-                message: "User not found."
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid email."
             });
         }
-        if (user.username !== username) {
-            return res.status(401).json({
-                status: 401,
-                message: "Invalid username or password."
-            });
-        }
-        const { password, ...userData } = user;
         res.status(200).json({
             status: 200,
             message: "Login successful.",
-            data: userData
+            data: user
         });
     } catch (error) {
         res.status(502).json({
@@ -43,4 +36,5 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = login;
+
+module.exports = logIn
