@@ -8,6 +8,7 @@ const NavBarCompanies = ({handleCoNav}) => {
     if(!companies){
         return <p>Loading companies...</p>
     }
+    // sort in alphabetical order
     const companiesinAlphaOrder = companies.sort((a,b)=> a.name.localeCompare(b.name))
 
     return(
@@ -20,7 +21,7 @@ const NavBarCompanies = ({handleCoNav}) => {
     )
 }
 const NavDrop = styled.div`
-    position:absolute;
+    position:fixed ;
     box-sizing: border-box;
     padding: 1em 0 1em 1em;
     display:grid;
@@ -36,5 +37,8 @@ const EachCompany = styled(NavLink)`
     width:fit-content;
     padding: 0;
     text-align:left;
+    &:hover{
+        text-decoration:underline;
+    }
 `  
 export default NavBarCompanies
