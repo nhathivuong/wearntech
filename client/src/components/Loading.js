@@ -7,3 +7,5 @@ const Loading = () => {
     <Loader src={Load}> Loading </Loader>
   )
 }
+
+export default Loading;

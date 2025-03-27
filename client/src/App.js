@@ -3,6 +3,7 @@ import Header from "./Header"
 import Home from "./pages/Home"
 import CompanyPage from "./pages/CompanyPage"
 import ViewItemsPage from "./pages/ViewItemsPage"
+import ViewCartPage from "./pages/ViewCartPage"
 
 const App = () => {
     return <Router>
@@ -13,6 +14,7 @@ const App = () => {
             <Route path="/company/:_id" element={<CompanyPage />} />
             <Route path="/items" element={<ViewItemsPage />} />
             <Route path="/item/:_id" />
+            <Route path="/cart/:_id" element={<ViewCartPage />} />
         </Routes>
     </Router>
 }
