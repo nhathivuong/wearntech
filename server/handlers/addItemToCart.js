@@ -24,6 +24,7 @@ const addItemToCart = async(req, res) =>{
     if(!cartId || !validateId(cartId)){
         cartId = uuidv4()
     }
+////////// check cart id 
     const client = new MongoClient(MONGO_URI)
     try{
         await client.connect()
@@ -31,6 +32,7 @@ const addItemToCart = async(req, res) =>{
         //find if cart exist
         const foundCart = await db.collection("cart").findOne({_id: cartId})
         // if the cart does not exist create a new cart
+        ///// validation 
         if(!foundCart){
             await db.collection("cart").insertOne({
                 _id: cartId,
