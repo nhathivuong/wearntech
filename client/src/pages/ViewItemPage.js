@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "../contexts/CartContext"
 
 const ViewItemPage = () => {
   const { _id: itemId } = useParams();
@@ -7,20 +8,28 @@ const ViewItemPage = () => {
   const [company, setCompany] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [status, setStatus] = useState("");
-  const [addedToCart, setAddedToCart] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);  //confirm that item was added to cart
+
+  const { _id: cartId } = useContext(CartContext); 
 
   //Fetches
   useEffect(() => {
     const fetchItemData = async () => {
-      //Fetch item's data from database
-      const itemResponse = await fetch(`/item/${itemId}`);
-      const { itemData } = await itemResponse.json();
-      setProduct(itemData);
+      try {
+        //Fetch item's data from database
+        const itemResponse = await fetch(`/item/${itemId}`);
+        if (!itemResponse.ok) throw new Error("Could not fetch item");
+        const { itemData } = await itemResponse.json();
+        setProduct(itemData);
 
-      //Using item's data, fetch company data from database
-      const companyResponse = await fetch(`/company/${itemData.companyId}`);
-      const { companyData } = await companyResponse.json();
-      setCompany(companyData);
+        //Using item's data, fetch company data from database
+        const companyResponse = await fetch(`/company/${itemData.companyId}`);
+        if (!companyResponse.ok) throw new Error ("Could not fetch company");
+        const { companyData } = await companyResponse.json();
+        setCompany(companyData);
+      } catch (err) {
+        console.log(err.message);
+      }
     }
     fetchItemData();
   },[itemId]);
@@ -29,7 +38,7 @@ const ViewItemPage = () => {
   const handleAddToCart = async (ev) => {
     try {
       ev.preventDefault();
-      setStatus("Processing")
+      setStatus("processing")
       const orderData = {
         _id: itemId,
         quantity
@@ -43,21 +52,20 @@ const ViewItemPage = () => {
         },
         body
       };
-      const addToCartResponse = await fetch(`/cart/${cartId}/${itemId}`, options);
+      const addToCartResponse = await fetch(`/cart/${cartId}/${itemId}`, options); 
       const { addToCartData } = await addToCartResponse.json();
       if (addToCartData.status !== 201) {
         setStatus("");
-        console.log(error);
+        console.log(addToCartData.message);
       } else {
         setAddedToCart(true);
       }
       
     } catch (error) {
-      setError(error.message);
+      console.log(error.message);
     }
   };
 
-  // Return a loading spinner or skeleton if product or company is still loading
   if (!product || !company) {
     return <p>Loading Information...</p>;
   }
