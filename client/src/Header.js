@@ -5,10 +5,13 @@ import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
 import NavBarItems from "./NavBarItems"
 import { CartContext } from "./contexts/CartContext"
+import { UserContext } from "./contexts/UserContext"
+
 const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
     const [coNavOpen, setCoNavOpen] = useState(false)
     const {cart} = useContext(CartContext)
+    const { currentUser } = useContext(UserContext);
     
     //opens the item nav and closes the companies nav
     const handleItemNav = () =>{
