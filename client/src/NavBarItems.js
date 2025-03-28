@@ -6,7 +6,7 @@ import styled from "styled-components"
 const NavBarItems = ({handleItemNav}) => {
     const {allItems} = useContext(AllItemsContext)
     if(!allItems){
-        return <p>Loading items category...</p>
+        return <Loading>Loading items category...</Loading>
     }
     //finds the unique categories
     const uniqueItemCategories = [... new Set(allItems.map(item => item.category))]
@@ -18,7 +18,13 @@ const NavBarItems = ({handleItemNav}) => {
 
     return(
     <NavDrop>
-        <EachFilter to={`/items`} onClick={handleItemNav}><h2>All items</h2></EachFilter>
+        <Categories>
+            <EachFilter to={`/items`} onClick={handleItemNav}><h2>All items</h2></EachFilter>
+            <Price>Price</Price>
+            <EachFilter to={`/items?under=20`} onClick={handleItemNav}>Under $20</EachFilter>
+            <EachFilter to={`/items?under=50`} onClick={handleItemNav}>Under $50</EachFilter>
+            <EachFilter to={`/items?under=100`} onClick={handleItemNav}>Under $100</EachFilter>
+        </Categories>
         <Categories>
         <h2>Categories</h2>
         {categoriesinAlphaOrder.map((category, index) => {
@@ -27,7 +33,7 @@ const NavBarItems = ({handleItemNav}) => {
         }
         </Categories>
         <Categories>
-        <h2>Location</h2>
+        <h2>Placement</h2>
         {bodyInAlphaOrder.map((location, index) => {
             return <EachFilter key={index} to={`/items?body=${location.toLowerCase()}`} onClick={handleItemNav}>{location}</EachFilter>
             })
@@ -62,6 +68,9 @@ const NavDrop = styled.div`
         }
     }
 `
+const Price = styled.h2`
+    text-align:left
+`
 const EachFilter = styled(NavLink)`
     height:fit-content;
     width:fit-content;
@@ -76,5 +85,8 @@ const Categories = styled.div`
     display:flex;
     flex-direction:column;
     gap: 5px;
+`
+const Loading = styled.h2`
+    background-color: var(--color-yellow);
 `
 export default NavBarItems

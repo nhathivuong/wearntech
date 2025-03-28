@@ -173,17 +173,22 @@ a {
     background-color: var(--color-yellow);
     border-radius: 5px;
     border: solid 2px var(--color-black);
-    color: white;
+    color: var(--color-white);
     display: flex;
-    justify-content: flex-end;
     font-family: Raleway;
     padding: 10px;
     margin-top: 15px;
     margin: auto;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .add-to-cart-btn:hover{
     cursor: pointer;
+}
+
+.add-to-cart-btn:active{
+    transform: scale(0.95);
 }
 
 .add-to-cart-btn:disabled {
