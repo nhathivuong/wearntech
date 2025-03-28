@@ -5,7 +5,6 @@ import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
 import NavBarItems from "./NavBarItems"
 
-
 const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
     const [coNavOpen, setCoNavOpen] = useState(false)
@@ -33,6 +32,7 @@ const Header = () => {
             <NavLink onClick={handleCoNav}>Brands</NavLink>
             <NavLink to="/about" onClick={closeNav}>About</NavLink>
             <NavLink to="/cart"  onClick={closeNav}><CartIcon /></NavLink>
+            <NavLink to="/signUp" onClick={closeNav}>Sign Up</NavLink>
         </div>
     </StyledNavigationBar>
     {itemNavOpen && <NavBarItems handleItemNav={handleItemNav}/>}
