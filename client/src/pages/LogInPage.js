@@ -7,7 +7,7 @@ const LogInPage = () => {
     const [ email, setEmail ] = useState("");
     const [ status, setStatus ] = useState("idle");
     const [ error, setError ] = useState(null);  //Error message to appear should there be any issues
-    const { setCurrentUser } = useContext(UserContext); 
+    const { currentUser, setCurrentUser } = useContext(UserContext); 
 
     const handleSubmit = async (ev) => {
         try {
