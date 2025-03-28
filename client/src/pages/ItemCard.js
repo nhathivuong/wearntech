@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 const ItemCard = ({ item }) => {
   const navigate = useNavigate();
   // State for showing a message after adding an item to the cart
@@ -15,7 +16,7 @@ const ItemCard = ({ item }) => {
   };
 
   return (
-    <button className="item-card" onClick={() => navigate(`/item/${item._id}`)}>
+    <NavLink className="item-card" onClick={() => navigate(`/item/${item._id}`)}>
       <div className="item-card-header">
         {/* Item Image */}
         <img src={item.imageSrc} alt={item.name} className="item-image" />
@@ -39,7 +40,7 @@ const ItemCard = ({ item }) => {
         {/* Confirmation Message */}
         {added && <p className="added-message">Added to Cart!</p>}
       </div>
-    </button>
+    </NavLink>
   );
 };
 

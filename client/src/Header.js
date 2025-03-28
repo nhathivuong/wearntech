@@ -1,5 +1,5 @@
 import { HomeIcon, CartIcon, SearchIcon } from "./components/Icons"
-import { NavLink } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
 import { useState } from "react"
 import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
@@ -9,7 +9,6 @@ import NavBarItems from "./NavBarItems"
 const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
     const [coNavOpen, setCoNavOpen] = useState(false)
-
     //opens the item nav and closes the companies nav
     const handleItemNav = () =>{
         setItemNavOpen(!itemNavOpen)

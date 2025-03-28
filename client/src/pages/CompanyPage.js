@@ -35,7 +35,7 @@ const CompanyPage = () => {
                     </section>
 
                     {/* Products by Company section */}
-                    <section className="item-grid center">
+                    <section className="item-grid-co center">
                         {
                             allItems? (
                                 itemsFromCompany.length > 0? (
