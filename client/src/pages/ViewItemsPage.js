@@ -2,7 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { AllItemsContext } from "../contexts/AllItemsContext"
 import { AllCompaniesContext } from "../contexts/AllCompaniesContext";
 import ItemCard from "./ItemCard";
-import { useLocation, useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
+import styled from "styled-components";
 
 const ViewItemsPage = () => {
   const {allItems}  = useContext(AllItemsContext);
@@ -14,7 +15,8 @@ const ViewItemsPage = () => {
   const filters = new URLSearchParams(location.search)
   const category = filters.get("category")
   const bodyLocation = filters.get("body")
-
+  const company = filters.get("company")
+  
   // Getting all company names for the filter buttons
   if(!companies){
       return <p>Loading companies...</p>
@@ -28,9 +30,10 @@ const ViewItemsPage = () => {
         // checks if the filter is applied
         const categoryFilter = !category || item.category.toLowerCase() === category
         const bodyFilter = !bodyLocation || item.body_location.toLowerCase() === bodyLocation
-        return categoryFilter && bodyFilter
+        const companyFilter = !company || item.companyId === Number(company)
+        return categoryFilter && bodyFilter && companyFilter
       })
-    },[category, bodyLocation])
+    },[category, bodyLocation, company])
   
     if(!allItems){
       return <p>Loading items...</p>
@@ -39,6 +42,7 @@ const ViewItemsPage = () => {
     const uniqueItemCategories = [... new Set(allItems.map(item => item.category))]
     //finds unique body location
     const uniqueItemBody = [... new Set(allItems.map(item => item.body_location))]
+
     //sort in alphabetical order
     const categoriesinAlphaOrder = uniqueItemCategories.sort((a,b)=> a.localeCompare(b))
     const bodyInAlphaOrder = uniqueItemBody.sort((a,b) => a.localeCompare(b))
@@ -57,20 +61,20 @@ const ViewItemsPage = () => {
           <p style={{fontWeight: "bold"}}>Company</p>
           <div className="companyFilter">
           {companiesinAlphaOrder.map((company) => {
-            return <p key={company._id}>{company.name}</p>
+            return <Filter key={company._id} to={`/items?company=${company._id}`}><p>{company.name}</p></Filter>
           })}
           </div>
           <p style={{fontWeight: "bold"}}>Category</p>
           {allItems === null ? <></> : <div className="categoryAndLocationFilter">
             {categoriesinAlphaOrder.map((category) => {
-              return <p key={category}>{category}</p>
+              return <Filter key={category} to={`/items?category=${category.toLowerCase()}`}>{category}</Filter>
             })}
             </div>
             }
           <p style={{fontWeight: "bold"}}>Location</p>
           {allItems === null ? <></> : <div className="categoryAndLocationFilter">
             {bodyInAlphaOrder.map((body) => {
-              return <p key={body}>{body}</p>
+              return <Filter key={body} to={`/items?body=${body.toLowerCase()}`}>{body}</Filter>
             })}
             </div>}
         </div>
@@ -88,5 +92,12 @@ const ViewItemsPage = () => {
     </div>
   );
 };
-
+const Filter = styled(NavLink)`
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  &:hover{
+      text-decoration:underline;
+  }
+`  
 export default ViewItemsPage;
