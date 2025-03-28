@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require("uuid");
 const signUp = async (req, res) => {
     const { email, name, address } = req.body;
     const client = new MongoClient(MONGO_URI);
+    
     if (!email || !name || !address) {
         return res.status(400).json({
             status: 400,
