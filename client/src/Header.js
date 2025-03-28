@@ -28,7 +28,8 @@ const Header = () => {
         <p style={{position: "absolute", fontFamily: "Josefin Sans", textShadow: "1.5px 1.5px var(--color-yellow)", marginLeft: "10px", cursor: "default"}}>Wear n' Tech</p>
         <div className="pagesNavigation">
             <NavLink to="/" onClick={closeNav}><HomeIcon/> Home</NavLink>
-            <NavLink onClick={handleItemNav}>Items</NavLink>
+            {/* This is a Button to not mess with the query filter */}
+            <ItemNavButton className="active" onClick={handleItemNav}>Items</ItemNavButton>
             <NavLink onClick={handleCoNav}>Brands</NavLink>
             <NavLink to="/about" onClick={closeNav}>About</NavLink>
             <NavLink to="/cart"  onClick={closeNav}><CartIcon /></NavLink>
@@ -65,13 +66,26 @@ const StyledNavigationBar = styled.nav`
         margin: 0 auto;
         position: relative;
     }
-    .searchAndCart{
+    /* .searchAndCart{
         display:flex;
         align-items:center;
         margin-left: auto;
         position: absolute;
         right: 0;
         margin: 0 2rem;
-}
+    } */
+`
+const ItemNavButton = styled.button`
+    padding: 0 2.5rem;
+    border: none;
+    background-color: transparent;
+    color: var(--color-white);
+    font-family: Josefin Sans;
+    font-size:1.5rem;
+    font-weight:bolder;
+    height:28px;
+    &:hover{
+        cursor: pointer;
+    }
 `
 export default Header

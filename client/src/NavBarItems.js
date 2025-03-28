@@ -18,7 +18,7 @@ const NavBarItems = ({handleItemNav}) => {
 
     return(
     <NavDrop>
-                <EachFilter to={`/items`} onClick={handleItemNav}><h2>All items</h2></EachFilter>
+        <EachFilter to={`/items`} onClick={handleItemNav}><h2>All items</h2></EachFilter>
         <Categories>
         <h2>Categories</h2>
         {categoriesinAlphaOrder.map((category, index) => {
