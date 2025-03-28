@@ -93,7 +93,7 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
   return (
     <div>
       <h1>Products</h1>
-      {filterName && <h2>{ filterName }</h2>}
+      {filterName && <FilterName>{ filterName }</FilterName>}
       <div className="section">
         <div className="filterSection">
           <p className="filterTitle">Filter by:</p>
@@ -154,5 +154,8 @@ const Filter = styled(NavLink)`
   &:hover{
       text-decoration:underline;
   }
-`  
+`
+const FilterName = styled.h2`
+  text-transform:capitalize;
+`
 export default ViewItemsPage;

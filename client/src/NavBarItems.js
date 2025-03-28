@@ -18,7 +18,13 @@ const NavBarItems = ({handleItemNav}) => {
 
     return(
     <NavDrop>
-        <EachFilter to={`/items`} onClick={handleItemNav}><h2>All items</h2></EachFilter>
+        <Categories>
+            <EachFilter to={`/items`} onClick={handleItemNav}><h2>All items</h2></EachFilter>
+            <Price>Price</Price>
+            <EachFilter to={`/items?under=20`} onClick={handleItemNav}>Under $20</EachFilter>
+            <EachFilter to={`/items?under=50`} onClick={handleItemNav}>Under $50</EachFilter>
+            <EachFilter to={`/items?under=100`} onClick={handleItemNav}>Under $100</EachFilter>
+        </Categories>
         <Categories>
         <h2>Categories</h2>
         {categoriesinAlphaOrder.map((category, index) => {
@@ -61,6 +67,9 @@ const NavDrop = styled.div`
             animation-timing-function: ease-in-out;
         }
     }
+`
+const Price = styled.h2`
+    text-align:left
 `
 const EachFilter = styled(NavLink)`
     height:fit-content;

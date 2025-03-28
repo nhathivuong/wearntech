@@ -4,7 +4,7 @@ import { useContext, useState } from "react"
 import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
 import NavBarItems from "./NavBarItems"
-import { UserContext } from "./contexts/UsersContext"
+import { UserContext } from "./contexts/UserContext"
 
 const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
