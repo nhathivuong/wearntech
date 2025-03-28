@@ -6,20 +6,23 @@ const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
     const { currentUser } = useContext(UserContext);
 
-    if (currentUser) {
+
+    useEffect(() => {
+        if (!currentUser) return;
         const url = `/cart/${currentUser.cartId}`; 
 
-        useEffect(() => {
         const fetchCart = async () => {
-            const response = await fetch(url);
-            const { data } = await response.json();
-            setCart(data);
+            try {
+                const response = await fetch(url);
+                const { data } = await response.json();
+                setCart(data);
+            } catch (error) {
+                console.error("Error fetching cart:", error)
+            }
         };
         fetchCart();
-        }, []);
-    }
+    }, [currentUser]);
     
-
     return (
         <CartContext.Provider value={{cart}}>
             {children}
