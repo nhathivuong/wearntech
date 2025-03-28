@@ -11,7 +11,9 @@ const UserProvider = ({ children }) => {
     const fetchUsers = async () => {
         const response = await fetch(url);
         const { data } = await response.json();
-        setUsers(data);
+        if (data) {
+            setUsers(data);
+        }
     };
 
     fetchUsers();

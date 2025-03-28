@@ -3,12 +3,16 @@ import App from "./App";
 import AllItemsProvider from "./contexts/AllItemsContext";
 import AllCompaniesProvider from "./contexts/AllCompaniesContext";
 import UserProvider from "./contexts/UsersContext";
+import CartProvider from "./contexts/CartContext";
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <AllCompaniesProvider>
         <AllItemsProvider>
             <UserProvider>
-                <App />
+                <CartProvider>
+                    <App />
+                </CartProvider>
             </UserProvider>
         </AllItemsProvider>
     </AllCompaniesProvider>
