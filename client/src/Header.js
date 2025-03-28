@@ -1,14 +1,15 @@
 import { HomeIcon, CartIcon, SearchIcon } from "./components/Icons"
 import { NavLink, useLocation } from "react-router-dom"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
 import NavBarItems from "./NavBarItems"
-
+import { UserContext } from "./contexts/UsersContext"
 
 const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
     const [coNavOpen, setCoNavOpen] = useState(false)
+    const {cartId} = useContext(UserContext)
     //opens the item nav and closes the companies nav
     const handleItemNav = () =>{
         setItemNavOpen(!itemNavOpen)
@@ -28,12 +29,15 @@ const Header = () => {
         <p style={{position: "absolute", fontFamily: "Josefin Sans", textShadow: "1.5px 1.5px var(--color-yellow)", marginLeft: "10px", cursor: "default"}}>Wear n' Tech</p>
         <div className="pagesNavigation">
             <NavLink to="/" onClick={closeNav}><HomeIcon/> Home</NavLink>
-            {/* This is a Button to not mess with the query filter */}
-            <ItemNavButton className="active" onClick={handleItemNav}>Products</ItemNavButton>
-            <NavLink onClick={handleCoNav}>Brands</NavLink>
+            <ItemNavButton type="button" className="active" onClick={handleItemNav}>Products</ItemNavButton>
+            <ItemNavButton type="button" className="active" onClick={handleCoNav}>Brands</ItemNavButton>
             <NavLink to="/about" onClick={closeNav}>About</NavLink>
-            <NavLink to="/cart"  onClick={closeNav}><CartIcon /></NavLink>
+            <NavLink to={`/cart/${cartId}`} onClick={closeNav}><CartIcon /></NavLink>
         </div>
+        <User>
+            <NavLink to="/logIn">Log In</NavLink>
+            <NavLink to="/signUp">Sign Up</NavLink>
+        </User>
     </StyledNavigationBar>
     {itemNavOpen && <NavBarItems handleItemNav={handleItemNav}/>}
     {coNavOpen && <NavBarCompanies handleCoNav={handleCoNav}/>}
@@ -86,6 +90,16 @@ const ItemNavButton = styled.button`
     height:28px;
     &:hover{
         cursor: pointer;
+    }
+`
+const User = styled.div`
+    position:absolute;
+    top:10px;
+    right:0;
+    font-size: 1rem;
+    margin-right: 10px;
+    a{
+        padding:0 0.5rem;
     }
 `
 export default Header
