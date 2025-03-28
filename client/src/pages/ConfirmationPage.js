@@ -54,3 +54,5 @@ const Confirmation = () => {
     </Container>
   );
 };
+
+export default Confirmation;

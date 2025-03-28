@@ -1,21 +1,89 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AllItemsContext } from "../contexts/AllItemsContext"
+import { AllCompaniesContext } from "../contexts/AllCompaniesContext";
+import ItemCard from "./ItemCard";
+import { useLocation, useParams } from "react-router-dom";
 
 const ViewItemsPage = () => {
   const {allItems}  = useContext(AllItemsContext);
+  const {companies} = useContext(AllCompaniesContext)
+  const location = useLocation()
+  const [filter, setFilter] = useState(()=> (item) => true)
 
+  //extracts information from the query
+  const filters = new URLSearchParams(location.search)
+  const category = filters.get("category")
+  const bodyLocation = filters.get("body")
+
+  // Getting all company names for the filter buttons
+  if(!companies){
+      return <p>Loading companies...</p>
+  }
+  // sort in alphabetical order
+  const companiesinAlphaOrder = companies.sort((a,b)=> a.name.localeCompare(b.name))
+  
+  //sets the filters for the array.filter() for the display of items
+  useEffect(()=> {
+      setFilter(()=>(item)=> {
+        // checks if the filter is applied
+        const categoryFilter = !category || item.category.toLowerCase() === category
+        const bodyFilter = !bodyLocation || item.body_location.toLowerCase() === bodyLocation
+        return categoryFilter && bodyFilter
+      })
+    },[category, bodyLocation])
+  
+    if(!allItems){
+      return <p>Loading items...</p>
+    }
+    //finds the unique categories
+    const uniqueItemCategories = [... new Set(allItems.map(item => item.category))]
+    //finds unique body location
+    const uniqueItemBody = [... new Set(allItems.map(item => item.body_location))]
+    //sort in alphabetical order
+    const categoriesinAlphaOrder = uniqueItemCategories.sort((a,b)=> a.localeCompare(b))
+    const bodyInAlphaOrder = uniqueItemBody.sort((a,b) => a.localeCompare(b))
+
+  
+  // checks if the array is loaded 
+  if(!allItems){
+    return <p>Loading items...</p>
+  }
   return (
     <div>
       <h1>Items</h1>
-      <div className="item-grid">
-        {allItems.length === 0 ? (
-          <p>No items available.</p>
-        ) : (
-          allItems.map((item) => (
-
-            <ItemCard key={item._id}/>
-          ))
-        )}
+      <div className="section">
+        <div className="filterSection">
+          <p className="filterTitle">Filter by:</p>
+          <p style={{fontWeight: "bold"}}>Company</p>
+          <div className="companyFilter">
+          {companiesinAlphaOrder.map((company) => {
+            return <p key={company._id}>{company.name}</p>
+          })}
+          </div>
+          <p style={{fontWeight: "bold"}}>Category</p>
+          {allItems === null ? <></> : <div className="categoryAndLocationFilter">
+            {categoriesinAlphaOrder.map((category) => {
+              return <p key={category}>{category}</p>
+            })}
+            </div>
+            }
+          <p style={{fontWeight: "bold"}}>Location</p>
+          {allItems === null ? <></> : <div className="categoryAndLocationFilter">
+            {bodyInAlphaOrder.map((body) => {
+              return <p key={body}>{body}</p>
+            })}
+            </div>}
+        </div>
+        <div className="item-grid">
+          {(allItems.length > 0) ? (
+              allItems.filter(filter).map((item) => (
+                <ItemCard key={item._id} item={item}/>
+                ))
+            ) : (
+              <p>No items available</p>
+            )
+          }
+        </div>
       </div>
     </div>
   );
