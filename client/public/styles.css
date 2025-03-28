@@ -84,6 +84,10 @@ h2 {
     padding-top: 0.5rem;
     border-bottom: solid 2px var(--color-yellow);
 }
+h3{
+    font-weight: bold;
+    line-height: 1.2;
+}
 
 a {
     text-decoration: none;
@@ -215,7 +219,15 @@ a {
 /* Grid for viewItems list 4 by 5 */
 .item-grid{
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: repeat(4, 1fr);
+    height:fit-content;
+    width: fit-content;
+    justify-content: end;
+}
+/* Grid for company items  */
+.item-grid-co{
+    display: grid;
+    grid-template-columns: repeat(4, auto);
     justify-content: end;
 }
 
