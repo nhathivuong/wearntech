@@ -12,7 +12,7 @@ const ViewItemsPage = () => {
   const [filter, setFilter] = useState(()=> (item) => true)
    // Pagination state
    const [currentPage, setCurrentPage] = useState(1);
-   const itemsPerPage = 10; // Number of items per page
+   const itemsPerPage = 20; // Number of items per page
  
 
   //extracts information from the query
@@ -28,6 +28,7 @@ const ViewItemsPage = () => {
   // sort in alphabetical order
   const companiesinAlphaOrder = companies.sort((a,b)=> a.name.localeCompare(b.name))
   
+
   //sets the filters for the array.filter() for the display of items
   useEffect(()=> {
       setFilter(()=>(item)=> {
@@ -35,7 +36,10 @@ const ViewItemsPage = () => {
         const categoryFilter = !category || item.category.toLowerCase() === category
         const bodyFilter = !bodyLocation || item.body_location.toLowerCase() === bodyLocation
         const companyFilter = !company || item.companyId === Number(company)
-        return categoryFilter && bodyFilter && companyFilter
+        const under20Filter = parseFloat(item.price.replace("$","")) < 20
+        const under50Filter = parseFloat(item.price.replace("$","")) < 50
+        const under100Filter = parseFloat(item.price.replace("$","")) < 50
+        return categoryFilter && bodyFilter && companyFilter && under20Filter && under50Filter && under100Filter
       })
     },[category, bodyLocation, company])
   
@@ -50,6 +54,7 @@ const ViewItemsPage = () => {
     //sort in alphabetical order
     const categoriesinAlphaOrder = uniqueItemCategories.sort((a,b)=> a.localeCompare(b))
     const bodyInAlphaOrder = uniqueItemBody.sort((a,b) => a.localeCompare(b))
+
 // Paginate items: Determine the index of the first and last items for the current page
 const indexOfLastItem = currentPage * itemsPerPage;
 const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -70,13 +75,15 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
       setCurrentPage(currentPage - 1);
     }
   };
-  // checks if the array is loaded 
-  if(!allItems){
-    return <p>Loading items...</p>
-  }
+  // getting the company name for the h2
+  const companyName = companies.find((individualCo) => individualCo.companyId === company)
+  console.log(companyName)
   return (
     <div>
       <h1>Products</h1>
+      {(category || bodyLocation || companyName) &&
+      <h2>{`${category || ""} ${bodyLocation || ""} ${companyName || ""}`}</h2>
+      }
       <div className="section">
         <div className="filterSection">
           <p className="filterTitle">Filter by:</p>
