@@ -10,7 +10,8 @@ const ViewItemsPage = () => {
   const {companies} = useContext(AllCompaniesContext)
   const location = useLocation()
   const [filter, setFilter] = useState(()=> (item) => true)
-  const [companyName, setCompanyName] = useState()
+  const [filterName, setFilterName] = useState()
+
    // Pagination state
    const [currentPage, setCurrentPage] = useState(1);
    const itemsPerPage = 20; // Number of items per page
@@ -21,7 +22,7 @@ const ViewItemsPage = () => {
   const category = filters.get("category")
   const bodyLocation = filters.get("body")
   const company = filters.get("company")
-  
+  const underPrice = filters.get("under")
   // Getting all company names for the filter buttons
   if(!companies){
       return <p>Loading companies...</p>
@@ -37,17 +38,24 @@ const ViewItemsPage = () => {
         const categoryFilter = !category || item.category.toLowerCase() === category
         const bodyFilter = !bodyLocation || item.body_location.toLowerCase() === bodyLocation
         const companyFilter = !company || item.companyId === Number(company)
-        const under20Filter = parseFloat(item.price.replace("$","")) < 20
-        const under50Filter = parseFloat(item.price.replace("$","")) < 50
-        const under100Filter = parseFloat(item.price.replace("$","")) < 50
-        return categoryFilter && bodyFilter && companyFilter && under20Filter && under50Filter && under100Filter
+        const underPriceFilter = !underPrice || parseFloat(item.price.replace("$","")) < Number(underPrice)
+        return categoryFilter && bodyFilter && companyFilter && underPriceFilter
       })
-      //find the company name for the h2
+      //find and set the filter name for the h2
       if (company){
         const companyName = companies.find((individualCo) => individualCo._id === Number(company))
-        setCompanyName(companyName.name)
+        setFilterName(companyName.name)
       }
-    },[category, bodyLocation, company])
+      if(category){
+        setFilterName(category)
+      }
+      if(bodyLocation){
+        setFilterName(bodyLocation)
+      }
+      if(underPrice){
+        setFilterName(`under $${underPrice}`)
+      }
+    },[category, bodyLocation, company, underPrice])
   
     if(!allItems){
       return <p>Loading items...</p>
@@ -85,9 +93,7 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
   return (
     <div>
       <h1>Products</h1>
-      {(category || bodyLocation || companyName) &&
-      <h2>{`${category || ""} ${bodyLocation || ""} ${companyName || ""}`}</h2>
-      }
+      {filterName && <h2>{ filterName }</h2>}
       <div className="section">
         <div className="filterSection">
           <p className="filterTitle">Filter by:</p>
@@ -109,6 +115,12 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
             {bodyInAlphaOrder.map((body) => {
               return <Filter key={body} to={`/items?body=${body.toLowerCase()}`}>{body}</Filter>
             })}
+            </div>}
+          <h2>Price</h2>
+          {allItems === null ? <></> : <div className="categoryAndLocationFilter">
+              <Filter to={`/items?under=20`}>Under $20</Filter>
+              <Filter to={`/items?under=50`}>Under $50</Filter>
+              <Filter to={`/items?under=100`}>Under $100</Filter>
             </div>}
         </div>
         <div className="item-grid">

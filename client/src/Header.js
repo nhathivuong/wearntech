@@ -4,6 +4,7 @@ import { useContext, useState } from "react"
 import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
 import NavBarItems from "./NavBarItems"
+import { UserContext } from "./contexts/UsersContext"
 
 const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
@@ -32,11 +33,10 @@ const Header = () => {
             <ItemNavButton type="button" className="active" onClick={handleCoNav}>Brands</ItemNavButton>
             <NavLink to="/about" onClick={closeNav}>About</NavLink>
             <NavLink to={`/cart/${cartId}`} onClick={closeNav}><CartIcon /></NavLink>
-            <NavLink to="/signUp" onClick={closeNav}>Sign Up</NavLink>
         </div>
         <User>
-            <NavLink to="/logIn">Log In</NavLink>
-            <NavLink to="/signUp">Sign Up</NavLink>
+            <NavLink to="/logIn" onClick={closeNav}>Log In</NavLink>
+            <NavLink to="/signUp" onClick={closeNav}>Sign Up</NavLink>
         </User>
     </StyledNavigationBar>
     {itemNavOpen && <NavBarItems handleItemNav={handleItemNav}/>}
