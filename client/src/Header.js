@@ -4,12 +4,12 @@ import { useContext, useState } from "react"
 import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
 import NavBarItems from "./NavBarItems"
-import { UserContext } from "./contexts/UserContext"
-
+import { CartContext } from "./contexts/CartContext"
 const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
     const [coNavOpen, setCoNavOpen] = useState(false)
-    const {cartId} = useContext(UserContext)
+    const {cart} = useContext(CartContext)
+    
     //opens the item nav and closes the companies nav
     const handleItemNav = () =>{
         setItemNavOpen(!itemNavOpen)
@@ -32,7 +32,7 @@ const Header = () => {
             <ItemNavButton type="button" className="active" onClick={handleItemNav}>Products</ItemNavButton>
             <ItemNavButton type="button" className="active" onClick={handleCoNav}>Brands</ItemNavButton>
             <NavLink to="/about" onClick={closeNav}>About</NavLink>
-            <NavLink to={`/cart/${cartId}`} onClick={closeNav}><CartIcon /></NavLink>
+            <NavLink to={`/cart/${cart._id}`} onClick={closeNav}><CartIcon /></NavLink>
         </div>
         <User>
             <NavLink to="/logIn" onClick={closeNav}>Log In</NavLink>

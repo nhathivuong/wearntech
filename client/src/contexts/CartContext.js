@@ -3,7 +3,7 @@ import {UserContext} from './UserContext';
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
-    const [cart, setCart] = useState([]);
+    const [cart, setCart] = useState({});
     const { currentUser } = useContext(UserContext);
 
 
