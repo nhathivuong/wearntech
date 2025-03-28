@@ -33,7 +33,7 @@ const ViewItemPage = () => {
     }
     fetchItemData();
   },[itemId]);
-  
+  console.log(product)
 
   const handleAddToCart = async (ev) => {
     try {
