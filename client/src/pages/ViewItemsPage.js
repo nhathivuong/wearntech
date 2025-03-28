@@ -10,6 +10,7 @@ const ViewItemsPage = () => {
   const {companies} = useContext(AllCompaniesContext)
   const location = useLocation()
   const [filter, setFilter] = useState(()=> (item) => true)
+  const [companyName, setCompanyName] = useState()
    // Pagination state
    const [currentPage, setCurrentPage] = useState(1);
    const itemsPerPage = 20; // Number of items per page
@@ -41,6 +42,10 @@ const ViewItemsPage = () => {
         const under100Filter = parseFloat(item.price.replace("$","")) < 50
         return categoryFilter && bodyFilter && companyFilter && under20Filter && under50Filter && under100Filter
       })
+      if (company){
+        const companyName = companies.find((individualCo) => individualCo._id === Number(company))
+        setCompanyName(companyName.name)
+      }
     },[category, bodyLocation, company])
   
     if(!allItems){
@@ -75,8 +80,8 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
       setCurrentPage(currentPage - 1);
     }
   };
-  // getting the company name for the h2
-  const companyName = companies.find((individualCo) => individualCo.companyId === company)
+
+  
   console.log(companyName)
   return (
     <div>
