@@ -21,6 +21,9 @@ const logIn = async (req, res) => {
                 message: "Invalid email."
             });
         }
+
+        const cart = await db.collection("cart").findOne({ _id: user.cartId });
+        
         res.status(200).json({
             status: 200,
             message: "Login successful.",
