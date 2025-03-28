@@ -21,16 +21,32 @@ const NavBarCompanies = ({handleCoNav}) => {
     )
 }
 const NavDrop = styled.div`
+    z-index: 1;
     position:fixed ;
     box-sizing: border-box;
     padding: 1em 0 1em 1em;
     display:grid;
-    grid-template-rows: repeat(13, auto);
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(15, 1.5rem);
+    grid-template-columns: repeat(5, 15rem);
     gap: 5px;
     grid-auto-flow:column;
     width:100%;
     background-color: var(--color-yellow);
+    justify-content: center;
+    font-weight: bold;
+    animation-name: fade-in;
+    animation-duration: 0.5s;
+    @keyframes fade-in {
+        0% {
+            transform-origin: top;
+            opacity: 75%;
+        }
+        100% {
+            transform-origin: top;
+            opacity: 100%;
+            animation-timing-function: ease-in-out;
+        }
+    }
 `
 const EachCompany = styled(NavLink)`
     height:fit-content;

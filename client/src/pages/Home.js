@@ -17,19 +17,15 @@ const Home = () => {
         })
     }
 
-    // Arrow buttons
+    // Arrow buttons click/scroll functions
     const scrollContainer = document.querySelector(".individualFeaturedItems")
-    const arrowLeft = document.getElementById("arrowLeft")
-    const arrowRight = document.getElementById("arrowRight")
-    if(allItems !== null){
-    arrowRight.addEventListener("click", () => {
-        scrollContainer.style.scrollBehavior = "smooth"; 
+    const arrowRightClick = () => {
+        scrollContainer.style.scrollBehavior = "smooth";
         scrollContainer.scrollLeft += 375;
-    })
-    arrowLeft.addEventListener("click", () => {
-        scrollContainer.style.scrollBehavior = "smooth"; 
+    }
+    const arrowLeftClick = () => {
+        scrollContainer.style.scrollBehavior = "smooth";
         scrollContainer.scrollLeft -= 375;
-    })
     }
     
     return <>
@@ -40,7 +36,7 @@ const Home = () => {
             <h2>Your one stop shop for wearable tech!</h2>
                 <p className="featuredItems">Featured items</p>
                 <div className="wrapContainer">
-                    <p id="arrowLeft" className="arrows"><i className="arrow left"></i></p>
+                    <p id="arrowLeft" onClick={arrowLeftClick} className="arrows"><i className="arrow left"></i></p>
                         <div className="individualFeaturedItems">
                             {allItems === null ? <p>Loading...</p> : <>
                                 {selectedItems.map((selectedItem) => {
@@ -48,7 +44,7 @@ const Home = () => {
                                 })}
                             </>}
                         </div>
-                    <p id="arrowRight" className="arrows"><i className="arrow right"></i></p>
+                    <p id="arrowRight" onClick={arrowRightClick} className="arrows"><i className="arrow right"></i></p>
                 </div>
         </div>
     </>
