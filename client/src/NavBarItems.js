@@ -18,6 +18,7 @@ const NavBarItems = ({handleItemNav}) => {
 
     return(
     <NavDrop>
+                <EachFilter to={`/items`} onClick={handleItemNav}><h2>All items</h2></EachFilter>
         <Categories>
         <h2>Categories</h2>
         {categoriesinAlphaOrder.map((category, index) => {
@@ -32,11 +33,11 @@ const NavBarItems = ({handleItemNav}) => {
             })
         }
         </Categories>
-        <EachFilter to={`/items`} onClick={handleItemNav}><h2>All items</h2></EachFilter>
     </NavDrop>
     )
 }
 const NavDrop = styled.div`
+    z-index: 1;
     position:fixed;
     box-sizing: border-box;
     padding: 1em 0 1em 1em;
@@ -44,6 +45,22 @@ const NavDrop = styled.div`
     grid-template-columns: 15rem 15rem 15rem;
     width:100%;
     background-color: var(--color-yellow);
+    margin: auto;
+    justify-content: center;
+    font-weight: bold;
+    animation-name: fade-in;
+    animation-duration: 0.5s;
+    @keyframes fade-in {
+        0% {
+            transform-origin: top;
+            opacity: 75%;
+        }
+        100% {
+            transform-origin: top;
+            opacity: 100%;
+            animation-timing-function: ease-in-out;
+        }
+    }
 `
 const EachFilter = styled(NavLink)`
     height:fit-content;

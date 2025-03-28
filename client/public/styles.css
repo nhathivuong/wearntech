@@ -73,7 +73,7 @@ h1 {
     font-weight: bolder;
     text-align: center;
     text-shadow: 3px 3px var(--color-yellow);
-    padding: 1.5rem 0;
+    padding: 2rem 0;
 }
 
 h2 {
@@ -83,6 +83,10 @@ h2 {
     padding-bottom: 1rem;
     padding-top: 0.5rem;
     border-bottom: solid 2px var(--color-yellow);
+}
+h3{
+    font-weight: bold;
+    line-height: 1.2;
 }
 
 a {
@@ -94,7 +98,7 @@ a {
 .banner{
     margin-top: 55vh;
     background-color: var(--color-white);
-    padding-top: 100px;
+    padding-top: 50px;
 }
 
 .homepagePhoto {
@@ -140,6 +144,7 @@ a {
     margin: 0 5rem 10rem;
 }
 
+/*Grid for the homepage, scroll further down for viewItems*/
 .grid {
     display: grid;
     grid-template-columns: auto auto auto;
@@ -209,4 +214,56 @@ a {
 .left{
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
+}
+
+/* Grid for viewItems list 4 by 5 */
+.item-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height:fit-content;
+    width: fit-content;
+    justify-content: end;
+}
+/* Grid for company items  */
+.item-grid-co{
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: end;
+}
+
+.center{
+    justify-content: center;
+    margin: 5rem 0
+}
+
+.section{
+    margin: 2rem 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.filterSection{
+    /*PLACEHOLDER BORDER*/
+    /* border: solid 1px black; */
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
+    box-shadow: 1px 1px 3px var(--color-gray);
+}
+
+.filterTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.companyFilter{
+    height: 20vh;
+    overflow-y: scroll;
+    margin: 1rem;
+    max-width: 200px;
+}
+
+.categoryAndLocationFilter{
+    margin: 1rem;
 }

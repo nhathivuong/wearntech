@@ -1,5 +1,5 @@
 import { HomeIcon, CartIcon, SearchIcon } from "./components/Icons"
-import { NavLink } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
 import { useState } from "react"
 import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
@@ -9,7 +9,6 @@ import NavBarItems from "./NavBarItems"
 const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
     const [coNavOpen, setCoNavOpen] = useState(false)
-
     //opens the item nav and closes the companies nav
     const handleItemNav = () =>{
         setItemNavOpen(!itemNavOpen)
@@ -26,14 +25,12 @@ const Header = () => {
         setItemNavOpen(false)
     }
     return <><StyledNavigationBar>
+        <p style={{position: "absolute", fontFamily: "Josefin Sans", textShadow: "1.5px 1.5px var(--color-yellow)", marginLeft: "10px", cursor: "default"}}>Wear n' Tech</p>
         <div className="pagesNavigation">
             <NavLink to="/" onClick={closeNav}><HomeIcon/> Home</NavLink>
-            <NavLink to="/about" onClick={closeNav}>About</NavLink>
             <NavLink onClick={handleItemNav}>Items</NavLink>
             <NavLink onClick={handleCoNav}>Brands</NavLink>
-        </div>
-        <div className="searchAndCart">
-            <SearchIcon /> <input type="text" onClick={closeNav}/>
+            <NavLink to="/about" onClick={closeNav}>About</NavLink>
             <NavLink to="/cart"  onClick={closeNav}><CartIcon /></NavLink>
         </div>
     </StyledNavigationBar>
@@ -47,6 +44,7 @@ const Header = () => {
 const StyledNavigationBar = styled.nav`
     background-color: var(--color-red);
     font-weight: bolder;
+    font-size: 1.5rem;
     color: var(--color-white);
     display: flex;
     top: 0;
@@ -56,6 +54,7 @@ const StyledNavigationBar = styled.nav`
     position: sticky;
     margin: 0;
     padding: 1rem 0;
+    z-index: 3;
     a{
         color: var(--color-white);
     }

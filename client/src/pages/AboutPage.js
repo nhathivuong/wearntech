@@ -29,13 +29,13 @@ const AboutPage = () => {
                 alt="Mahan Nilipour"
             />
             <PortfolioItem
-                href=""
+                href="https://nhathivuongportfolio.vercel.app/"
                 src="/assets/nhathi-picture.JPG"
                 alt="Nha Thi Vuong"
             />
             <PortfolioItem
-                href=""
-                src=""
+                href="https://valoopay.github.io/my-portfolio/"
+                src="/assets/valerie-picture.jpg"
                 alt="Valerie Payeur"
             />
         </PortfolioSection>
