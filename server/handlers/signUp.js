@@ -1,10 +1,12 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
+const { v4: uuidv4 } = require("uuid");
 
 const signUp = async (req, res) => {
     const { email, name, address } = req.body;
     const client = new MongoClient(MONGO_URI);
+    
     if (!email || !name || !address) {
         return res.status(400).json({
             status: 400,
@@ -21,10 +23,15 @@ const signUp = async (req, res) => {
                 message: "User with this email already exists."
             });
         }
+        const cartId = uuidv4();
+        const newCart = { _id: cartId, items: [] };
+        await db.collection("cart").insertOne(newCart);
         const newUser = {
+            _id: uuidv4(),
             email,
             name,
-            address
+            address,
+            cartId
         };
         const result = await db.collection("users").insertOne(newUser);
         if (!result.acknowledged) {
