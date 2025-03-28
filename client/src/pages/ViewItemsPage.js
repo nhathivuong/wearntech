@@ -76,7 +76,7 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
   }
   return (
     <div>
-      <h1>Items</h1>
+      <h1>Products</h1>
       <div className="section">
         <div className="filterSection">
           <p className="filterTitle">Filter by:</p>
@@ -93,7 +93,7 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
             })}
             </div>
             }
-          <h2>Location</h2>
+          <h2>Placement</h2>
           {allItems === null ? <></> : <div className="categoryAndLocationFilter">
             {bodyInAlphaOrder.map((body) => {
               return <Filter key={body} to={`/items?body=${body.toLowerCase()}`}>{body}</Filter>
