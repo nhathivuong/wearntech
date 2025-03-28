@@ -1,13 +1,13 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { UsersContext } from "../contexts/UsersContext"
+import { UserContext } from "../contexts/UserContext"
 
 const LogInPage = () => {
     const navigate = useNavigate();
     const [ email, setEmail ] = useState("");
     const [ status, setStatus ] = useState("idle");
     const [ error, setError ] = useState(null);  //Error message to appear should there be any issues
-    const { setCurrentUser } = useContext(UsersContext); 
+    const { currentUser, setCurrentUser } = useContext(UserContext); 
 
     const handleSubmit = async (ev) => {
         try {
@@ -32,7 +32,7 @@ const LogInPage = () => {
                 setStatus("idle");
                 setError("Please enter a valid email")
             } else {
-            setCurrentUser( data.data._id);
+            setCurrentUser( data.data);
             navigate(`/`);
             }
 
@@ -44,7 +44,7 @@ const LogInPage = () => {
     return (
         <>
             <h2>Wear and Tech Log In:</h2>
-            { currentUser !== "Guest"? ( // If the user is already logged in.
+            { currentUser? ( // If the user is already logged in.
                 <section>
                     <p>You're already signed in.</p>
                     <p>Please sign out if you wish to log in with a different account.</p>

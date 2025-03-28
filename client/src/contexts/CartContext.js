@@ -1,21 +1,24 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import {UserContext} from './UsersContext';
+import {UserContext} from './UserContext';
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
     const { currentUser } = useContext(UserContext);
-    const url = `/cart/${currentUser.cartId}`; 
 
-    useEffect(() => {
-    const fetchCart = async () => {
-        const response = await fetch(url);
-        const { data } = await response.json();
-        setCart(data);
-    };
+    if (currentUser) {
+        const url = `/cart/${currentUser.cartId}`; 
 
-    fetchCart();
-    }, []);
+        useEffect(() => {
+        const fetchCart = async () => {
+            const response = await fetch(url);
+            const { data } = await response.json();
+            setCart(data);
+        };
+        fetchCart();
+        }, []);
+    }
+    
 
     return (
         <CartContext.Provider value={{cart}}>
