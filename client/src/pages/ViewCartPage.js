@@ -15,7 +15,7 @@ const ViewCartPage = () => {
 
   //fetching cart items
   const fetchCartItems = () => {
-    fetch("/api/cart")
+    fetch("/cart")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -38,7 +38,7 @@ const ViewCartPage = () => {
   //fetching cart items details such as price 
   const fetchItemsDetails = (items) => {
     const itemDetailsPromises = items.map((item) => {
-      return fetch(`/api/item/${item._id}`)
+      return fetch(`/item/${item._id}`)
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -107,7 +107,7 @@ const ViewCartPage = () => {
 
   const handleCheckout = () => {
     // Perform post request to submit the cartItems for checkout
-    fetch("/api/purchase-item", {
+    fetch("/purchase-item", {
       method: "POST",
       body: JSON.stringify(cartItems),
       headers: {
@@ -131,7 +131,7 @@ const ViewCartPage = () => {
 
   const handleDeleteItem = (itemId) => {
     // Perform delete request to remove a single item from the cart
-    fetch(`/api/delete-item/${itemId}`, {
+    fetch(`/delete-item/${itemId}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -152,7 +152,7 @@ const ViewCartPage = () => {
 
   const handleEmptyCart = () => {
     // Perform delete request to remove all items from the cart
-    fetch("/api/delete-AllItems", {
+    fetch("/delete-AllItems", {
       method: "DELETE",
     })
       .then((response) => {
