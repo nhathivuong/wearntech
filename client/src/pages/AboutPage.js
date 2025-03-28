@@ -14,9 +14,9 @@ const AboutPage = () => {
         
         <PortfolioSection>
             <PortfolioItem
-                href=""
-                src=""
-                alt="Aziz"
+                href="https://az1v.github.io/my-portfolio/"
+                src="/assets/aziz-picture.jpg"
+                alt="Aziz Moe"
             />
             <PortfolioItem
                 href="https://ebishiru.github.io/my-portfolio/"
