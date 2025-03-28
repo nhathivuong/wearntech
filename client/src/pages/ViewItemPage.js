@@ -1,127 +1,153 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState, useCallback } from "react";
-import { LoadingSpinner, ErrorBoundary } from "../components"; // Assuming these components exist
+import { useEffect, useState } from "react";
 
+
+// display one product and its details
 const ViewItemPage = () => {
   const params = useParams();
   const [product, setProduct] = useState(null);
   const [company, setCompany] = useState(null);
+  const [fetched, setFetched] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [status, setStatus] = useState(null);
   const [error, setError] = useState(null);
+  const [status, setStatus] = useState(null);
 
-  // Fetch item and company data in one function
-  const fetchItemData = useCallback(async (itemId) => {
-    try {
-      const productRes = await fetch(`/item/${itemId}`);
-      if (!productRes.ok) throw new Error("Failed to fetch product data");
-      const productData = await productRes.json();
-
-      setProduct(productData.data);
-
-      const companyRes = await fetch(`/company/${productData.data.companyId}`);
-      if (!companyRes.ok) throw new Error("Failed to fetch company data");
-      const companyData = await companyRes.json();
-
-      setCompany(companyData.data);
-    } catch (err) {
-      setError(err.message);
-    }
-  }, []);
-
+  // fetching the product details and the company details
   useEffect(() => {
-    fetchItemData(params.itemId);
-  }, [params.itemId, fetchItemData]);
+    let mounted = true;
 
-  const handleAddToCart = async () => {
-    try {
-      const response = await fetch("/add-item-to-cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          _id: product._id,
-          quantity,
-        }),
-      });
-
+    const fetchItemData = async () => {
+      const response = await fetch(`/item/${params.itemId}`);
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
-      setStatus("Item added to cart!");
-    } catch (error) {
-      setError(error.message);
-    }
+      if (data.status === 400 || data.status === 500) {
+        throw new Error(data.message);
+      } else {
+        if (mounted) {
+          setProduct(data.data);
+          await fetchCompanyData(data.data.companyId);
+        }
+      }
+    };
+
+    const fetchCompanyData = async (companyId) => {
+      const response = await fetch(`/company/${companyId}`);
+      const data = await response.json();
+      if (data.status === 400 || data.status === 500) {
+        throw new Error(data.message);
+      } else {
+        if (mounted) {
+          setCompany(data.data);
+        }
+      }
+    };
+
+    fetchItemData();
+
+    return () => {
+      mounted = false;
+    };
+  }, [params.itemId]);
+
+  const handleAddToCart = () => {
+    setFetched(true);
+    setStatus(null);
+    setError(null);
+
+    fetch("/add-item-to-cart", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        _id: product._id,
+        quantity: quantity,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 400 || data.status === 500) {
+          setError(data.message);
+
+          throw new Error(data.message);
+        } else {
+          setStatus("Added to cart!");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        setFetched(false);
+      });
   };
 
-  // Return a loading spinner or skeleton if product or company is still loading
-  if (!product || !company) {
-    return <LoadingSpinner />;
-  }
-
   return (
-    <ErrorBoundary>
-      <div className="product-details-container">
-        <div className="status-box">
-          {error && <div className="error-message">{error}</div>}
-          {status && <div className="status-message">{status}</div>}
-        </div>
+    <>
+      {!product || !company ? (
+        <Loading>Loading...</Loading>
+      ) : (
+        <Container>
+          <StatusBox>
+            {error && <Error>{error}</Error>}
+            {status && <Status>{status}</Status>}
+          </StatusBox>
+          <ProductBox>
+            <Image src={product.imageSrc} alt="productImg" />
+            <DetailsBox>
+              <ProductCategory>{product.category}</ProductCategory>
+              <ProductName>{product.name}</ProductName>
+              <div>
+                <Price>{product.price}</Price>
+                <Info>
+                  <div>
+                    <Details>Details</Details>
+                    <DetailsList>
+                      Designed by{" "}
+                      <StyledLink to={`/company/${company._id}`}>
+                        {company.name}
+                      </StyledLink>
+                      <Location>Used on: {product.body_location}</Location>
+                    </DetailsList>
+                  </div>
+                </Info>
 
-        <div className="product-box">
-          <img src={product.imageSrc} alt={product.name} className="product-image" />
-          <div className="details-box">
-            <div className="product-category">{product.category}</div>
-            <div className="product-name">{product.name}</div>
-            <div className="product-price">{product.price}</div>
+                {product.numInStock === 0 ? (
+                  <DisabledButton>OUT OF STOCK</DisabledButton>
+                ) : (
+                  <Flex>
+                    <Quantity>
+                      <QuantButtonContainer>
+                        <QuantButton
+                          onClick={() => setQuantity(Math.max(quantity - 1, 1))}
+                          disabled={quantity === 1}
+                        >
+                          -
+                        </QuantButton>
+                        <QuantityValue>{quantity}</QuantityValue>
+                        <QuantButton
+                          onClick={() =>
+                            setQuantity(
+                              Math.min(quantity + 1, product.numInStock)
+                            )
+                          }
+                          disabled={quantity === product.numInStock}
+                        >
+                          +
+                        </QuantButton>
+                      </QuantButtonContainer>
+                      {quantity >= product.numInStock && (
+                        <MessageQuant>Maximum amount in stock!</MessageQuant>
+                      )}
+                    </Quantity>
 
-            <div className="product-info">
-              <div className="product-details">
-                <div>
-                  Designed by{" "}
-                  <Link to={`/company/${company._id}`} className="company-link">
-                    {company.name}
-                  </Link>
-                </div>
-                <div>Used on: {product.body_location}</div>
-              </div>
-            </div>
-
-            {/* Stock and Quantity */}
-            {product.numInStock === 0 ? (
-              <button disabled className="out-of-stock-btn">
-                OUT OF STOCK
-              </button>
-            ) : (
-              <div className="quantity-section">
-                <div className="quantity-container">
-                  <button
-                    onClick={() => setQuantity(Math.max(quantity - 1, 1))}
-                    disabled={quantity === 1}
-                    className="quantity-button"
-                  >
-                    -
-                  </button>
-                  <span>{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(Math.min(quantity + 1, product.numInStock))}
-                    disabled={quantity === product.numInStock}
-                    className="quantity-button"
-                  >
-                    +
-                  </button>
-                </div>
-                {quantity >= product.numInStock && (
-                  <div className="max-quantity-message">Maximum quantity in stock!</div>
+                    <Button onClick={handleAddToCart}>ADD TO CART</Button>
+                  </Flex>
                 )}
-                <button className="add-to-cart-btn" onClick={handleAddToCart}>
-                  Add to Cart
-                </button>
               </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </ErrorBoundary>
+            </DetailsBox>
+          </ProductBox>
+        </Container>
+      )}
+    </>
   );
 };
 

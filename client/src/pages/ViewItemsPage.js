@@ -10,6 +10,10 @@ const ViewItemsPage = () => {
   const {companies} = useContext(AllCompaniesContext)
   const location = useLocation()
   const [filter, setFilter] = useState(()=> (item) => true)
+   // Pagination state
+   const [currentPage, setCurrentPage] = useState(1);
+   const itemsPerPage = 10; // Number of items per page
+ 
 
   //extracts information from the query
   const filters = new URLSearchParams(location.search)
@@ -46,8 +50,26 @@ const ViewItemsPage = () => {
     //sort in alphabetical order
     const categoriesinAlphaOrder = uniqueItemCategories.sort((a,b)=> a.localeCompare(b))
     const bodyInAlphaOrder = uniqueItemBody.sort((a,b) => a.localeCompare(b))
-
+// Paginate items: Determine the index of the first and last items for the current page
+const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const currentItems = allItems.filter(filter).slice(indexOfFirstItem, indexOfLastItem);
   
+// Calculate total pages
+const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
+
+ // Handle page changes
+ const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
   // checks if the array is loaded 
   if(!allItems){
     return <p>Loading items...</p>
@@ -58,20 +80,20 @@ const ViewItemsPage = () => {
       <div className="section">
         <div className="filterSection">
           <p className="filterTitle">Filter by:</p>
-          <p style={{fontWeight: "bold"}}>Company</p>
+          <h2>Company</h2>
           <div className="companyFilter">
           {companiesinAlphaOrder.map((company) => {
             return <Filter key={company._id} to={`/items?company=${company._id}`}><p>{company.name}</p></Filter>
           })}
           </div>
-          <p style={{fontWeight: "bold"}}>Category</p>
+          <h2>Category</h2>
           {allItems === null ? <></> : <div className="categoryAndLocationFilter">
             {categoriesinAlphaOrder.map((category) => {
               return <Filter key={category} to={`/items?category=${category.toLowerCase()}`}>{category}</Filter>
             })}
             </div>
             }
-          <p style={{fontWeight: "bold"}}>Location</p>
+          <h2>Location</h2>
           {allItems === null ? <></> : <div className="categoryAndLocationFilter">
             {bodyInAlphaOrder.map((body) => {
               return <Filter key={body} to={`/items?body=${body.toLowerCase()}`}>{body}</Filter>
@@ -87,6 +109,16 @@ const ViewItemsPage = () => {
               <p>No items available</p>
             )
           }
+        </div>
+          {/* Pagination Controls */}
+          <div className="pagination-controls">
+          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+            Next
+          </button>
         </div>
       </div>
     </div>
