@@ -5,10 +5,13 @@ import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
 import NavBarItems from "./NavBarItems"
 import { CartContext } from "./contexts/CartContext"
+import { UserContext } from "./contexts/UserContext"
+
 const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
     const [coNavOpen, setCoNavOpen] = useState(false)
     const {cart} = useContext(CartContext)
+    const { currentUser } = useContext(UserContext);
     
     //opens the item nav and closes the companies nav
     const handleItemNav = () =>{
@@ -35,8 +38,8 @@ const Header = () => {
             <NavLink to={`/cart/${cart._id}`} onClick={closeNav}><CartIcon /></NavLink>
         </div>
         <User>
-            <NavLink to="/logIn" onClick={closeNav}>Log In</NavLink>
-            <NavLink to="/signUp" onClick={closeNav}>Sign Up</NavLink>
+            {!currentUser && <NavLink to="/logIn" onClick={closeNav}>Log In</NavLink>}
+            {!currentUser && <NavLink to="/signup">Sign Up</NavLink>}
         </User>
     </StyledNavigationBar>
     {itemNavOpen && <NavBarItems handleItemNav={handleItemNav}/>}
