@@ -42,6 +42,7 @@ const ViewItemsPage = () => {
         const under100Filter = parseFloat(item.price.replace("$","")) < 50
         return categoryFilter && bodyFilter && companyFilter && under20Filter && under50Filter && under100Filter
       })
+      //find the company name for the h2
       if (company){
         const companyName = companies.find((individualCo) => individualCo._id === Number(company))
         setCompanyName(companyName.name)
@@ -81,8 +82,6 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
     }
   };
 
-  
-  console.log(companyName)
   return (
     <div>
       <h1>Products</h1>
