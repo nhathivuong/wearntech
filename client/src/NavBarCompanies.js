@@ -13,6 +13,7 @@ const NavBarCompanies = ({handleCoNav}) => {
 
     return(
     <NavDrop>
+    <AllCompanies to="/companies" onClick={handleCoNav}>All companies</AllCompanies>
     {companiesinAlphaOrder.map(company => {
         return <EachCompany key={company._id} to={`/company/${company._id}`} onClick={handleCoNav}>{company.name}</EachCompany>
         })
@@ -56,5 +57,8 @@ const EachCompany = styled(NavLink)`
     &:hover{
         text-decoration:underline;
     }
-`  
+`
+const AllCompanies = styled(EachCompany)`
+    font-weight:bolder;
+`
 export default NavBarCompanies

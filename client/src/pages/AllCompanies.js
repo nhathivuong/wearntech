@@ -31,6 +31,10 @@ const CompaniesGrid = styled.div`
     justify-content: center;
 `
 const Company = styled(NavLink)`
-    padding:0
+    padding:0;
+    &:hover{
+        text-decoration: underline;
+        font-weight:bold;
+    }
 `
 export default AllCompanies

@@ -1,6 +1,8 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
+const { v4: uuidv4 } = require("uuid");
+
 
 const getCart = async (req, res) => {
     const client = new MongoClient(MONGO_URI);
@@ -14,7 +16,7 @@ const getCart = async (req, res) => {
         await client.connect();
         const db = client.db("e-commerce");
 
-        const foundCart = await db.collection("cart").findOne({ cartId: Number(cartId) });
+        const foundCart = await db.collection("cart").findOne({ _id: cartId });
 
         if (foundCart) {
             res.status(200).json({ status: 200, data: foundCart });
