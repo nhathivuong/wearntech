@@ -19,13 +19,13 @@ const ViewItemPage = () => {
         //Fetch item's data from database
         const itemResponse = await fetch(`/item/${itemId}`);
         if (!itemResponse.ok) throw new Error("Could not fetch item");
-        const { itemData } = await itemResponse.json();
+        const { data: itemData } = await itemResponse.json();
         setProduct(itemData);
 
         //Using item's data, fetch company data from database
         const companyResponse = await fetch(`/company/${itemData.companyId}`);
         if (!companyResponse.ok) throw new Error ("Could not fetch company");
-        const { companyData } = await companyResponse.json();
+        const { data: companyData } = await companyResponse.json();
         setCompany(companyData);
       } catch (err) {
         console.log(err.message);

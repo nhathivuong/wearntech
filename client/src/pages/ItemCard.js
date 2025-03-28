@@ -6,7 +6,6 @@ const ItemCard = ({ item }) => {
   const navigate = useNavigate();
   // State for showing a message after adding an item to the cart
   const [added, setAdded] = useState(false);
-
   // Handle add to cart action
   const handleAddToCart = (event) => {
     event.stopPropagation();

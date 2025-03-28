@@ -6,7 +6,7 @@ import styled from "styled-components"
 const NavBarItems = ({handleItemNav}) => {
     const {allItems} = useContext(AllItemsContext)
     if(!allItems){
-        return <p>Loading items category...</p>
+        return <Loading>Loading items category...</Loading>
     }
     //finds the unique categories
     const uniqueItemCategories = [... new Set(allItems.map(item => item.category))]
@@ -27,7 +27,7 @@ const NavBarItems = ({handleItemNav}) => {
         }
         </Categories>
         <Categories>
-        <h2>Location</h2>
+        <h2>Placement</h2>
         {bodyInAlphaOrder.map((location, index) => {
             return <EachFilter key={index} to={`/items?body=${location.toLowerCase()}`} onClick={handleItemNav}>{location}</EachFilter>
             })
@@ -76,5 +76,8 @@ const Categories = styled.div`
     display:flex;
     flex-direction:column;
     gap: 5px;
+`
+const Loading = styled.h2`
+    background-color: var(--color-yellow);
 `
 export default NavBarItems

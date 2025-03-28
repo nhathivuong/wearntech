@@ -6,7 +6,7 @@ import styled from "styled-components"
 const NavBarCompanies = ({handleCoNav}) => {
     const {companies} = useContext(AllCompaniesContext)
     if(!companies){
-        return <p>Loading companies...</p>
+        return <Loading>Loading companies...</Loading>
     }
     // sort in alphabetical order
     const companiesinAlphaOrder = companies.sort((a,b)=> a.name.localeCompare(b.name))
@@ -60,5 +60,8 @@ const EachCompany = styled(NavLink)`
 `
 const AllCompanies = styled(EachCompany)`
     font-weight:bolder;
+`
+const Loading = styled.h2`
+    background-color: var(--color-yellow);
 `
 export default NavBarCompanies
