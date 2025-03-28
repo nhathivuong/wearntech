@@ -10,6 +10,7 @@ const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
     const [coNavOpen, setCoNavOpen] = useState(false)
     const {cartId} = useContext(UserContext)
+    const { currentUser } = useContext(UserContext);
     //opens the item nav and closes the companies nav
     const handleItemNav = () =>{
         setItemNavOpen(!itemNavOpen)
@@ -35,8 +36,8 @@ const Header = () => {
             <NavLink to={`/cart/${cartId}`} onClick={closeNav}><CartIcon /></NavLink>
         </div>
         <User>
-            <NavLink to="/logIn" onClick={closeNav}>Log In</NavLink>
-            <NavLink to="/signUp" onClick={closeNav}>Sign Up</NavLink>
+            {!currentUser && <NavLink to="/logIn" onClick={closeNav}>Log In</NavLink>}
+            {!currentUser && <NavLink to="/signup">Sign Up</NavLink>}
         </User>
     </StyledNavigationBar>
     {itemNavOpen && <NavBarItems handleItemNav={handleItemNav}/>}
