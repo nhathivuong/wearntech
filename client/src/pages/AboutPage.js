@@ -34,8 +34,8 @@ const AboutPage = () => {
                 alt="Nha Thi Vuong"
             />
             <PortfolioItem
-                href=""
-                src=""
+                href="https://valoopay.github.io/my-portfolio/"
+                src="/assets/valerie-picture.jpg"
                 alt="Valerie Payeur"
             />
         </PortfolioSection>

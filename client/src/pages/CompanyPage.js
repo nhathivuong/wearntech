@@ -15,7 +15,7 @@ const CompanyPage = () => {
             setCompany(data);
         };
         fetchCompany();
-    }, []);
+    }, [companyId]);
 
     let itemsFromCompany = [];
     
@@ -30,12 +30,12 @@ const CompanyPage = () => {
                 <>
                     {/* Company Title section */}
                     <section> 
-                        <p><a href={company.url} target="_blank">{company.name}</a></p>
-                        <p>Products made in {company.country}</p>
+                        <h1><a href={company.url} target="_blank">{company.name}</a></h1>
+                        <h2>Products made in {company.country}</h2>
                     </section>
 
                     {/* Products by Company section */}
-                    <section>
+                    <section className="item-grid center">
                         {
                             allItems? (
                                 itemsFromCompany.length > 0? (
