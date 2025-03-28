@@ -6,7 +6,7 @@ const ItemCard = ({ item }) => {
   const navigate = useNavigate();
   // State for showing a message after adding an item to the cart
   const [added, setAdded] = useState(false);
-
+console.log(item)
   // Handle add to cart action
   const handleAddToCart = (event) => {
     event.stopPropagation();
@@ -16,7 +16,7 @@ const ItemCard = ({ item }) => {
   };
 
   return (
-    <NavLink className="item-card" onClick={() => navigate(`/item/${item._id}`)}>
+    <NavLink className="item-card" to={`/item/${item._id}`}>
       <div className="item-card-header">
         {/* Item Image */}
         <img src={item.imageSrc} alt={item.name} className="item-image" />

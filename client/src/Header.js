@@ -29,7 +29,7 @@ const Header = () => {
         <div className="pagesNavigation">
             <NavLink to="/" onClick={closeNav}><HomeIcon/> Home</NavLink>
             {/* This is a Button to not mess with the query filter */}
-            <ItemNavButton className="active" onClick={handleItemNav}>Items</ItemNavButton>
+            <ItemNavButton className="active" onClick={handleItemNav}>Products</ItemNavButton>
             <NavLink onClick={handleCoNav}>Brands</NavLink>
             <NavLink to="/about" onClick={closeNav}>About</NavLink>
             <NavLink to="/cart"  onClick={closeNav}><CartIcon /></NavLink>
