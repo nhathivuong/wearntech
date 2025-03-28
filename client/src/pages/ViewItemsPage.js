@@ -10,9 +10,11 @@ const ViewItemsPage = () => {
   const {companies} = useContext(AllCompaniesContext)
   const location = useLocation()
   const [filter, setFilter] = useState(()=> (item) => true)
+  const [filterName, setFilterName] = useState()
+
    // Pagination state
    const [currentPage, setCurrentPage] = useState(1);
-   const itemsPerPage = 10; // Number of items per page
+   const itemsPerPage = 20; // Number of items per page
  
 
   //extracts information from the query
@@ -20,7 +22,7 @@ const ViewItemsPage = () => {
   const category = filters.get("category")
   const bodyLocation = filters.get("body")
   const company = filters.get("company")
-  
+  const underPrice = filters.get("under")
   // Getting all company names for the filter buttons
   if(!companies){
       return <p>Loading companies...</p>
@@ -28,6 +30,7 @@ const ViewItemsPage = () => {
   // sort in alphabetical order
   const companiesinAlphaOrder = companies.sort((a,b)=> a.name.localeCompare(b.name))
   
+
   //sets the filters for the array.filter() for the display of items
   useEffect(()=> {
       setFilter(()=>(item)=> {
@@ -35,9 +38,24 @@ const ViewItemsPage = () => {
         const categoryFilter = !category || item.category.toLowerCase() === category
         const bodyFilter = !bodyLocation || item.body_location.toLowerCase() === bodyLocation
         const companyFilter = !company || item.companyId === Number(company)
-        return categoryFilter && bodyFilter && companyFilter
+        const underPriceFilter = !underPrice || parseFloat(item.price.replace("$","")) < Number(underPrice)
+        return categoryFilter && bodyFilter && companyFilter && underPriceFilter
       })
-    },[category, bodyLocation, company])
+      //find and set the filter name for the h2
+      if (company){
+        const companyName = companies.find((individualCo) => individualCo._id === Number(company))
+        setFilterName(companyName.name)
+      }
+      if(category){
+        setFilterName(category)
+      }
+      if(bodyLocation){
+        setFilterName(bodyLocation)
+      }
+      if(underPrice){
+        setFilterName(`under $${underPrice}`)
+      }
+    },[category, bodyLocation, company, underPrice])
   
     if(!allItems){
       return <p>Loading items...</p>
@@ -50,6 +68,7 @@ const ViewItemsPage = () => {
     //sort in alphabetical order
     const categoriesinAlphaOrder = uniqueItemCategories.sort((a,b)=> a.localeCompare(b))
     const bodyInAlphaOrder = uniqueItemBody.sort((a,b) => a.localeCompare(b))
+
 // Paginate items: Determine the index of the first and last items for the current page
 const indexOfLastItem = currentPage * itemsPerPage;
 const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -70,13 +89,11 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
       setCurrentPage(currentPage - 1);
     }
   };
-  // checks if the array is loaded 
-  if(!allItems){
-    return <p>Loading items...</p>
-  }
+
   return (
     <div>
       <h1>Products</h1>
+      {filterName && <FilterName>{ filterName }</FilterName>}
       <div className="section">
         <div className="filterSection">
           <p className="filterTitle">Filter by:</p>
@@ -98,6 +115,12 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
             {bodyInAlphaOrder.map((body) => {
               return <Filter key={body} to={`/items?body=${body.toLowerCase()}`}>{body}</Filter>
             })}
+            </div>}
+          <h2>Price</h2>
+          {allItems === null ? <></> : <div className="categoryAndLocationFilter">
+              <Filter to={`/items?under=20`}>Under $20</Filter>
+              <Filter to={`/items?under=50`}>Under $50</Filter>
+              <Filter to={`/items?under=100`}>Under $100</Filter>
             </div>}
         </div>
         <div className="item-grid">
@@ -131,5 +154,8 @@ const Filter = styled(NavLink)`
   &:hover{
       text-decoration:underline;
   }
-`  
+`
+const FilterName = styled.h2`
+  text-transform:capitalize;
+`
 export default ViewItemsPage;
