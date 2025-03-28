@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { UserContext } from "../contexts/UsersContext"; 
+import { UserContext } from "../contexts/UserContext"; 
 import styled from 'styled-components';
 
 const SignUpPage = () => {
