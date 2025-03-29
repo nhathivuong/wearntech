@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { CartProvider } from '../src/contexts/CartContext';  // Import the CartProvider
 import Header from "./Header"
 import Home from "./pages/Home"
 import CompanyPage from "./pages/CompanyPage"
@@ -12,6 +13,7 @@ import SignUpPage from "./pages/SignUpPage";
 
 const App = () => {
     return <Router>
+        <CartProvider>
         <Header />
         <Routes>
             <Route path="/" element={<Home />} />
@@ -25,6 +27,7 @@ const App = () => {
             <Route path="/signUp" element={<SignUpPage />}/>
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        </CartProvider>
     </Router>
 }
 
