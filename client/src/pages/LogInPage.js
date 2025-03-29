@@ -118,7 +118,7 @@ const LogInSection = styled.section`
     height: 500px;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    padding-top: 2.5rem;
+    padding-top: 1rem;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -128,26 +128,10 @@ const LogInSection = styled.section`
 const SignUpSection = styled.section`
     width: 50%;
     height: 500px;
-    border: 1px solid var(--color-yellow);
+    border: 1px solid var(--color-red);
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    background-image: linear-gradient(
-    45deg,
-    hsl(39deg 96% 53%) 0%,
-    hsl(36deg 92% 52%) 9%,
-    hsl(34deg 87% 51%) 17%,
-    hsl(32deg 84% 50%) 25%,
-    hsl(29deg 83% 48%) 33%,
-    hsl(27deg 82% 47%) 41%,
-    hsl(24deg 80% 46%) 49%,
-    hsl(21deg 79% 45%) 56%,
-    hsl(17deg 77% 43%) 64%,
-    hsl(14deg 76% 42%) 71%,
-    hsl(10deg 74% 40%) 78%,
-    hsl(5deg 73% 38%) 85%,
-    hsl(359deg 74% 36%) 93%,
-    hsl(351deg 96% 30%) 100%
-  );
+    background-color: var(--color-red);
     color: var(--color-white);
     text-align: center;
     display: flex;
