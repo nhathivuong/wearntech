@@ -7,13 +7,15 @@ const LogInPage = () => {
     const navigate = useNavigate();
     const [ email, setEmail ] = useState("");
     const [ status, setStatus ] = useState("idle");
-    const [ error, setError ] = useState(null);  //Error message to appear should there be any issues
+    const [ showError, setShowError ] = useState("false");  //Error message to appear should there be any issues
+    const [ errorMessage, setErrorMessage ] = useState("");
     const { currentUser, setCurrentUser } = useContext(UserContext); 
 
     const handleSubmit = async (ev) => {
         try {
             ev.preventDefault();
-            setError(null);
+            setShowError("false");
+            setErrorMessage("");
             setStatus("logging")
             const logInData = {
                 email
@@ -31,103 +33,136 @@ const LogInPage = () => {
             const data = await response.json();
             if (data.status !== 200) {
                 setStatus("idle");
-                setError("We could not find an account with that email...")
+                setShowError("true")
+                setErrorMessage("We could not find an account with that email...");
             } else {
             setCurrentUser( data.data);
             navigate(`/`);
             }
 
         } catch (err) {
-            console.log(error);
+            setStatus("idle");
+            setShowError("true");
+            setErrorMessage("Could not log in. Please try again.");
         }
     };
 
     return (
-        <>
-            <Title>Log In</Title>
-            <LogInContainer>
+        <StyledContainer>
+            <LogInSection>
             
             { currentUser? ( // If the user is already logged in.
-                <StyledSection>
+                <section>
                     <p>You're already signed in.</p>
                     <p>Please sign out first, if you wish to log in with a different account.</p>
-                </StyledSection>
+                </section>
             ) : (
-                <StyledForm onSubmit={handleSubmit}>
-                    <p>Please enter your login information.</p>
+                <form onSubmit={handleSubmit}>
+                    <h3>Log In</h3>
+                    <p>Please enter your information</p>
                     <label>Email:</label>
-                    <StyledInput type="email" value={email} onChange={(ev)=>{
+                    <input type="email" value={email} onChange={(ev)=>{
                         setEmail(ev.target.value)
-                        setError(null)
-                        }}></StyledInput>
+                        setShowError("false")
+                        setErrorMessage("");
+                        }}></input>
                     <StyledButton disabled={!email || status === "logging"}>Log In</StyledButton>
                     {
-                        error && <ErrorMessage>{error}</ErrorMessage>
+                        <ErrorMessage show={showError}>{errorMessage}</ErrorMessage>
                     }
-                </StyledForm>
+                </form>
             )}
-            </LogInContainer>
-        </>
+            </LogInSection>
+            <SignUpSection>
+                <h3>New Here?</h3>
+                <p>Sign up to buy our Techwear!</p>
+                <StyledButton onClick={()=>navigate("/signUp")}>Sign Up</StyledButton>
+            </SignUpSection>
+        </StyledContainer>
     )
 }
 
 export default LogInPage;
 
-const Title = styled.h2`
-    font-size: 2rem;
-    color: #333;
-`;
-
-const LogInContainer = styled.div`
+const StyledContainer = styled.div`
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 85vh;
-    background-color: #f7f7f7;
-`;
+    height: 500px;
+    width: 50vw;
+    margin: 11rem auto;
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 
-const StyledForm = styled.form`
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
+    & h3 {
+        font-size: 1.5rem;
+        padding: 1rem;
+    }
 
     & p {
-        padding: 1rem 0;
-        font-size: 1.25rem;
+        padding: 1rem;
+        font-size: 1rem;
         font-weight: bold;
     }
 
     & label {
         padding: 1rem;
     }
+
+    & input { 
+        padding: 0.25rem;
+        font-size: 1rem;
+    }
 `;
 
-const StyledSection = styled.section`
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
+const LogInSection = styled.section`
+    width: 50%;
+    height: 500px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    padding-top: 2.5rem;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`
 
-    & p {
-        padding: 1rem 0;
-        font-size: 1.25rem;
-        font-weight: bold;
+const SignUpSection = styled.section`
+    width: 50%;
+    height: 500px;
+    border: 1px solid var(--color-yellow);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-image: linear-gradient(
+    45deg,
+    hsl(39deg 96% 53%) 0%,
+    hsl(36deg 92% 52%) 9%,
+    hsl(34deg 87% 51%) 17%,
+    hsl(32deg 84% 50%) 25%,
+    hsl(29deg 83% 48%) 33%,
+    hsl(27deg 82% 47%) 41%,
+    hsl(24deg 80% 46%) 49%,
+    hsl(21deg 79% 45%) 56%,
+    hsl(17deg 77% 43%) 64%,
+    hsl(14deg 76% 42%) 71%,
+    hsl(10deg 74% 40%) 78%,
+    hsl(5deg 73% 38%) 85%,
+    hsl(359deg 74% 36%) 93%,
+    hsl(351deg 96% 30%) 100%
+  );
+    color: var(--color-white);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & button {
+        background-color: var(--color-white);
+        color: var(--color-black)
     }
 `
-const StyledInput = styled.input`
-    padding: 0.25rem;
-    font-size: 1rem;
-`
+
 const StyledButton = styled.button`
     display: block;
-    margin: 1rem auto 0;
+    margin: 1rem auto;
     background-color: var(--color-yellow);
     border-radius: 5px;
     color: var(--color-white);
@@ -151,4 +186,5 @@ const StyledButton = styled.button`
 `
 const ErrorMessage = styled.p`
     color: var(--color-red);
+    visibility: ${(props) => (props.show === "true"? "visible" : "hidden")};
 `
