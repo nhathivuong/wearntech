@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const SignUpPage = () => {
     const navigate = useNavigate();
-    const { setCurrentUser } = useContext(UserContext); 
+    const { currentUser, setCurrentUser } = useContext(UserContext); 
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
@@ -30,12 +30,12 @@ const SignUpPage = () => {
                 setName("");
                 setAddress("");
                 setError("");
-                setSuccessMessage("Sign up successful! Welcome to Wear n' Tech.");
+                setSuccessMessage("Sign up successful!");
             } else {
                 setError(result.message);
             }
         } catch (error) {
-            setError("There was an error creating your account.");
+            setError("Could not create account. Please try again.");
         }
     };
     return (
@@ -46,40 +46,64 @@ const SignUpPage = () => {
                 <StyledButton onClick={()=>navigate("/logIn")}>Log In</StyledButton>
             </LogInSection>
             <SignUpSection>
-                <form onSubmit={handleSignUp}>
-                    <h3>Create an Account</h3>
-                    <p>Please fill out all entries</p>
-                    <div>
-                        <label>Email:</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(ev) => setEmail(ev.target.value)}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label>Name:</label>
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(ev) => setName(ev.target.value)}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label>Address:</label>
-                        <input
-                        type="text"
-                        value={address}
-                        onChange={(ev) => setAddress(ev.target.value)}
-                        required
-                        />
-                    </div>
-                    <StyledButton type="submit" disabled={!email || !name || !address}>Sign Up</StyledButton>
-                    {error && <p>{error}</p>}
-                    {successMessage && <p>{successMessage}</p>}
-                </form>
+                {
+                    currentUser && !successMessage? ( //If user is already logged in and did not just sign up
+                        <>
+                            <p>You're already signed in.</p>
+                            <p>Please sign out first, if you wish to sign up with a different account.</p>
+                        </>
+                    ) : (
+                        currentUser && successMessage? (
+                            <SuccessContainer>
+                                <h3>{successMessage}</h3>
+                                <p>Welcome to Wear n' Tech</p>
+                            </SuccessContainer>
+                            
+                        ) : (
+                            <form onSubmit={handleSignUp}>
+                                <h3>Create an Account</h3>
+                                <p>Please fill out all entries</p>
+                                <InputContainer>
+                                    <div>
+                                        <label>Email:</label>
+                                        <input
+                                            type="email"
+                                            value={email}
+                                            onChange={(ev) => {
+                                                setEmail(ev.target.value)
+                                                setError("");
+                                        }}/>
+                                    </div>
+                                    <div>
+                                        <label>Name:</label>
+                                        <input
+                                            type="text"
+                                            value={name}
+                                            onChange={(ev) => {
+                                                setName(ev.target.value)
+                                                setError("");
+                                        }}/>
+                                    </div>
+                                    <div>
+                                        <label>Address:</label>
+                                        <input
+                                            type="text"
+                                            value={address}
+                                            onChange={(ev) => {
+                                                setAddress(ev.target.value)
+                                                setError("");
+                                        }}/>
+                                    </div>
+                                </InputContainer>
+                                <StyledButton type="submit" disabled={!email || !name || !address}>Sign Up</StyledButton>
+                                {
+                                    <ErrorMessage show={error}>{error}</ErrorMessage>
+                                }                   
+                            </form>
+                        )
+                    )
+                }
+                
             </SignUpSection>
             
             
@@ -87,6 +111,9 @@ const SignUpPage = () => {
     );
 };
 
+export default SignUpPage;
+
+//STYLED COMPONENTS - CSS
 const StyledContainer = styled.div`
     display: flex;
     height: 500px;
@@ -146,6 +173,15 @@ const SignUpSection = styled.section`
     justify-content: center;
 `
 
+const InputContainer = styled.div`
+    text-align: right;
+    padding-right: 4.5rem;
+
+    & div {
+        padding: 0.25rem 0;
+    }
+`
+
 const StyledButton = styled.button`
     display: block;
     margin: 1rem auto;
@@ -171,5 +207,13 @@ const StyledButton = styled.button`
     }
 `
 
+const SuccessContainer = styled.div`
+    font-weight: bold;
+`
 
-export default SignUpPage;
+const ErrorMessage = styled.p`
+    color: var(--color-red);
+    visibility: ${(props) => (props.show? "visible" : "hidden")};
+`
+
+

@@ -84,6 +84,7 @@ const LogInPage = () => {
 
 export default LogInPage;
 
+//STYLED COMPONENTS - CSS
 const StyledContainer = styled.div`
     display: flex;
     height: 500px;
@@ -118,7 +119,6 @@ const LogInSection = styled.section`
     height: 500px;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    padding-top: 1rem;
     text-align: center;
     display: flex;
     flex-direction: column;
