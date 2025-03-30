@@ -13,7 +13,6 @@ import SignUpPage from "./pages/SignUpPage";
 
 const App = () => {
     return <Router>
-        <CartProvider>
         <Header />
         <Routes>
             <Route path="/" element={<Home />} />
@@ -27,7 +26,6 @@ const App = () => {
             <Route path="/signUp" element={<SignUpPage />}/>
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-        </CartProvider>
     </Router>
 }
 
