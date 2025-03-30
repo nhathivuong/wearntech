@@ -11,7 +11,7 @@ const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
     const [coNavOpen, setCoNavOpen] = useState(false)
     const {cart} = useContext(CartContext)
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, logOut} = useContext(UserContext);
     
     //opens the item nav and closes the companies nav
     const handleItemNav = () =>{
@@ -38,8 +38,11 @@ const Header = () => {
             <NavLink to={`/cart/${cart._id}`} onClick={closeNav}><CartIcon /></NavLink>
         </div>
         <User>
-            {!currentUser && <NavLink to="/logIn" onClick={closeNav}>Log In</NavLink>}
-            {!currentUser && <NavLink to="/signup">Sign Up</NavLink>}
+            {!currentUser ? 
+            <><NavLink to="/logIn" onClick={closeNav}>Log In</NavLink>
+            <NavLink to="/signup">Sign Up</NavLink></>
+            : <HelloUserAlignment><p>Hello, {currentUser.name}</p>
+            <NavLink to="/" onClick={logOut}>Log Out</NavLink></HelloUserAlignment>}
         </User>
     </StyledNavigationBar>
     {itemNavOpen && <NavBarItems handleItemNav={handleItemNav}/>}
@@ -73,14 +76,6 @@ const StyledNavigationBar = styled.nav`
         margin: 0 auto;
         position: relative;
     }
-    /* .searchAndCart{
-        display:flex;
-        align-items:center;
-        margin-left: auto;
-        position: absolute;
-        right: 0;
-        margin: 0 2rem;
-    } */
 `
 const ItemNavButton = styled.button`
     padding: 0 2.5rem;
@@ -104,5 +99,10 @@ const User = styled.div`
     a{
         padding:0 0.5rem;
     }
+`
+const HelloUserAlignment = styled.div`
+    display:flex;
+    flex-direction:row;
+    gap: 5px;
 `
 export default Header
