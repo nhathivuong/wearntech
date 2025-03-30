@@ -1,5 +1,5 @@
-import { HomeIcon, CartIcon, SearchIcon } from "./components/Icons"
-import { NavLink, useLocation } from "react-router-dom"
+import { HomeIcon, CartIcon} from "./components/Icons"
+import { NavLink} from "react-router-dom"
 import { useContext, useState } from "react"
 import styled from "styled-components"
 import NavBarCompanies from "./NavBarCompanies"
@@ -28,6 +28,7 @@ const Header = () => {
         setCoNavOpen(false);
         setItemNavOpen(false)
     }
+
     return <><StyledNavigationBar>
         <p style={{position: "absolute", fontFamily: "Josefin Sans", textShadow: "1.5px 1.5px var(--color-yellow)", marginLeft: "10px", cursor: "default"}}>Wear n' Tech</p>
         <div className="pagesNavigation">
@@ -35,7 +36,7 @@ const Header = () => {
             <ItemNavButton type="button" className="active" onClick={handleItemNav}>Products</ItemNavButton>
             <ItemNavButton type="button" className="active" onClick={handleCoNav}>Brands</ItemNavButton>
             <NavLink to="/about" onClick={closeNav}>About</NavLink>
-            <NavLink to={`/cart/${cart._id}`} onClick={closeNav}><CartIcon /></NavLink>
+            <NavLink to={currentUser?`/cart/${cart._id}`: "/logIn"} onClick={closeNav}><CartIcon /></NavLink>
         </div>
         <User>
             {!currentUser ? 
