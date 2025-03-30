@@ -12,7 +12,7 @@ const NavBarCompanies = ({handleCoNav}) => {
     const companiesinAlphaOrder = companies.sort((a,b)=> a.name.localeCompare(b.name))
 
     return(
-    <div className="dropdownMenu" style={{backgroundColor: "var(--color-yellow)", textAlign: "center", paddingTop: "1rem"}}>
+    <div className="dropdownMenu" style={{position: "fixed", width: "100%", backgroundColor: "var(--color-yellow)", textAlign: "center", paddingTop: "1rem"}}>
         <AllCompanies to="/companies" onClick={handleCoNav}>All companies</AllCompanies>
         <NavDrop>
         {companiesinAlphaOrder.map(company => {
@@ -25,7 +25,6 @@ const NavBarCompanies = ({handleCoNav}) => {
 }
 const NavDrop = styled.div`
     z-index: 1;
-    position:fixed ;
     box-sizing: border-box;
     padding: 1em 0 1em 1em;
     display:grid;
