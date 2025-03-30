@@ -22,9 +22,10 @@ export const CartProvider = ({ children }) => {
         };
         fetchCart();
     }, [currentUser]);
-    
+    const totalItems = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+
     return (
-        <CartContext.Provider value={{cart}}>
+        <CartContext.Provider value={{cart, totalItems}}>
             {children}
         </CartContext.Provider>
     );

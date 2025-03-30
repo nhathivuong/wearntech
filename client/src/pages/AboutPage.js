@@ -24,8 +24,8 @@ const AboutPage = () => {
                 alt="Kevin Kar-Ho Lo"
             />
             <PortfolioItem
-                href=""
-                src=""
+                href="https://mahannilipour.github.io/My-portfolio/"
+                src="/assets/Mahan-picture.jpg"
                 alt="Mahan Nilipour"
             />
             <PortfolioItem
