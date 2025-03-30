@@ -10,7 +10,7 @@ import { UserContext } from "./contexts/UserContext"
 const Header = () => {
     const [itemNavOpen, setItemNavOpen] = useState(false)
     const [coNavOpen, setCoNavOpen] = useState(false)
-    const {cart} = useContext(CartContext)
+    const {cart, totalItems} = useContext(CartContext)
     const { currentUser, logOut} = useContext(UserContext);
     
     //opens the item nav and closes the companies nav
@@ -36,7 +36,8 @@ const Header = () => {
             <ItemNavButton type="button" className="active" onClick={handleItemNav}>Products</ItemNavButton>
             <ItemNavButton type="button" className="active" onClick={handleCoNav}>Brands</ItemNavButton>
             <NavLink to="/about" onClick={closeNav}>About</NavLink>
-            <NavLink to={currentUser?`/cart/${cart._id}`: "/logIn"} onClick={closeNav}><CartIcon /></NavLink>
+            <NavLink to={currentUser?`/cart/${cart._id}`: "/logIn"} onClick={closeNav} style={{ position: "relative" }}><CartIcon />
+            {totalItems > 0 && <CartCount>{totalItems}</CartCount>}</NavLink>
         </div>
         <User>
             {!currentUser ? 
@@ -105,4 +106,16 @@ const HelloUserAlignment = styled.div`
     flex-direction:row;
     gap: 5px;
 `
+const CartCount = styled.span`
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: var(--color-yellow);
+    color: black;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 4px 7px;
+`;
+
 export default Header
