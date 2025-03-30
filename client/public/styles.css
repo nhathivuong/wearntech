@@ -247,8 +247,6 @@ a {
 }
 
 .filterSection{
-    /*PLACEHOLDER BORDER*/
-    /* border: solid 1px black; */
     width: fit-content;
     height: fit-content;
     padding: 20px;
@@ -270,4 +268,36 @@ a {
 
 .categoryAndLocationFilter{
     margin: 1rem;
+}
+
+.itemsAndPagination{
+    display: flex;
+    flex-direction: column;
+}
+
+.pagination-controls{
+    margin: 2rem auto;
+}
+
+.pagination-controls button{
+    background-color: var(--color-yellow);
+    border-radius: 5px;
+    border: solid 2px var(--color-black);
+    color: var(--color-white);
+    font-weight: bold;
+    font-size: 15px;
+    padding: 10px;
+}
+
+.pagination-controls button:hover{
+    cursor: pointer;
+}
+
+.pagination-controls button:active{
+    transform: scale(0.95);
+}
+
+.pagination-controls button:disabled {
+    opacity: 50%;
+    cursor: not-allowed;
 }
