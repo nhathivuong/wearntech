@@ -92,9 +92,8 @@ const ItemNavButton = styled.button`
 `
 const User = styled.div`
     position:absolute;
-    top:10px;
     right:0;
-    font-size: 1rem;
+    font-size: 1.25rem;
     margin-right: 10px;
     a{
         padding:0 0.5rem;

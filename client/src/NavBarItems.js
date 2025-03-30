@@ -17,29 +17,31 @@ const NavBarItems = ({handleItemNav}) => {
     const bodyInAlphaOrder = uniqueItemBody.sort((a,b) => a.localeCompare(b))
 
     return(
-    <NavDrop>
-        <Categories>
-            <EachFilter to={`/items`} onClick={handleItemNav}><h2>All items</h2></EachFilter>
-            <Price>Price</Price>
-            <EachFilter to={`/items?under=20`} onClick={handleItemNav}>Under $20</EachFilter>
-            <EachFilter to={`/items?under=50`} onClick={handleItemNav}>Under $50</EachFilter>
-            <EachFilter to={`/items?under=100`} onClick={handleItemNav}>Under $100</EachFilter>
-        </Categories>
-        <Categories>
-        <h2>Categories</h2>
-        {categoriesinAlphaOrder.map((category, index) => {
-            return <EachFilter key={index} to={`/items?category=${category.toLowerCase()}`} onClick={handleItemNav}>{category}</EachFilter>
-            })
-        }
-        </Categories>
-        <Categories>
-        <h2>Placement</h2>
-        {bodyInAlphaOrder.map((location, index) => {
-            return <EachFilter key={index} to={`/items?body=${location.toLowerCase()}`} onClick={handleItemNav}>{location}</EachFilter>
-            })
-        }
-        </Categories>
-    </NavDrop>
+    <div className="dropdownMenu">
+        <NavDrop>
+            <Categories>
+                <EachFilter to={`/items`} onClick={handleItemNav}><h2>All products</h2></EachFilter>
+                <Price>Price</Price>
+                <EachFilter to={`/items?under=20`} onClick={handleItemNav}>Under $20</EachFilter>
+                <EachFilter to={`/items?under=50`} onClick={handleItemNav}>Under $50</EachFilter>
+                <EachFilter to={`/items?under=100`} onClick={handleItemNav}>Under $100</EachFilter>
+            </Categories>
+            <Categories>
+            <h2>Categories</h2>
+            {categoriesinAlphaOrder.map((category, index) => {
+                return <EachFilter key={index} to={`/items?category=${category.toLowerCase()}`} onClick={handleItemNav}>{category}</EachFilter>
+                })
+            }
+            </Categories>
+            <Categories>
+            <h2>Placement</h2>
+            {bodyInAlphaOrder.map((location, index) => {
+                return <EachFilter key={index} to={`/items?body=${location.toLowerCase()}`} onClick={handleItemNav}>{location}</EachFilter>
+                })
+            }
+            </Categories>
+        </NavDrop>
+    </div>
     )
 }
 const NavDrop = styled.div`
@@ -56,17 +58,6 @@ const NavDrop = styled.div`
     font-weight: bold;
     animation-name: fade-in;
     animation-duration: 0.5s;
-    @keyframes fade-in {
-        0% {
-            transform-origin: top;
-            opacity: 75%;
-        }
-        100% {
-            transform-origin: top;
-            opacity: 100%;
-            animation-timing-function: ease-in-out;
-        }
-    }
 `
 const Price = styled.h2`
     text-align:left

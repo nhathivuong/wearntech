@@ -12,13 +12,15 @@ const NavBarCompanies = ({handleCoNav}) => {
     const companiesinAlphaOrder = companies.sort((a,b)=> a.name.localeCompare(b.name))
 
     return(
-    <NavDrop>
-    <AllCompanies to="/companies" onClick={handleCoNav}>All companies</AllCompanies>
-    {companiesinAlphaOrder.map(company => {
-        return <EachCompany key={company._id} to={`/company/${company._id}`} onClick={handleCoNav}>{company.name}</EachCompany>
-        })
-    }
-    </NavDrop>
+    <div className="dropdownMenu" style={{backgroundColor: "var(--color-yellow)", textAlign: "center", paddingTop: "1rem"}}>
+        <AllCompanies to="/companies" onClick={handleCoNav}>All companies</AllCompanies>
+        <NavDrop>
+        {companiesinAlphaOrder.map(company => {
+            return <EachCompany key={company._id} to={`/company/${company._id}`} onClick={handleCoNav}>{company.name}</EachCompany>
+            })
+        }
+        </NavDrop>
+    </div>
     )
 }
 const NavDrop = styled.div`
@@ -35,19 +37,6 @@ const NavDrop = styled.div`
     background-color: var(--color-yellow);
     justify-content: center;
     font-weight: bold;
-    animation-name: fade-in;
-    animation-duration: 0.5s;
-    @keyframes fade-in {
-        0% {
-            transform-origin: top;
-            opacity: 75%;
-        }
-        100% {
-            transform-origin: top;
-            opacity: 100%;
-            animation-timing-function: ease-in-out;
-        }
-    }
 `
 const EachCompany = styled(NavLink)`
     height:fit-content;
@@ -59,7 +48,8 @@ const EachCompany = styled(NavLink)`
     }
 `
 const AllCompanies = styled(EachCompany)`
-    font-weight:bolder;
+    font-weight: bolder;
+    font-size: 1.5rem;
 `
 const Loading = styled.h2`
     background-color: var(--color-yellow);
