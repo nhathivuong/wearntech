@@ -36,7 +36,7 @@ const Home = () => {
     return <>
     <img src={laptop} className="homepagePhoto"></img>
     <div className="banner">
-        <h1>Wear & Tech</h1>
+        <h1>Wear n' Tech</h1>
         <div className="homepage"></div>
             <h2>Your one stop shop for wearable tech!</h2>
                 <p className="featuredItems">Featured items</p>

@@ -151,17 +151,23 @@ a {
     grid-gap: 20px;
 }
 
+.item-price{
+    padding: 0.5rem 0;
+}
+
 .item-card{
     box-shadow: 1px 1px 5px var(--color-gray);
     width: 250px;
+    max-height: 400px;
     padding: 25px;
     margin: 15px;
     text-align: center;
     line-height: 25px;
+    font-size: 1.1rem;
     display: flex;
     flex-direction: column;
     vertical-align: middle;
-    justify-content: space-evenly;
+    justify-content: space-between;
     transition: 0.2s ease-in-out;
 }
 
@@ -177,8 +183,7 @@ a {
     display: flex;
     font-family: Raleway;
     padding: 10px;
-    margin-top: 15px;
-    margin: auto;
+    margin: 0 auto;
     font-weight: bold;
     font-size: 15px;
 }
@@ -204,10 +209,11 @@ a {
 }
 
 .arrows {
-    border: 2px solid var(--color-black);
+    box-shadow: 1px 1px 5px var(--color-gray);
     border-radius: 50%;
     padding: 5px 8px;
     cursor: pointer;
+    margin: 0 1rem;
 }
 
 .right{
@@ -300,4 +306,23 @@ a {
 .pagination-controls button:disabled {
     opacity: 50%;
     cursor: not-allowed;
+}
+
+.dropdownMenu{
+    animation-name: dropdownAnim;
+    animation-duration: 0.5s;
+}
+
+@keyframes dropdownAnim {
+    0% {
+        transform-origin: top;
+        transform: translateY(-100px);
+        opacity: 0%;
+    }
+    100% {
+        transform-origin: top;
+        opacity: 100%;
+        transform: translateY(0px);
+        animation-timing-function: ease-in-out;
+    }
 }
