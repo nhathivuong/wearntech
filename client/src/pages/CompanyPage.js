@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { AllItemsContext } from "../contexts/AllItemsContext"
 import ItemCard from "./ItemCard";
+import { BsLink45Deg } from "react-icons/bs";
 
 const CompanyPage = () => {
     const { allItems } = useContext(AllItemsContext);
@@ -30,7 +31,7 @@ const CompanyPage = () => {
                 <>
                     {/* Company Title section */}
                     <section> 
-                        <h1><a href={company.url} target="_blank">{company.name}</a></h1>
+                        <h1><a href={company.url} target="_blank">{company.name}<BsLink45Deg  size={40}/></a></h1>
                         <h2>Products made in {company.country}</h2>
                     </section>
 
@@ -58,5 +59,4 @@ const CompanyPage = () => {
         </>
     )
 }
-
 export default CompanyPage;

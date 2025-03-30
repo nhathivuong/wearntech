@@ -12,7 +12,7 @@ const AllCompanies = () =>{
     const companiesinAlphaOrder = companies.sort((a,b)=> a.name.localeCompare(b.name))
 
     return (<>
-        <h1>All Companies</h1>
+        <h1 style={{margin: "3rem 0"}}>All Companies</h1>
         <CompaniesGrid>
         {companiesinAlphaOrder.map(company => {
             return <Company key={company._id} to={`/company/${company._id}`}>{company.name}</Company>

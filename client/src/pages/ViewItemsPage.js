@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AllItemsContext } from "../contexts/AllItemsContext"
 import { AllCompaniesContext } from "../contexts/AllCompaniesContext";
 import ItemCard from "./ItemCard";
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const ViewItemsPage = () => {
@@ -10,13 +10,13 @@ const ViewItemsPage = () => {
   const {companies} = useContext(AllCompaniesContext)
   const location = useLocation()
   const [filter, setFilter] = useState(()=> (item) => true)
-  const [filterName, setFilterName] = useState()
+  const [filterName, setFilterName] = useState("All Products")
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20; // Number of items per page
 
-   // Pagination state
-   const [currentPage, setCurrentPage] = useState(1);
-   const itemsPerPage = 20; // Number of items per page
- 
 
+  ///// FILTERS START HERE
   //extracts information from the query
   const filters = new URLSearchParams(location.search)
   const category = filters.get("category")
@@ -42,18 +42,26 @@ const ViewItemsPage = () => {
         return categoryFilter && bodyFilter && companyFilter && underPriceFilter
       })
       //find and set the filter name for the h2
+      if (!company || !category || !bodyLocation || !underPrice){
+        setFilterName("All products")
+        setCurrentPage(1)
+      }
       if (company){
         const companyName = companies.find((individualCo) => individualCo._id === Number(company))
         setFilterName(companyName.name)
+        setCurrentPage(1)
       }
       if(category){
         setFilterName(category)
+        setCurrentPage(1)
       }
       if(bodyLocation){
         setFilterName(bodyLocation)
+        setCurrentPage(1)
       }
       if(underPrice){
         setFilterName(`under $${underPrice}`)
+        setCurrentPage(1)
       }
     },[category, bodyLocation, company, underPrice])
   
@@ -68,7 +76,12 @@ const ViewItemsPage = () => {
     //sort in alphabetical order
     const categoriesinAlphaOrder = uniqueItemCategories.sort((a,b)=> a.localeCompare(b))
     const bodyInAlphaOrder = uniqueItemBody.sort((a,b) => a.localeCompare(b))
+  ///// FILTERS END HERE
 
+
+
+
+///// PAGINATION STARTS HERE
 // Paginate items: Determine the index of the first and last items for the current page
 const indexOfLastItem = currentPage * itemsPerPage;
 const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -77,8 +90,8 @@ const currentItems = allItems.filter(filter).slice(indexOfFirstItem, indexOfLast
 // Calculate total pages
 const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
 
- // Handle page changes
- const handleNextPage = () => {
+  // Handle page changes
+  const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
@@ -89,10 +102,11 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
       setCurrentPage(currentPage - 1);
     }
   };
+  ///// PAGINATION ENDS HERE
 
   return (
     <div>
-      <h1>Products</h1>
+      <h1 style={{marginTop: "3rem", marginBottom: "1rem"}}>Products</h1>
       {filterName && <FilterName>{ filterName }</FilterName>}
       <div className="section">
         <div className="filterSection">
@@ -123,25 +137,27 @@ const totalPages = Math.ceil(allItems.filter(filter).length / itemsPerPage);
               <Filter to={`/items?under=100`}>Under $100</Filter>
             </div>}
         </div>
-        <div className="item-grid">
-          {(allItems.length > 0) ? (
-              allItems.filter(filter).map((item) => (
-                <ItemCard key={item._id} item={item}/>
-                ))
-            ) : (
-              <p>No items available</p>
-            )
-          }
-        </div>
+        <div className="itemsAndPagination">
+          <div className="item-grid">
+            {(allItems.length > 0) ? (
+                currentItems.filter(filter).map((item) => (
+                  <ItemCard key={item._id} item={item}/>
+                  ))
+              ) : (
+                <p>No items available</p>
+              )
+            }
+          </div>
           {/* Pagination Controls */}
           <div className="pagination-controls">
-          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-            Previous
-          </button>
-          <span>Page {currentPage} of {totalPages}</span>
-          <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-            Next
-          </button>
+            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+              Prev
+            </button>
+            <span> Page {currentPage} of {totalPages} </span>
+            <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ const LogInPage = () => {
     const [ status, setStatus ] = useState("idle");
     const [ showError, setShowError ] = useState("false");  //Error message to appear should there be any issues
     const [ errorMessage, setErrorMessage ] = useState("");
-    const { currentUser, setCurrentUser } = useContext(UserContext); 
+    const { currentUser, setCurrentUser, logIn } = useContext(UserContext); 
 
     const handleSubmit = async (ev) => {
         try {
@@ -38,6 +38,7 @@ const LogInPage = () => {
             } else {
             setCurrentUser( data.data);
             navigate(`/`);
+            logIn(data.data)
             }
 
         } catch (err) {

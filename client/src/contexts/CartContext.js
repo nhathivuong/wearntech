@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import {UserContext} from './UserContext';
 export const CartContext = createContext();
 
-const CartProvider = ({ children }) => {
+export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState({});
     const { currentUser } = useContext(UserContext);
 
