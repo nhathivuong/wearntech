@@ -1,21 +1,25 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
+import { CartContext } from "../contexts/CartContext"
 
-//cart logic that receives the cart items from backend , deletes them , or post them using the checkout button
 const ViewCartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const { cart } = useContext(CartContext);
+  const { _id: cartId } = cart; // Access the cart._id here  
+  const { _id: itemId } = useParams();
 
+  // Fetching cart items and their details (e.g., price)
   useEffect(() => {
     fetchCartItems();
   }, []);
 
-  //fetching cart items
+  // Fetch cart items from the backend
   const fetchCartItems = () => {
-    fetch("/cart")
+       if (!cartId || !itemId) return; // Don't run the fetch if cartId or itemId is not defined
+    fetch(`/cart/${cartId}/${itemId}`)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -24,7 +28,7 @@ const ViewCartPage = () => {
         }
       })
       .then((parsed) => {
-        return fetchItemsDetails(parsed.data);
+        return fetchItemsDetails(parsed.data);  // Fetching additional details of the items
       })
       .then((itemsWithDetails) => {
         setCartItems(itemsWithDetails);
@@ -35,7 +39,7 @@ const ViewCartPage = () => {
       });
   };
 
-  //fetching cart items details such as price 
+  // Fetching item details such as price, numInStock
   const fetchItemsDetails = (items) => {
     const itemDetailsPromises = items.map((item) => {
       return fetch(`/item/${item._id}`)
@@ -49,13 +53,13 @@ const ViewCartPage = () => {
         })
         .then((parsed) => {
           if (parsed) {
-            //converting price from string to a number so we do calculations
+            // Converting price from string to number for calculation purposes
             const priceWithoutSymbol = parsed.data.price.replace("$", ""); 
             item.details = {
               ...parsed.data,
               price: parseFloat(priceWithoutSymbol),
-            }; // we pushed the items in the cart into item.details to use it later in our return
-            return item; // Return the modified item object
+            };
+            return item;
           } else {
             return item;
           }
@@ -66,7 +70,6 @@ const ViewCartPage = () => {
         });
     });
 
-    //store all promises and execute them when they are met
     return Promise.all(itemDetailsPromises)
       .then((itemDetails) => itemDetails.filter((item) => item !== null))
       .catch((error) => {
@@ -75,7 +78,7 @@ const ViewCartPage = () => {
       });
   };
 
-  //decrease quant logic
+  // Decrease quantity of an item
   const decreaseQuantity = (index) => {
     const updatedCartItems = [...cartItems];
     if (updatedCartItems[index].quantity > 1) {
@@ -84,7 +87,7 @@ const ViewCartPage = () => {
     }
   };
 
-  //increase quant logic , the limit is the number of articles in stock
+  // Increase quantity of an item, the limit is the number of items in stock
   const increaseQuantity = (index) => {
     const updatedCartItems = [...cartItems];
     if (
@@ -96,7 +99,7 @@ const ViewCartPage = () => {
     }
   };
 
-  //logic for calculating the total order price
+  // Calculate the total price of the items in the cart
   const calculateOrderTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {
@@ -105,8 +108,8 @@ const ViewCartPage = () => {
     return total;
   };
 
+  // Handle checkout
   const handleCheckout = () => {
-    // Perform post request to submit the cartItems for checkout
     fetch("/purchase-item", {
       method: "POST",
       body: JSON.stringify(cartItems),
@@ -116,7 +119,7 @@ const ViewCartPage = () => {
     })
       .then((response) => {
         if (response.ok) {
-          // Do something after successful checkout, e.g., show confirmation message
+          // Redirect to confirmation page after successful checkout
           navigate("/confirmation", {
             state: { purchaseInfo: cartItems },
           });
@@ -129,17 +132,14 @@ const ViewCartPage = () => {
       });
   };
 
+  // Handle deletion of a single item from the cart
   const handleDeleteItem = (itemId) => {
-    // Perform delete request to remove a single item from the cart
     fetch(`/delete-item/${itemId}`, {
       method: "DELETE",
     })
       .then((response) => {
         if (response.ok) {
-          // Update the cartItems state to reflect the deletion
-          const updatedCartItems = cartItems.filter(
-            (item) => item._id !== itemId
-          );
+          const updatedCartItems = cartItems.filter((item) => item._id !== itemId);
           setCartItems(updatedCartItems);
         } else {
           throw new Error("Error deleting item from cart");
@@ -150,15 +150,14 @@ const ViewCartPage = () => {
       });
   };
 
+  // Handle deletion of all items from the cart
   const handleEmptyCart = () => {
-    // Perform delete request to remove all items from the cart
     fetch("/delete-AllItems", {
       method: "DELETE",
     })
       .then((response) => {
         if (response.ok) {
-          // Update the cartItems state to reflect the deletion of all items
-          setCartItems([]);
+          setCartItems([]);  // Empty the cart state
         } else {
           throw new Error("Error deleting all items from cart");
         }
@@ -169,67 +168,47 @@ const ViewCartPage = () => {
   };
 
   return (
-    <Container>
+    <div>
       {isLoading ? (
-        <LoadingBox>
-          <Loading/>
-        </LoadingBox>
-        
+        <Loading />  
       ) : cartItems.length > 0 ? (
         <>
-          <ItemList>
+          <div>
             {cartItems.map((item, index) => (
-              <Item key={index}>
-                <ItemImage
-                  src={item.details.imageSrc}
-                  alt={item.details.name}
-                />
-                <ItemDetails>
-                  <ProductName>{item.details.name}</ProductName>
-                  <Category>{item.details.category}</Category>
-                  <Price>
-                    Price: $<span>{(item.details.price * item.quantity).toFixed(2)}</span>
-                  </Price>
-                  <Quantity>
-                    <Button onClick={() => decreaseQuantity(index)}>-</Button>
-                    <QuantityValue>{item.quantity}</QuantityValue>
-                    <Button onClick={() => increaseQuantity(index)}>+</Button>
-                    {/* it shows a message upon reaching max quantity in stock */}
+              <div key={index}>
+                <img src={item.details.imageSrc} alt={item.details.name} />
+                <div>
+                  <h3>{item.details.name}</h3>
+                  <p>{item.details.category}</p>
+                  <p>Price: ${item.details.price.toFixed(2)}</p>
+                  <div>
+                    <button onClick={() => decreaseQuantity(index)}>-</button>
+                    <span>{item.quantity}</span>
+                    <button onClick={() => increaseQuantity(index)}>+</button>
                     {item.quantity >= item.details.numInStock && (
-                      <MessageQuant>Maximum amount in stock!</MessageQuant>
+                      <span>Maximum amount in stock!</span>
                     )}
-                    <DeleteButton onClick={() => handleDeleteItem(item._id)}>
-                      <i className="fa-regular fa-trash-can"></i>
-                    </DeleteButton>
-                  </Quantity>
-                </ItemDetails>
-              </Item>
+                    <button onClick={() => handleDeleteItem(item._id)}>
+                      <i className="fa-regular fa-trash-can"></i> Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
             ))}
-          </ItemList>
-          <BottomSection>
-            <OrderTotal>
-              ORDER TOTAL: ${calculateOrderTotal().toFixed(2)}
-            </OrderTotal>
+          </div>
 
-            {/* redirect user to confirmation page */}
-
-            <BtnBox>
-              <CheckoutButton onClick={handleCheckout}>
-                Proceed to Checkout
-              </CheckoutButton>
-
-              <EmptyCartButton onClick={handleEmptyCart}>
-                Empty Cart
-              </EmptyCartButton>
-            </BtnBox>
-          </BottomSection>
-
-          {/* Delete all items from the cart */}
+          <div>
+            <p>ORDER TOTAL: ${calculateOrderTotal().toFixed(2)}</p>
+            <div>
+              <button onClick={handleCheckout}>Proceed to Checkout</button>
+              <button onClick={handleEmptyCart}>Empty Cart</button>
+            </div>
+          </div>
         </>
       ) : (
         <p>Your cart is empty.</p>
       )}
-    </Container>
+    </div>
   );
 };
 

@@ -10,8 +10,10 @@ const ViewItemPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [status, setStatus] = useState("");
   const [addedToCart, setAddedToCart] = useState(false);  //confirm that item was added to cart
+const { cart } = useContext(CartContext);
+const cartId = cart._id;  // Make sure cart is not null and then destructure _id
 
-  const { _id: cartId } = useContext(CartContext); 
+
 
   //Fetches
   useEffect(() => {
@@ -36,13 +38,17 @@ const ViewItemPage = () => {
   },[itemId]);
 
   const handleAddToCart = async (ev) => {
-    try {
-      ev.preventDefault();
-      setStatus("processing")
-      const orderData = {
+    ev.preventDefault();
+    if (!cartId) {
+        console.error("Cart ID is not available!");
+        return;  // Handle this case, maybe show a message to the user.
+    }
+    setStatus("processing");
+
+    const orderData = {
         _id: itemId,
-        quantity
-      }
+        quantity,
+    };
       const body = JSON.stringify( orderData );
       const options = {
         method: "POST",
@@ -52,6 +58,7 @@ const ViewItemPage = () => {
         },
         body
       };
+      try {
       const addToCartResponse = await fetch(`/cart/${cartId}/${itemId}`, options); 
       const { addToCartData } = await addToCartResponse.json();
       if (addToCartData.status !== 201) {
