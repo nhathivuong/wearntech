@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import Loading from "./Loading";
+import Loading from "../components/Loading";
 
 const Confirmation = () => {
   const location = useLocation();
@@ -9,7 +9,7 @@ const Confirmation = () => {
 
   return (
     <div>
-      {showContent ? (
+      {true ? (
         <>
           <h2>Receipt Details</h2>
           <div>

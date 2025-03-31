@@ -5,6 +5,8 @@ export const AllItemsContext = React.createContext();
 
 const AllItemsProvider = ({ children }) => {
     const [allItems, setAllItems] = useState(null)
+    const [refetch , setRefetch] = useState(0)
+
     useEffect(() => {
         const getAllItems = async () => {
             const response = await fetch("/items");
@@ -12,9 +14,10 @@ const AllItemsProvider = ({ children }) => {
             setAllItems(data);
         };
         getAllItems();
-    }, [])
+    }, [refetch])
+
     return (
-        <AllItemsContext.Provider value={{allItems, setAllItems}} >
+        <AllItemsContext.Provider value={{allItems, setAllItems, setRefetch}} >
             {children}
         </AllItemsContext.Provider>
     )

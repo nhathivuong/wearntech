@@ -10,7 +10,7 @@ const ViewItemPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [status, setStatus] = useState("");
   const [addedToCart, setAddedToCart] = useState(false);  //confirm that item was added to cart
-  const { cart } = useContext(CartContext);
+  const { cart, replaceCart} = useContext(CartContext);
   const cartId = cart._id;  // Make sure cart is not null and then destructure _id
 
 
@@ -72,6 +72,7 @@ const ViewItemPage = () => {
 
     // Check if `addToCartData` and `addToCartData.status` are valid before accessing them
     if (addToCartData && addToCartData.status === 201) {
+      replaceCart(addToCartData.data)
       setAddedToCart(true);
       setTimeout(()=> setAddedToCart(false), 2000)
     } else {

@@ -6,9 +6,11 @@ export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState({});
     const { currentUser } = useContext(UserContext);
 
-
     useEffect(() => {
-        if (!currentUser) return;
+        if (!currentUser) {
+            setCart({});
+            return
+        };
         const url = `/cart/${currentUser.cartId}`; 
 
         const fetchCart = async () => {
@@ -21,7 +23,7 @@ export const CartProvider = ({ children }) => {
             }
         };
         fetchCart();
-    }, [currentUser, cart]);
+    }, [currentUser]);
     const totalItems = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
     
     const addItemToCart = (item, quantity) => {
@@ -38,11 +40,14 @@ export const CartProvider = ({ children }) => {
         }
         fetch(`/cart/${cart._id}/${item._id}`, options)
         .then(response => response.json())
-        .then(data => {if(data.status === 201){setCart(data)}})
+        .then(data => {if(data.status === 201){setCart(data.data)}})
         .catch((error) => console.error(error))
     }
+    const replaceCart = (cart) => {
+        setCart(cart)
+    }
     return (
-        <CartContext.Provider value={{cart, totalItems, addItemToCart}}>
+        <CartContext.Provider value={{cart, setCart, totalItems, addItemToCart, replaceCart}}>
             {children}
         </CartContext.Provider>
     );
