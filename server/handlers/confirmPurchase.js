@@ -7,6 +7,7 @@ const confirmPurchase = async(req, res) =>{
     const {cartId} = req.params
     const {items} = req.body
     const client = new MongoClient(MONGO_URI)
+
     const newOrder = {
         _id: uuidv4(),
         cartId : cartId,

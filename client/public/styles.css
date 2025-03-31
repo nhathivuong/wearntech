@@ -176,15 +176,9 @@ a {
 }
 
 .add-to-cart-btn{
-    background-color: var(--color-yellow);
-    border-radius: 5px;
-    border: solid 2px var(--color-black);
-    color: var(--color-white);
     display: flex;
-    font-family: Raleway;
     padding: 10px;
     margin: 0 auto;
-    font-weight: bold;
     font-size: 15px;
 }
 
@@ -355,6 +349,10 @@ button{
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
+}
+
+button:active{
+    transform: scale(0.95);
 }
 
 button:disabled{

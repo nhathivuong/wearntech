@@ -3,12 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import { CartContext } from "../contexts/CartContext"
 import { TrashIcon } from "../components/Icons";
-
+import { AllItemsContext } from "../contexts/AllItemsContext";
 const ViewCartPage = () => {
   const [cartItems, setCartItems] = useState([]);
+  console.log(cartItems)
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const { cart, addItemToCart } = useContext(CartContext);
+  const { cart, setCart, addItemToCart, replaceCart } = useContext(CartContext);
+  const {setRefetch} = useContext(AllItemsContext)
   const { _id: cartId } = cart; // Access the cart._id here  
 
   // Fetching cart items and their details (e.g., price)
@@ -132,26 +134,53 @@ const ViewCartPage = () => {
   const handleCheckout = () => {
     fetch(`/cart/${cartId}`, {
       method: "POST",
-      body: JSON.stringify(cartItems),
+      body: JSON.stringify({items: cartItems}),
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then((response) => {
         if (response.ok) {
-          // Redirect to confirmation page after successful checkout
-          navigate("/confirmation", {
-            state: { purchaseInfo: cartItems },
-          });
+          return response.json()
         } else {
           throw new Error("Error during checkout");
         }
       })
+      .then((data) => {
+        if(data.status !== 200){
+          console.error(data.message)
+        }
+        navigate(`/order/${data.data._id}/receipt`, {
+          state: { purchaseInfo: cartItems },
+        });
+        })
       .catch((error) => {
         console.error(error);
       });
+      const options= {
+        method: "PATCH",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+      fetch(`/cart/${cartId}`, options)
+      .then(response => {
+        if(!response.ok){
+          throw new Error("Inventory has not been updated")
+        }
+        return response.json()})
+      .then(data => {
+        if(data.status === 202){
+          setCart({})
+          replaceCart({_id: cartId, items: []})
+          handleEmptyCart()
+          setRefetch((fetch)=> fetch + 1)
+        }
+      })
   };
 
+ 
   // Handle deletion of a single item from the cart
   const handleDeleteItem = (itemId) => {
     const options = {
@@ -182,7 +211,8 @@ const ViewCartPage = () => {
     })
       .then((response) => {
         if (response.ok) {
-          setCartItems([]);  // Empty the cart state
+          setCartItems([]); 
+          replaceCart({_id: cartId, items: []}) // Empty the cart state
         } else {
           throw new Error("Error deleting all items from cart");
         }

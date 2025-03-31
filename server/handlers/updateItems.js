@@ -12,14 +12,14 @@ const updateItems = async (req, res) => {
         const db = client.db("e-commerce");
 
         // find cart object from database
-        const cart = await db.collection("cart").findOne({ cartId: Number(cartId) });
+        const cart = await db.collection("cart").findOne({ _id: cartId });
 
         if (!cart) {
             return res.status(404).json({ status: 404, message: "Cart not found."});
         }
 
         const itemsInCart = cart.items; // array of objects with keys _id & quantity
-
+        let currentNumInStock = 0;
         // Check if inventory is sufficient for all items
         const stockCheckPromises = itemsInCart.map(async (itemInCart) => {
             const itemId = itemInCart._id;
@@ -33,13 +33,14 @@ const updateItems = async (req, res) => {
             }
 
             // stock of found item
-            const currentNumInStock = foundItem.numInStock;
+
+            currentNumInStock = foundItem.numInStock;
 
             // verify that inventory is available
             if (currentNumInStock === 0 || currentNumInStock - quantityOfItem < 0) {
                 return { success: false, status: 400, message: `Not enough inventory available for Item ID ${itemId}.`}
             }
-
+            console.log(currentNumInStock)
             return { success: true, status: 200, message: "Sufficient inventory for cart items,"};
 
         });

@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import { CartProvider } from '../src/contexts/CartContext';  // Import the CartProvider
 import Header from "./Header"
 import Home from "./pages/Home"
 import CompanyPage from "./pages/CompanyPage"
@@ -10,6 +9,7 @@ import AllCompanies from "./pages/AllCompanies"
 import ViewItemPage from "./pages/ViewItemPage"
 import LogInPage from "./pages/LogInPage"
 import SignUpPage from "./pages/SignUpPage";
+import Confirmation from "./pages/ConfirmationPage"
 
 const App = () => {
     return <Router>
@@ -24,6 +24,7 @@ const App = () => {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/logIn" element={<LogInPage />} />
             <Route path="/signUp" element={<SignUpPage />}/>
+            <Route path="/order/:_id/receipt" element={<Confirmation/>}/>
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
     </Router>
