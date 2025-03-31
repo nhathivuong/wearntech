@@ -5,19 +5,7 @@ import Loading from "./Loading";
 const Confirmation = () => {
   const location = useLocation();
   const { purchaseInfo } = location.state || {}; // Make sure purchaseInfo exists
-  const [showContent, setShowContent] = useState(false);
 
-  // Set a timer to show the content after 2 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowContent(true);
-    }, 2000);
-
-    // Clean up the timer when the component unmounts
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
 
   return (
     <div>
