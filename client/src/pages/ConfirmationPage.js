@@ -11,31 +11,28 @@ const Confirmation = () => {
     <div>
       {true ? (
         <>
+          <h1>Thank you for your purchase!</h1>
           <h2>Receipt Details</h2>
-          <div>
+          <div style={{width: "fit-content", margin: "5rem auto", boxShadow: "1px 1px 5px var(--color-gray)", padding: "1rem"}}>
             {Array.isArray(purchaseInfo) && purchaseInfo.length > 0 ? (
               purchaseInfo.map((item, index) => (
-                <div key={index}>
+                <div style={{display: "flex"}} key={index}>
                   <img
                     src={item.details.imageSrc}
                     alt={item.details.name}
                     width="100"
                     height="100"
                   />
+                  <div className="detailsOfCartItem">
                   <h3>{item.details.name}</h3>
                   <p>Price: ${item.details.price.toFixed(2)}</p>
                   <p>Quantity: {item.quantity}</p>
+                  </div>
                 </div>
               ))
             ) : (
               <p>No items found in your purchase.</p>
             )}
-          </div>
-
-          <div>
-            <h1>Thank you for your purchase!</h1>
-            <h3>Go back to the Homepage if you want to keep on shopping!</h3>
-            <Link to="/">Homepage</Link>
           </div>
         </>
       ) : (
