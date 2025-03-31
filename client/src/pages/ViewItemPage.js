@@ -202,9 +202,7 @@ const StyledItemSection = styled.section`
     .cartButton{
       padding: 10px;
     }
-    .plusAndMinusButtons{
-      padding: 3px 7px;
-    }
+
   }
   .fullItemDescription{
     display: flex;

@@ -67,7 +67,7 @@ const StyledNavigationBar = styled.nav`
     position: sticky;
     margin: 0;
     padding: 1rem 0;
-    z-index: 3;
+    z-index: 11;
     a{
         color: var(--color-white);
     }
@@ -108,8 +108,6 @@ const HelloUserAlignment = styled.div`
 `
 const CartCount = styled.span`
     position: absolute;
-    top: -5px;
-    right: -10px;
     background-color: var(--color-yellow);
     color: black;
     font-size: 0.75rem;

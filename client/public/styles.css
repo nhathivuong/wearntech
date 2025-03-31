@@ -311,6 +311,7 @@ a {
 .dropdownMenu{
     animation-name: dropdownAnim;
     animation-duration: 0.5s;
+    z-index: 10;
 }
 
 @keyframes dropdownAnim {
@@ -325,4 +326,50 @@ a {
         transform: translateY(0px);
         animation-timing-function: ease-in-out;
     }
+}
+
+.fullViewCartPage{
+    margin: 5rem;
+}
+
+.itemInCart{
+    display: flex;
+    margin: 2rem;
+    padding: 1rem;
+    box-shadow: 1px 1px 5px var(--color-gray);
+    min-height: 200px;
+}
+
+.detailsOfCartItem{
+    justify-content: center;
+    padding: 1.5rem;
+    margin: auto 0;
+    line-height: 1.5rem;
+}
+
+button{
+    background-color: var(--color-yellow);
+    border: 2px solid var(--color-black);
+    color: var(--color-white);
+    font-family: Raleway;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:disabled{
+    opacity: 50%;
+    cursor: not-allowed;
+}
+
+.viewCartPageButtons{
+    padding: 10px;
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+}
+
+.orderTotal {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-left: 7rem;
 }
