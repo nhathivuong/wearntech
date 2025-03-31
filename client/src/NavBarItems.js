@@ -17,7 +17,7 @@ const NavBarItems = ({handleItemNav}) => {
     const bodyInAlphaOrder = uniqueItemBody.sort((a,b) => a.localeCompare(b))
 
     return(
-    <div className="dropdownMenu">
+    <div className="dropdownMenu" style={{position: "fixed", width: "100%"}}>
         <NavDrop>
             <Categories>
                 <EachFilter to={`/items`} onClick={handleItemNav}><h2>All products</h2></EachFilter>
@@ -46,7 +46,6 @@ const NavBarItems = ({handleItemNav}) => {
 }
 const NavDrop = styled.div`
     z-index: 1;
-    position:fixed;
     box-sizing: border-box;
     padding: 1em 0 1em 1em;
     display:grid;
@@ -56,8 +55,6 @@ const NavDrop = styled.div`
     margin: auto;
     justify-content: center;
     font-weight: bold;
-    animation-name: fade-in;
-    animation-duration: 0.5s;
 `
 const Price = styled.h2`
     text-align:left

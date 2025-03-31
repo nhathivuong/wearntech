@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import { CartContext } from "../contexts/CartContext"
+import { TrashIcon } from "../components/Icons";
 
 const ViewCartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -196,35 +197,37 @@ const ViewCartPage = () => {
         <Loading />  
       ) : cartItems.length > 0 ? (
         <>
-          <div>
+          <div className="fullViewCartPage">
             {cartItems.map((item, index) => (
-              <div key={index}>
+              <div className="itemInCart" key={index}>
                 <img src={item.details.imageSrc} alt={item.details.name} />
-                <div>
-                  <h3>{item.details.name}</h3>
+                <div className="detailsOfCartItem">
+                  <h3 style={{fontSize: "1.3rem"}}>{item.details.name}</h3>
                   <p>{item.details.category}</p>
                   <p>Price: ${item.details.price.toFixed(2)}</p>
                   <div>
                     <button onClick={() => decreaseQuantity(index)}>-</button>
-                    <span>{item.quantity}</span>
+                    <span> {item.quantity} </span>
                     <button onClick={() => increaseQuantity(index)}>+</button>
                     {item.quantity >= item.details.numInStock && (
                       <span>Maximum amount in stock!</span>
                     )}
-                    <button onClick={() => handleDeleteItem(item._id)}>
-                      <i className="fa-regular fa-trash-can"></i> Delete
+                    <div>
+                      <button className="viewCartPageButtons" onClick={() => handleDeleteItem(item._id)}>
+                        <TrashIcon /> Delete
                     </button>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          <div>
-            <p>ORDER TOTAL: ${calculateOrderTotal().toFixed(2)}</p>
-            <div>
-              <button onClick={handleCheckout}>Proceed to Checkout</button>
-              <button onClick={handleEmptyCart}>Empty Cart</button>
+          <div className="fullViewCartPage orderTotal">
+            <h2 style={{textAlign: "left"}}>ORDER TOTAL: ${calculateOrderTotal().toFixed(2)}</h2>
+            <div style={{marginTop: "2rem"}}>
+              <button className="viewCartPageButtons" onClick={handleCheckout}>Proceed to Checkout</button>
+              <button className="viewCartPageButtons" onClick={handleEmptyCart}>Empty Cart</button>
             </div>
           </div>
         </>
