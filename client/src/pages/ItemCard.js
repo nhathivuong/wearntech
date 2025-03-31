@@ -1,24 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
-
+import { CartContext } from '../contexts/CartContext';
 const ItemCard = ({ item }) => {
-  const navigate = useNavigate();
+  const {addItemToCart} = useContext(CartContext)
   // State for showing a message after adding an item to the cart
   const [added, setAdded] = useState(false);
 
-   // Local function to handle add to cart logic
-   const addToCart = (item) => {
-    // Assuming you would add the item to local cart or handle the cart logic here
-    console.log("Item added to cart", item);
-    // You can also update local state here if needed
-  };
-
   // Handle add to cart action
-  const handleAddToCart = (event) => {
+  const handleAddToCart = (item, event) => {
     event.stopPropagation();
-    addToCart(item);  // Add item to cart (this will come from parent component)
+    addItemToCart(item, 1); // adds item in the cart collection in the database
     setAdded(true);  // Show confirmation message
     setTimeout(() => setAdded(false), 2000);  // Hide confirmation after 2 seconds
   };
@@ -43,7 +36,7 @@ const ItemCard = ({ item }) => {
         </NavLink>
 
         {/* Add to Cart Button */}
-        <button className="add-to-cart-btn" onClick={handleAddToCart} disabled={item.numInStock === 0}>
+        <button className="add-to-cart-btn" onClick={(event) => handleAddToCart(item, event)} disabled={item.numInStock === 0}>
           {item.numInStock > 0 ? 'Add to Cart' : 'Out of Stock'}
         </button>
         {/* Confirmation Message */}

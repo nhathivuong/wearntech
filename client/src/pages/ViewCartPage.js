@@ -7,14 +7,13 @@ const ViewCartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const { cart } = useContext(CartContext);
+  const { cart, addItemToCart } = useContext(CartContext);
   const { _id: cartId } = cart; // Access the cart._id here  
-  const { _id: itemId } = useParams();
 
   // Fetching cart items and their details (e.g., price)
   useEffect(() => {
     fetchCartItems();
-  }, []);
+  }, [cart]);
 
   // Fetch cart items from the backend
   const fetchCartItems = () => {
@@ -24,27 +23,21 @@ const ViewCartPage = () => {
     }
   
     const url = `/cart/${cartId}/`;  // Updated URL without itemId
-    console.log("Fetching cart items from URL:", url);
   
     fetch(url)
       .then((response) => {
-        console.log("Response status:", response.status);
+
         if (!response.ok) {
           throw new Error(`Error fetching cart items: ${response.statusText}`);
         }
         return response.json();
       })
       .then((parsed) => {
-        console.log("Fetched cart response:", parsed);
         const items = parsed.data.items;
         if (!items || items.length === 0) {
           console.error("No items found in the cart data:", parsed);
           return [];  // Return empty array if no items exist
         }
-        
-        // Log the items data to inspect
-        console.log("Cart items data:", items);
-  
         return fetchItemsDetails(items);  // Continue with fetching item details
       })
       .then((itemsWithDetails) => {
@@ -58,8 +51,6 @@ const ViewCartPage = () => {
 
   // Fetching item details such as price, numInStock
   const fetchItemsDetails = (items) => {
-    // Log items to inspect the data
-    console.log("Items in the cart:", items);
   
     if (!Array.isArray(items)) {
       // If items is not an array, return an empty array or handle it accordingly
@@ -121,6 +112,8 @@ const ViewCartPage = () => {
       updatedCartItems[index].details.numInStock
     ) {
       updatedCartItems[index].quantity++;
+      console.log(updatedCartItems[index])
+      addItemToCart(updatedCartItems[index], 1)
       setCartItems(updatedCartItems);
     }
   };
@@ -160,23 +153,21 @@ const ViewCartPage = () => {
 
   // Handle deletion of a single item from the cart
   const handleDeleteItem = (itemId) => {
-    console.log("Deleting item with ID:", itemId);
-    console.log("From cart with ID:", cartId);
-    const itemExists = cartItems.find(item => item._id === itemId);
-    if (!itemExists) {
-        console.error("Item not found in cart!");
-        return;
-      }
-    fetch(`/cart/${cartId}/${itemId}`, { method: "DELETE" })
+    const options = {
+      method: "DELETE",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+    fetch(`/cart/${cartId}/${itemId}`, options )
       .then((response) => {
-        if (response.ok) {
-          const updatedCartItems = cartItems.filter((item) => item._id !== itemId);
-          setCartItems(updatedCartItems);
-        } else {
-          console.error("Error deleting item from cart:", response.statusText);
-          throw new Error("Error deleting item from cart");
+        if (!response.ok) {
+          throw new Error("Error deleting item from cart", response.status);
         }
+        return response.json()
       })
+      .then((data) => console.log(data))
       .catch((error) => {
         console.error("Error deleting item from cart:", error);
       });

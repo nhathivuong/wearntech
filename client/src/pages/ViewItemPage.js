@@ -10,8 +10,8 @@ const ViewItemPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [status, setStatus] = useState("");
   const [addedToCart, setAddedToCart] = useState(false);  //confirm that item was added to cart
-const { cart } = useContext(CartContext);
-const cartId = cart._id;  // Make sure cart is not null and then destructure _id
+  const { cart } = useContext(CartContext);
+  const cartId = cart._id;  // Make sure cart is not null and then destructure _id
 
 
 
@@ -47,7 +47,7 @@ const cartId = cart._id;  // Make sure cart is not null and then destructure _id
 
     const orderData = {
         _id: itemId,
-        quantity,
+        quantity: quantity,
     };
       const body = JSON.stringify( orderData );
       const options = {
@@ -60,23 +60,20 @@ const cartId = cart._id;  // Make sure cart is not null and then destructure _id
       };
       
   try {
-    const addToCartResponse = await fetch(`/cart/${cartId}/${itemId}`, options);
-
-    // Log the response to check its structure
-    const responseData = await addToCartResponse.json();
-    console.log("API Response:", responseData);  // Log the entire response
+    const response = await fetch(`/cart/${cartId}/${itemId}`, options);
 
     // Check if the response is valid and contains expected data
-    if (!addToCartResponse.ok) {
+    if (!response.ok) {
       setStatus("");
       throw new Error("Failed to add item to cart");
     }
 
-    const { addToCartData } = responseData;
+    const addToCartData = await response.json();
 
     // Check if `addToCartData` and `addToCartData.status` are valid before accessing them
     if (addToCartData && addToCartData.status === 201) {
       setAddedToCart(true);
+      setTimeout(()=> setAddedToCart(false), 2000)
     } else {
       setStatus(""); // Reset status if something went wrong
       console.error(addToCartData ? addToCartData.message : "Unknown error");
@@ -129,15 +126,10 @@ const cartId = cart._id;  // Make sure cart is not null and then destructure _id
                   )
                 }
                 <button className="cartButton" onClick={handleAddToCart} disabled={status === "processing"}>Add to Cart</button>
+                {/* Confirmation message that item was added to cart*/}
+                {addedToCart && <p>{quantity}x {product.name}: Successfully added to Cart!</p>}
               </>
             )}
-          </section>
-          
-          {/* Confirmation message that item was added to cart*/}
-          <section>
-            {
-              addedToCart && <p>{quantity}x {product.name}: Successfully added to Cart!</p>
-            }
           </section>
         </div>
       </div>
