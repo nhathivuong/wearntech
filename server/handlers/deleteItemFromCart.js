@@ -22,7 +22,7 @@ const deleteItemFromCart = async (req, res) => {
 
         //Find item in cart
         const foundItem = foundCart.items.find((item)=>{
-            return item._id === itemId;
+            return item._id === Number(itemId);
         });
         if (!foundItem) {
             return res.status(404).json({ status: 404, message: "Item not found in cart."})
@@ -33,7 +33,7 @@ const deleteItemFromCart = async (req, res) => {
         //Verify if quantity for item is greater than 1, Decrease quantity by 1
         if (foundItem.quantity > 1) {
             updatedCart = await db.collection("cart").updateOne(
-                { _id: cartId, "items._id": itemId },
+                { _id: cartId, "items._id": Number(itemId) },
                 { $inc: { "items.$.quantity": -1 }}
             )
         }
@@ -41,7 +41,7 @@ const deleteItemFromCart = async (req, res) => {
         if (foundItem.quantity === 1) {
             updatedCart = await db.collection("cart").updateOne(
                 { _id: cartId },
-                { $pull: { items: { _id: itemId}}}
+                { $pull: { items: { _id: Number(itemId)}}}
             )
         }
 
