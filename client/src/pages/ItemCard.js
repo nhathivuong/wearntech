@@ -8,6 +8,13 @@ const ItemCard = ({ item }) => {
   // State for showing a message after adding an item to the cart
   const [added, setAdded] = useState(false);
 
+   // Local function to handle add to cart logic
+   const addToCart = (item) => {
+    // Assuming you would add the item to local cart or handle the cart logic here
+    console.log("Item added to cart", item);
+    // You can also update local state here if needed
+  };
+
   // Handle add to cart action
   const handleAddToCart = (event) => {
     event.stopPropagation();

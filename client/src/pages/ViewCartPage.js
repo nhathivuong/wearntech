@@ -18,29 +18,55 @@ const ViewCartPage = () => {
 
   // Fetch cart items from the backend
   const fetchCartItems = () => {
-       if (!cartId || !itemId) return; // Don't run the fetch if cartId or itemId is not defined
-    fetch(`/cart/${cartId}/${itemId}`)
+    if (!cartId) {
+      console.error("Cart ID is missing.");
+      return;
+    }
+  
+    const url = `/cart/${cartId}/`;  // Updated URL without itemId
+    console.log("Fetching cart items from URL:", url);
+  
+    fetch(url)
       .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Error fetching cart items");
+        console.log("Response status:", response.status);
+        if (!response.ok) {
+          throw new Error(`Error fetching cart items: ${response.statusText}`);
         }
+        return response.json();
       })
       .then((parsed) => {
-        return fetchItemsDetails(parsed.data);  // Fetching additional details of the items
+        console.log("Fetched cart response:", parsed);
+        const items = parsed.data.items;
+        if (!items || items.length === 0) {
+          console.error("No items found in the cart data:", parsed);
+          return [];  // Return empty array if no items exist
+        }
+        
+        // Log the items data to inspect
+        console.log("Cart items data:", items);
+  
+        return fetchItemsDetails(items);  // Continue with fetching item details
       })
       .then((itemsWithDetails) => {
         setCartItems(itemsWithDetails);
         setIsLoading(false);
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error in fetchCartItems:", error);
       });
   };
 
   // Fetching item details such as price, numInStock
   const fetchItemsDetails = (items) => {
+    // Log items to inspect the data
+    console.log("Items in the cart:", items);
+  
+    if (!Array.isArray(items)) {
+      // If items is not an array, return an empty array or handle it accordingly
+      console.error("Items is not an array:", items);
+      return [];
+    }
+  
     const itemDetailsPromises = items.map((item) => {
       return fetch(`/item/${item._id}`)
         .then((response) => {
@@ -54,7 +80,7 @@ const ViewCartPage = () => {
         .then((parsed) => {
           if (parsed) {
             // Converting price from string to number for calculation purposes
-            const priceWithoutSymbol = parsed.data.price.replace("$", ""); 
+            const priceWithoutSymbol = parsed.data.price.replace("$", "");
             item.details = {
               ...parsed.data,
               price: parseFloat(priceWithoutSymbol),
@@ -69,7 +95,7 @@ const ViewCartPage = () => {
           return item;
         });
     });
-
+  
     return Promise.all(itemDetailsPromises)
       .then((itemDetails) => itemDetails.filter((item) => item !== null))
       .catch((error) => {
@@ -110,7 +136,7 @@ const ViewCartPage = () => {
 
   // Handle checkout
   const handleCheckout = () => {
-    fetch("/purchase-item", {
+    fetch(`/cart/${cartId}`, {
       method: "POST",
       body: JSON.stringify(cartItems),
       headers: {
@@ -134,25 +160,32 @@ const ViewCartPage = () => {
 
   // Handle deletion of a single item from the cart
   const handleDeleteItem = (itemId) => {
-    fetch(`/delete-item/${itemId}`, {
-      method: "DELETE",
-    })
+    console.log("Deleting item with ID:", itemId);
+    console.log("From cart with ID:", cartId);
+    const itemExists = cartItems.find(item => item._id === itemId);
+    if (!itemExists) {
+        console.error("Item not found in cart!");
+        return;
+      }
+    fetch(`/cart/${cartId}/${itemId}`, { method: "DELETE" })
       .then((response) => {
         if (response.ok) {
           const updatedCartItems = cartItems.filter((item) => item._id !== itemId);
           setCartItems(updatedCartItems);
         } else {
+          console.error("Error deleting item from cart:", response.statusText);
           throw new Error("Error deleting item from cart");
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error deleting item from cart:", error);
       });
   };
+    
 
   // Handle deletion of all items from the cart
   const handleEmptyCart = () => {
-    fetch("/delete-AllItems", {
+    fetch(`/cart/${cartId}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -166,7 +199,6 @@ const ViewCartPage = () => {
         console.error(error);
       });
   };
-
   return (
     <div>
       {isLoading ? (

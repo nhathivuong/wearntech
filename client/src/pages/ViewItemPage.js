@@ -58,20 +58,34 @@ const cartId = cart._id;  // Make sure cart is not null and then destructure _id
         },
         body
       };
-      try {
-      const addToCartResponse = await fetch(`/cart/${cartId}/${itemId}`, options); 
-      const { addToCartData } = await addToCartResponse.json();
-      if (addToCartData.status !== 201) {
-        setStatus("");
-        console.log(addToCartData.message);
-      } else {
-        setAddedToCart(true);
-      }
       
-    } catch (error) {
-      console.log(error.message);
+  try {
+    const addToCartResponse = await fetch(`/cart/${cartId}/${itemId}`, options);
+
+    // Log the response to check its structure
+    const responseData = await addToCartResponse.json();
+    console.log("API Response:", responseData);  // Log the entire response
+
+    // Check if the response is valid and contains expected data
+    if (!addToCartResponse.ok) {
+      setStatus("");
+      throw new Error("Failed to add item to cart");
     }
-  };
+
+    const { addToCartData } = responseData;
+
+    // Check if `addToCartData` and `addToCartData.status` are valid before accessing them
+    if (addToCartData && addToCartData.status === 201) {
+      setAddedToCart(true);
+    } else {
+      setStatus(""); // Reset status if something went wrong
+      console.error(addToCartData ? addToCartData.message : "Unknown error");
+    }
+  } catch (error) {
+    setStatus(""); // Reset status if error occurs
+    console.error("Error adding item to cart:", error.message);
+  }
+};
 
   if (!product || !company) {
     return <p>Loading Information...</p>;
