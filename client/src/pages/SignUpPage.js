@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const SignUpPage = () => {
     const navigate = useNavigate();
-    const { currentUser, setCurrentUser } = useContext(UserContext); 
+    const { currentUser, setCurrentUser, logIn} = useContext(UserContext); 
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
@@ -26,6 +26,7 @@ const SignUpPage = () => {
             const result = await response.json();
             if (response.status === 201) {
                 setCurrentUser(result.data);
+                logIn(result.data)
                 setEmail("");
                 setName("");
                 setAddress("");

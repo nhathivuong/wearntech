@@ -21,11 +21,28 @@ export const CartProvider = ({ children }) => {
             }
         };
         fetchCart();
-    }, [currentUser]);
+    }, [currentUser, cart]);
     const totalItems = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
-
+    
+    const addItemToCart = (item, quantity) => {
+        const body = JSON.stringify({
+            quantity: quantity,
+        })
+        const options = {
+            method:"POST",
+            headers:{
+                "Accept" : "application/json",
+                "Content-Type" : "application/json",
+            },
+            body
+        }
+        fetch(`/cart/${cart._id}/${item._id}`, options)
+        .then(response => response.json())
+        .then(data => {if(data.status === 201){setCart(data)}})
+        .catch((error) => console.error(error))
+    }
     return (
-        <CartContext.Provider value={{cart, totalItems}}>
+        <CartContext.Provider value={{cart, totalItems, addItemToCart}}>
             {children}
         </CartContext.Provider>
     );
