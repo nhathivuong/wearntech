@@ -1,6 +1,7 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link,useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../contexts/CartContext"
+import { UserContext } from "../contexts/UserContext";
 import styled from "styled-components";
 
 const ViewItemPage = () => {
@@ -12,8 +13,8 @@ const ViewItemPage = () => {
   const [addedToCart, setAddedToCart] = useState(false);  //confirm that item was added to cart
   const { cart, replaceCart} = useContext(CartContext);
   const cartId = cart._id;  // Make sure cart is not null and then destructure _id
-
-
+  const {currentUser} = useContext (UserContext)
+  const navigate = useNavigate()
 
   //Fetches
   useEffect(() => {
@@ -39,6 +40,9 @@ const ViewItemPage = () => {
 
   const handleAddToCart = async (ev) => {
     ev.preventDefault();
+    if(!currentUser){
+      navigate("/logIn")
+    }
     if (!cartId) {
         console.error("Cart ID is not available!");
         return;  // Handle this case, maybe show a message to the user.
