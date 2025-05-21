@@ -14,6 +14,7 @@ import Confirmation from "./pages/ConfirmationPage"
 const App = () => {
     return <Router>
         <Header />
+        <main>
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/companies" element={<AllCompanies/>}/>
@@ -27,6 +28,7 @@ const App = () => {
             <Route path="/order/:_id/receipt" element={<Confirmation/>}/>
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        </main>
     </Router>
 }
 
