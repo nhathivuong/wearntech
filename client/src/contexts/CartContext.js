@@ -11,7 +11,7 @@ export const CartProvider = ({ children }) => {
             setCart({});
             return
         };
-        const url = `/cart/${currentUser.cartId}`; 
+        const url = `https://wearntech.onrender.com/cart/${currentUser.cartId}`; 
 
         const fetchCart = async () => {
             try {
@@ -38,7 +38,7 @@ export const CartProvider = ({ children }) => {
             },
             body
         }
-        fetch(`/cart/${cart._id}/${item._id}`, options)
+        fetch(`https://wearntech.onrender.com/cart/${cart._id}/${item._id}`, options)
         .then(response => response.json())
         .then(data => {if(data.status === 201){setCart(data.data)}})
         .catch((error) => console.error(error))

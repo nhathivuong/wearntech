@@ -11,7 +11,7 @@ const CompanyPage = () => {
 
     useEffect(() => {
         const fetchCompany = async () => {
-            const response = await fetch(`/company/${companyId}`);
+            const response = await fetch(`https://wearntech.onrender.com/company/${companyId}`);
             const { data } = await response.json();
             setCompany(data);
         };

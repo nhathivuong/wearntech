@@ -25,7 +25,7 @@ const ViewCartPage = () => {
       return;
     }
   
-    const url = `/cart/${cartId}/`;  // Updated URL without itemId
+    const url = `https://wearntech.onrender.com/cart/${cartId}/`;  // Updated URL without itemId
   
     fetch(url)
       .then((response) => {
@@ -62,7 +62,7 @@ const ViewCartPage = () => {
     }
   
     const itemDetailsPromises = items.map((item) => {
-      return fetch(`/item/${item._id}`)
+      return fetch(`https://wearntech.onrender.com/item/${item._id}`)
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -132,7 +132,7 @@ const ViewCartPage = () => {
 
   // Handle checkout
   const handleCheckout = () => {
-    fetch(`/cart/${cartId}`, {
+    fetch(`https://wearntech.onrender.com/cart/${cartId}`, {
       method: "POST",
       body: JSON.stringify({items: cartItems}),
       headers: {
@@ -164,7 +164,7 @@ const ViewCartPage = () => {
           "Content-Type": "application/json",
         },
       }
-      fetch(`/cart/${cartId}`, options)
+      fetch(`https://wearntech.onrender.com/cart/${cartId}`, options)
       .then(response => {
         if(!response.ok){
           throw new Error("Inventory has not been updated")
@@ -190,7 +190,7 @@ const ViewCartPage = () => {
         "Content-Type": "application/json",
       },
     }
-    fetch(`/cart/${cartId}/${itemId}`, options )
+    fetch(`https://wearntech.onrender.com/cart/${cartId}/${itemId}`, options )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error deleting item from cart", response.status);
@@ -206,7 +206,7 @@ const ViewCartPage = () => {
 
   // Handle deletion of all items from the cart
   const handleEmptyCart = () => {
-    fetch(`/cart/${cartId}`, {
+    fetch(`https://wearntech.onrender.com/cart/${cartId}`, {
       method: "DELETE",
     })
       .then((response) => {

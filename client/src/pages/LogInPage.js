@@ -29,7 +29,7 @@ const LogInPage = () => {
                 },
                 body
             };
-            const response = await fetch('/logIn', options); 
+            const response = await fetch('https://wearntech.onrender.com/logIn', options); 
             const data = await response.json();
             if (data.status !== 200) {
                 setStatus("idle");

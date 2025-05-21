@@ -17,9 +17,16 @@ const {
     logIn,
 } = require("./handlers");
 
-const PORT = 4000;
+const PORT = process.env.PORT ||4000;
 
 const app = express();
+
+app.use(cors({
+    origin: [
+        'https://wearntech.vercel.app/'
+    ],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+}));
 
 app.use(morgan("tiny"));
 app.use(express.json());

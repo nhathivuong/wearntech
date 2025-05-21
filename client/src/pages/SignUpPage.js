@@ -16,7 +16,7 @@ const SignUpPage = () => {
         ev.preventDefault();
         const newUser = { email, name, address };
         try {
-            const response = await fetch("/signUp", {
+            const response = await fetch("https://wearntech.onrender.com/signUp", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

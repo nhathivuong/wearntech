@@ -10,7 +10,7 @@ const AllCompaniesProvider = ({ children }) => {
   // Fetch the allCompanies data when the component mounts
   useEffect(() => {
     const fetchCompanies = async () => {
-      const response = await fetch('/companies');
+      const response = await fetch('https://wearntech.onrender.com/companies');
       const {data} = await response.json();
       setCompanies(data);
     };

@@ -17,7 +17,7 @@ const UserProvider = ({ children }) => {
                 },
                 body
             };
-            fetch(`/logIn`, options)
+            fetch(`https://wearntech.onrender.com/logIn`, options)
             .then(res => res.json())
             .then(data => {
                 if(data.status === 200){setCurrentUser(data.data)}

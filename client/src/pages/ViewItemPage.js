@@ -21,13 +21,13 @@ const ViewItemPage = () => {
     const fetchItemData = async () => {
       try {
         //Fetch item's data from database
-        const itemResponse = await fetch(`/item/${itemId}`);
+        const itemResponse = await fetch(`https://wearntech.onrender.com/item/${itemId}`);
         if (!itemResponse.ok) throw new Error("Could not fetch item");
         const { data: itemData } = await itemResponse.json();
         setProduct(itemData);
 
         //Using item's data, fetch company data from database
-        const companyResponse = await fetch(`/company/${itemData.companyId}`);
+        const companyResponse = await fetch(`https://wearntech.onrender.com/company/${itemData.companyId}`);
         if (!companyResponse.ok) throw new Error ("Could not fetch company");
         const { data: companyData } = await companyResponse.json();
         setCompany(companyData);
@@ -64,7 +64,7 @@ const ViewItemPage = () => {
       };
       
   try {
-    const response = await fetch(`/cart/${cartId}/${itemId}`, options);
+    const response = await fetch(`https://wearntech.onrender.com/cart/${cartId}/${itemId}`, options);
 
     // Check if the response is valid and contains expected data
     if (!response.ok) {

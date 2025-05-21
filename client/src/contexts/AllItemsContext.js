@@ -9,7 +9,7 @@ const AllItemsProvider = ({ children }) => {
 
     useEffect(() => {
         const getAllItems = async () => {
-            const response = await fetch("/items");
+            const response = await fetch("https://wearntech.onrender.com/items");
             const {data} = await response.json();
             setAllItems(data);
         };
