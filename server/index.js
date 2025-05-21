@@ -45,10 +45,6 @@ app.patch("/cart/:cartId", updateItems)
 app.post("/signUp", signUp)
 app.post("/logIn", logIn)
 
-app.get('/', (req, res) => {
-    res.send('WearnTech API is running 🚀');
-});
-
 app.get("*", (req, res) => {
     res.status(404).json({
     status: 404,
