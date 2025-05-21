@@ -23,9 +23,7 @@ const PORT = process.env.PORT ||4000;
 const app = express();
 
 app.use(cors({
-    origin: [
-        'https://wearntech.vercel.app'
-    ],
+    origin: 'https://wearntech.vercel.app',
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
 }));
 
