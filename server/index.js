@@ -23,7 +23,7 @@ const app = express();
 
 app.use(cors({
     origin: [
-        'https://wearntech.vercel.app/'
+        'https://wearntech.vercel.app'
     ],
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
 }));
